@@ -1,0 +1,15 @@
+﻿生成启动时间为 2018/7/4 21:46:40。
+     1>项目“G:\二进制安全系列\经典栈溢出\theory_project\stack_overflow\stack_overflow\stack_overflow.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         F:\VS2013\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stack_overflow.cpp
+         stack_overflow.cpp
+     1>g:\二进制安全系列\经典栈溢出\theory_project\stack_overflow\stack_overflow\stack_overflow.cpp(19): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\vs2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+       Link:
+         F:\VS2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"G:\二进制安全系列\经典栈溢出\theory_project\stack_overflow\Debug\stack_overflow.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:\二进制安全系列\经典栈溢出\theory_project\stack_overflow\Debug\stack_overflow.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE:NO /NXCOMPAT:NO /IMPLIB:"G:\二进制安全系列\经典栈溢出\theory_project\stack_overflow\Debug\stack_overflow.lib" /MACHINE:X86 /SAFESEH:NO Debug\stack_overflow.obj
+         stack_overflow.vcxproj -> G:\二进制安全系列\经典栈溢出\theory_project\stack_overflow\Debug\stack_overflow.exe
+     1>已完成生成项目“G:\二进制安全系列\经典栈溢出\theory_project\stack_overflow\stack_overflow\stack_overflow.vcxproj”(Build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:00.36
