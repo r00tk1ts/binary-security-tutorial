@@ -27,6 +27,7 @@ void vul_func()
 
 int main(int argc, char *argv[])
 {
+	char buf[1024];
 	vul_func();
 	return 0;
 }
