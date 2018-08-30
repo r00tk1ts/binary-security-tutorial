@@ -1,0 +1,54 @@
+.wp-downloadmanager-paging a, .wp-downloadmanager-paging a:link {
+    padding: 2px 4px 2px 4px;
+    margin: 2px;
+    text-decoration: none;
+    border: 1px solid #0066cc;
+    color: #0066cc;
+    background-color: #FFFFFF;
+}
+.wp-downloadmanager-paging a:visited {
+    padding: 2px 4px 2px 4px;
+    margin: 2px;
+    text-decoration: none;
+    border: 1px solid #0066cc;
+    color: #0066cc;
+    background-color: #FFFFFF;
+}
+.wp-downloadmanager-paging a:hover {
+    border: 1px solid #000000;
+    color: #000000;
+    background-color: #FFFFFF;
+}
+.wp-downloadmanager-paging a:active {
+    padding: 2px 4px 2px 4px;
+    margin: 2px;
+    text-decoration: none;
+    border: 1px solid #0066cc;
+    color: #0066cc;
+    background-color: #FFFFFF;
+}
+.wp-downloadmanager-paging span.pages {
+    padding: 2px 4px 2px 4px;
+    margin: 2px 2px 2px 2px;
+    color: #000000;
+    border: 1px solid #000000;
+    background-color: #FFFFFF;
+}
+.wp-downloadmanager-paging span.current {
+    padding: 2px 4px 2px 4px;
+    margin: 2px;
+    font-weight: bold;
+    border: 1px solid #000000;
+    color: #000000;
+    background-color: #FFFFFF;
+}
+.wp-downloadmanager-paging span.extend {
+    padding: 2px 4px 2px 4px;
+    margin: 2px;
+    border: 1px solid #000000;
+    color: #000000;
+    background-color: #FFFFFF;
+}
+.download-search-highlight {
+    color: red;
+}

@@ -1,0 +1,132 @@
+
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> thickbox specific link and font settings <<<------------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+#TB_window {
+	font: 14px "Open Sans", sans-serif;
+	color: #333333;
+}
+
+#TB_secondLine {
+	font: 10px "Open Sans", sans-serif;
+	color:#666666;
+	padding-top: 2px;
+}
+
+.rtl #TB_window,
+.rtl #TB_secondLine {
+	font-family: Tahoma, sans-serif;
+}
+
+:lang(he-il) .rtl #TB_window,
+:lang(he-il) .rtl #TB_secondLine {
+	font-family: Arial, sans-serif;
+}
+
+#TB_window a:link {color: #666666;}
+#TB_window a:visited {color: #666666;}
+#TB_window a:hover {color: #000;}
+#TB_window a:active {color: #666666;}
+#TB_window a:focus{color: #666666;}
+
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> thickbox settings <<<-----------------------------------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+
+
+#TB_window {
+	color:#000000;
+}
+
+#TB_caption {
+	padding: 5px 0 10px 0px;
+	text-align: center;
+	width: 100%;
+}
+
+#TB_closeWindow {
+	float: none;
+}
+
+#TB_prev {
+	float: left;
+	padding-left: 10px;
+}
+
+#TB_next {
+	float: right;
+	padding-right: 10px;
+}
+
+#TB_prev a,
+#TB_next a {
+	text-decoration: none;
+}
+
+/*
+
+#TB_overlay {
+	height:100%;
+	width:100%;
+}
+
+
+diffs from the WP 3.8 thickbox.css file
+
+#TB_overlay {
+
+	// 3.9 changed props
+	background: #000;
+	opacity: 0.7;
+	filter: alpha(opacity=70);
+}
+
+
+#TB_closeAjaxWindow{
+	padding:6px 10px 0;
+	text-align:right;
+}
+
+#TB_title{
+	background-color:#e8e8e8;
+}
+
+#TB_iframeContent{
+	margin-bottom:-1px;
+	_margin-bottom:1px;
+}
+
+.tb-close-icon {
+	height: 16px;
+	margin: -3px -3px 0 0;
+	width: 16px;
+}
+
+.tb-close-icon:before {
+	color: #ccc;
+	font: normal 20px/29px 'dashicons';
+	vertical-align: middle;;
+}
+
+.tb-close-icon:hover:before {
+	color: #fff;
+}
+*/
+
+/*
+.tb-close-icon {
+	background: url('../images/tb-close.png') no-repeat;
+	height: 15px;
+	width: 15px;
+}
+
+@media print,
+  (-o-min-device-pixel-ratio: 5/4),
+  (-webkit-min-device-pixel-ratio: 1.25),
+  (min-resolution: 120dpi) {
+	.tb-close-icon {
+		background: url('../images/tb-close-2x.png') no-repeat;
+		background-size: 15px;
+	}
+}
+*/

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<!-- saved from url=(0111)https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/ -->
+<html lang="en-US" style="background-image: url(&quot;data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==&quot;);"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="stylesheet" href="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/bootstrap.min.css">
+	<link rel="pingback" href="https://blogs.technet.microsoft.com/srd/xmlrpc.php">
+		<!--[if lt IE 9]>
+	<script src="https://blogs.technet.microsoft.com/srd/wp-content/themes/microsoft/js/html5.js"></script>
+	<![endif]-->
+	<title>Software Defense: mitigating heap corruption vulnerabilities – Security Research &amp; Defense</title>
+<link rel="dns-prefetch" href="https://ajax.aspnetcdn.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Security Research &amp; Defense » Software Defense: mitigating heap corruption vulnerabilities Comments Feed" href="https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/feed/">
+		<script id="facebook-jssdk" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/sdk.js"></script><script async="" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/gtm.js"></script><script async="" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/analytics.js"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/blogs.technet.microsoft.com\/srd\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.7"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56692,8205,9792,65039],[55357,56692,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/wp-emoji-release.min.js" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="wds-ratings-css" href="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/wds-ratings.css" type="text/css" media="all">
+<link rel="stylesheet" id="microsoft-parent-style-css" href="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="microsoft-child-style-css" href="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/style(1).css" type="text/css" media="all">
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/jquery-1.12.1.min.js"></script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/bootstrap.min.js"></script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/single.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://blogs.technet.microsoft.com/srd/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://blogs.technet.microsoft.com/srd/wp-includes/wlwmanifest.xml"> 
+
+<link rel="canonical" href="https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/">
+<link rel="shortlink" href="https://blogs.technet.microsoft.com/srd/?p=407">
+<link rel="alternate" type="application/json+oembed" href="https://blogs.technet.microsoft.com/srd/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblogs.technet.microsoft.com%2Fsrd%2F2013%2F10%2F29%2Fsoftware-defense-mitigating-heap-corruption-vulnerabilities%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://blogs.technet.microsoft.com/srd/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblogs.technet.microsoft.com%2Fsrd%2F2013%2F10%2F29%2Fsoftware-defense-mitigating-heap-corruption-vulnerabilities%2F&amp;format=xml">
+	<script>
+		if(window.document.referrer.indexOf('login.live.com') !== -1) {
+			// redefine ga function to prevent referrer data collected by google analytics
+			window.ga = function(){};
+		}
+	</script>
+	<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/jsll-4.2.1.js"></script><link href="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/style(2).css" rel="stylesheet" type="text/css"><link href="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/icons.css" rel="stylesheet" type="text/css"><style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}.fb_link img{border:none}@keyframes fb_transform{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_reset .fb_dialog_legacy{overflow:visible}.fb_dialog_advanced{padding:10px;border-radius:8px}.fb_dialog_content{background:#fff;color:#333}.fb_dialog_close_icon{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent}.fb_dialog_close_icon:active{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent}.fb_dialog_loader{background-color:#f5f6f7;border:1px solid #606060;font-size:24px;padding:20px}.fb_dialog_top_left,.fb_dialog_top_right,.fb_dialog_bottom_left,.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}.fb_dialog_top_left{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}.fb_dialog_top_right{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}.fb_dialog_bottom_left{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}.fb_dialog_bottom_right{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}.fb_dialog_vert_left,.fb_dialog_vert_right,.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}.fb_dialog_vert_left,.fb_dialog_vert_right{width:10px;height:100%}.fb_dialog_vert_left{margin-left:-10px}.fb_dialog_vert_right{right:0;margin-right:-10px}.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{width:100%;height:10px}.fb_dialog_horiz_top{margin-top:-10px}.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #365899;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{-webkit-transform:none;height:100%;margin:0;overflow:visible;position:absolute;top:-10000px;left:0;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{width:auto;height:auto;min-height:initial;min-width:initial;background:none}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{color:#fff;display:block;padding-top:20px;clear:both;font-size:18px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;bottom:0;left:0;right:0;top:0;width:100%;min-height:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_mobile .fb_dialog_iframe{position:-webkit-sticky;top:0}.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4966A6), color-stop(.5, #355492), to(#2A4887));border:1px solid #29487d;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset, rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f5f6f7;border:1px solid #555;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/t-wz8gw1xG1.png);background-repeat:no-repeat;background-position:50% 50%;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_hide_iframes iframe{position:relative;left:-10000px}.fb_iframe_widget_loader{position:relative;display:inline-block}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}.fb_iframe_widget_loader .FB_Loader{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}
+.fb_customer_chat_bounce_in_v2{animation-duration:300ms;animation-name:fb_bounce_in_v2;transition-timing-function:ease-in}.fb_customer_chat_bounce_out_v2{animation-duration:300ms;animation-name:fb_bounce_out_v2;transition-timing-function:ease-in}.fb_customer_chat_bounce_in_v2_mobile_chat_started{animation-duration:300ms;animation-name:fb_bounce_in_v2_mobile_chat_started;transition-timing-function:ease-in}.fb_customer_chat_bounce_out_v2_mobile_chat_started{animation-duration:300ms;animation-name:fb_bounce_out_v2_mobile_chat_started;transition-timing-function:ease-in}.fb_customer_chat_bubble_pop_in{animation-duration:250ms;animation-name:fb_customer_chat_bubble_bounce_in_animation}.fb_customer_chat_bubble_animated_no_badge{box-shadow:0 3px 12px rgba(0, 0, 0, .15);transition:box-shadow 150ms linear}.fb_customer_chat_bubble_animated_no_badge:hover{box-shadow:0 5px 24px rgba(0, 0, 0, .3)}.fb_customer_chat_bubble_animated_with_badge{box-shadow:-5px 4px 14px rgba(0, 0, 0, .15);transition:box-shadow 150ms linear}.fb_customer_chat_bubble_animated_with_badge:hover{box-shadow:-5px 8px 24px rgba(0, 0, 0, .2)}.fb_invisible_flow{display:inherit;height:0;overflow-x:hidden;width:0}.fb_mobile_overlay_active{background-color:#fff;height:100%;overflow:hidden;position:fixed;visibility:hidden;width:100%}@keyframes fb_bounce_in_v2{0%{opacity:0;transform:scale(0, 0);transform-origin:bottom right}50%{transform:scale(1.03, 1.03);transform-origin:bottom right}100%{opacity:1;transform:scale(1, 1);transform-origin:bottom right}}@keyframes fb_bounce_in_v2_mobile_chat_started{0%{opacity:0;top:20px}100%{opacity:1;top:0}}@keyframes fb_bounce_out_v2{0%{opacity:1;transform:scale(1, 1);transform-origin:bottom right}100%{opacity:0;transform:scale(0, 0);transform-origin:bottom right}}@keyframes fb_bounce_out_v2_mobile_chat_started{0%{opacity:1;top:0}100%{opacity:0;top:20px}}@keyframes fb_customer_chat_bubble_bounce_in_animation{0%{bottom:6pt;opacity:0;transform:scale(0, 0);transform-origin:center}70%{bottom:18pt;opacity:1;transform:scale(1.2, 1.2)}100%{transform:scale(1, 1)}}</style><script async="" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/t.js"></script><link href="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/UnifiedBaseballCard.css" rel="stylesheet" type="text/css"><link href="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/usercard.css" rel="stylesheet" type="text/css"></head><body class="post-template-default single single-post postid-407 single-format-standard"><div id="msccBanner" dir="ltr" data-site-name="uhf-TechNetBlogs" data-mscc-version="0.4.0" data-nver="aspnet-3.1.3" data-sver="0.1.2" class="cc-banner active" role="alert"><div class="cc-container"><svg class="cc-icon cc-v-center" x="0px" y="0px" viewBox="0 0 44 44" height="30px" fill="none" stroke="currentColor"><circle cx="22" cy="22" r="20" stroke-width="2"></circle><line x1="22" x2="22" y1="18" y2="33" stroke-width="3"></line><line x1="22" x2="22" y1="12" y2="15" stroke-width="3"></line></svg> <span class="cc-v-center cc-text">This site uses cookies for analytics, personalized content and ads. By continuing to browse this site, you agree to this use.</span> <a href="https://go.microsoft.com/fwlink/?linkid=845480" aria-label="Learn more about Microsoft&#39;s Cookie Policy" id="msccLearnMore" class="cc-link cc-v-center cc-float-right" data-mscc-ic="false">Learn more</a></div></div><script type="text/javascript">
+jQuery( window ).load( function() {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    if (typeof mscc === 'undefined' || (!mscc || mscc.hasConsent())) {
+                ga('require', 'linkid');
+                ga('create', 'UA-65691138-1', 'auto');
+                ga('send', 'pageview');
+                ga('set', 'anonymizeIp', true);
+            }
+} );
+</script>
+			<!-- Begin Custom CSS --><style type="text/css" id="wds-custom-css">
+						</style><!-- End Custom CSS -->
+			    <link rel="shortcut icon" href="https://blogs.technet.microsoft.com/srd/wp-content/themes/microsoft-technet/images/favicon-technet.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Software Defense: mitigating heap corruption vulnerabilities">
+<meta property="og:url" content="https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/">
+<meta property="og:site_name" content="Security Research &amp; Defense">
+<meta property="og:description" content="Heap corruption vulnerabilities are the most common type of vulnerability that Microsoft addresses through security updates today. These vulnerabilities typically occur as a result of programming mistakes that make it possible to write beyond the bounds of a heap buffer (a spatial issue) or to place a heap allocated object in an unexpected state such...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Software Defense: mitigating heap corruption vulnerabilities">
+<meta name="twitter:url" content="https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/">
+<meta name="twitter:description" content="Heap corruption vulnerabilities are the most common type of vulnerability that Microsoft addresses through security updates today. These vulnerabilities typically occur as a result of programming mistakes that make it possible to write beyond the bounds of a heap buffer (a spatial issue) or to place a heap allocated object in an unexpected state such...">
+
+
+
+<div id="page" class="site container-fluid">
+
+	<header id="site-header" class="site-header row" role="banner">
+		<div id="site-header-global-wrapper" class="site-header-global-wrapper">
+			<div id="site-header-global" class="site-header-global">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#site-profile-menu" aria-label="toggle menu" tabindex="0" aria-expanded="false">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<div id="site-logo" class="col-sm-5 row navbar-header">
+					<div id="header-microsoft-logo">
+						<a id="home-link" href="http://technet.microsoft.com/" tabindex="1" aria-label="Microsoft Technet">
+							<img id="header-microsoft-logo-svg" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/ms-logo-gray.svg" alt="Microsoft logo">
+							<span id="brand">
+								<span id="brand-separator">|</span>
+								<span id="brand-name"></span>
+							</span>
+						</a>
+					</div>
+				</div>
+				<div id="site-header-global-right" class="col-sm-7">
+					<div id="site-profile-menu" class="navbar-collapse collapse">
+						<div id="search-form-wrapper">
+														<form id="search-form" role="search" action="https://social.technet.microsoft.com/search/en-US" home-url="https://blogs.technet.microsoft.com/srd" autocomplete="off">
+								<div class="input-group">
+																			<input name="rq" value="site:blogs.technet.microsoft.com/srd" type="hidden">
+										<input name="rn" value="srd" type="hidden">
+																		<input type="hidden" name="ral" value="1">
+									<input type="text" class="form-control" placeholder="Search" name="query" id="srch-term" tabindex="0" aria-label="Search box with search options">
+									<div class="input-group-btn">
+										<button aria-label="Search" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+									</div>
+								</div>
+							</form>
+							<div id="search-option" style="display: none;">
+								<div class="search-filter" id="search-filter-site" tabindex="0" aria-label="Search TechNet">
+									<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+									<span class="search-text">Search TechNet</span>
+								</div>
+								<div class="search-filter" tabindex="0" aria-label="Search all blogs" id="search-filter-all-blogs">
+									<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+									<span class="search-text">Search all blogs</span>
+								</div>
+																	<div class="search-filter selected" tabindex="0" aria-label="Search this blog" id="search-filter-this-blog">
+										<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+										<span class="search-text">Search this blog</span>
+									</div>
+															</div>
+						</div>
+						<div id="me-control">
+															<a href="https://blogs.technet.microsoft.com/wp-login.php?aadsso_action=login">Sign in</a>
+													</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+		<div id="site-header-blog-wrapper" class="site-header-blog-wrapper ms-blog-header clear-both">
+			<div id="site-header-blog" class="site-header-blog">
+				<nav class="navbar navbar-inverse">
+					<div id="blog-logo-area" class="navbar-header">
+						<div id="blog-logo" data-toggle="collapse" data-target="#blog-menu" tabindex="0" aria-label="blog logo">
+														<div id="blog-logo-text">
+				<h1 class="site-title ms-blog-title">
+					<a href="https://blogs.technet.microsoft.com/srd" class="for-desktop">
+						Security Research &amp; Defense					</a>
+					<a href="https://blogs.technet.microsoft.com/srd" class="for-mobile">
+						Security Research &amp; Defense					</a>
+				</h1>
+				<p class="site-description ms-blog-description">Information from Microsoft about vulnerabilities, mitigations and workarounds, active attacks, security research, tools and guidance</p>
+			</div>
+									</div>
+					</div>
+									</nav>
+			</div>
+		</div>
+		<div id="site-header-image-wrapper" class="ms-blog-banner">
+			<div id="site-header-image">
+											</div>
+		</div>
+	</header>
+
+	<div id="site-content" class="site-content row">
+
+	<div id="primary" class="content-area col-sm-9">
+		<div id="single-content" class="div-content">
+
+			
+				
+<article id="post-407" class="post-407 post type-post status-publish format-standard hentry category-uncategorized">
+
+	<header class="entry-header single">
+		<h1 class="entry-title">Software Defense: mitigating heap corruption vulnerabilities</h1>		<div class="rating-wrap">
+		<div id="star-rating-407" class="wds-ratings" data-rating="5" data-userrating="0" data-postid="407" data-container="body" data-toggle="tooltip" title="1 user(s) rated">
+			<div class="wds-ratings-inner-wrap">
+				<div>
+					<div aria-label="Select 5 star, this article is 5 star rated" tabindex="0" class="wds-ratings-stars wds-ratings-stars-enable-editing current-rating" data-stars="5"><span aria-hidden="true" class="star-1"><span>★</span></span><span aria-hidden="true" class="star-2"><span>★</span></span><span aria-hidden="true" class="star-3"><span>★</span></span><span aria-hidden="true" class="star-4"><span>★</span></span><span aria-hidden="true" class="star-5"><span>★</span></span></div><div aria-label="Select 4 star, this article is 5 star rated" tabindex="0" class="wds-ratings-stars wds-ratings-stars-enable-editing current-rating" data-stars="4"><span aria-hidden="true" class="star-1"><span>★</span></span><span aria-hidden="true" class="star-2"><span>★</span></span><span aria-hidden="true" class="star-3"><span>★</span></span><span aria-hidden="true" class="star-4"><span>★</span></span></div><div aria-label="Select 3 star, this article is 5 star rated" tabindex="0" class="wds-ratings-stars wds-ratings-stars-enable-editing current-rating" data-stars="3"><span aria-hidden="true" class="star-1"><span>★</span></span><span aria-hidden="true" class="star-2"><span>★</span></span><span aria-hidden="true" class="star-3"><span>★</span></span></div><div aria-label="Select 2 star, this article is 5 star rated" tabindex="0" class="wds-ratings-stars wds-ratings-stars-enable-editing current-rating" data-stars="2"><span aria-hidden="true" class="star-1"><span>★</span></span><span aria-hidden="true" class="star-2"><span>★</span></span></div><div aria-label="Select 1 star, this article is 5 star rated" tabindex="0" class="wds-ratings-stars wds-ratings-stars-enable-editing current-rating" data-stars="1"><span aria-hidden="true" class="star-1"><span>★</span></span></div>
+				</div>
+			</div>
+		</div>
+		</div>		<div class="clear-both"></div>
+		<div class="entry-meta">
+			<img alt="avatar of swiat" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/avatar.jpg" class="avatar avatar-22 photo" height="22" width="22"><span class="byline"><span class="author vcard"><a class="url fn n profile-usercard-hover" data-profile-userid="563e88179e6e4b988633e0fced0f669e" href="https://social.technet.microsoft.com/profile/swiat" data-profile-rendered="true">swiat<div class="profile-usercard">            <div class="profile-header">                <span class="profile-userimage">                                            <img src="data:image/jpg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAsACwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDPg0K4vNP0s2sLSXV9czRRqO6oI+fYAs2T2wSap3RSz1IiwnYi3cCO4RsFmX+NSMYGeR3AxXXT+KLWw8K/2TaQlby2t0to5ZFxJG8u5rnGRwAQqdjyTk1xMMMtzMkMETyyucIiKWZj6ADrXnSSWx6MW3ue2eBfHUfiGFdPv2WPVUXg4wLgD+Iejeo/EcZAyfif4ghW8sdFE7JGji5umSJZcY+4pUsA3clW4+7XnsXh7xHBMk0OjarHLGwZHW1kBUjkEHHBrV8THUda06DWNQ0y5tr2BRBcytbskc65+VwcYDZyrDP93HGQNXUk4WZkqcVO6NrVNM8P3ejfb9K0qHVAib7qawumt5Yzkgk27Btq9+PToFFeeTmFpmNvHJHH2WRw5H4gD+VEFxNazpPbyyQzIcrJGxVlPsRUlxdm5l82WGHzCPmZF27j6kDAz9B79cmsZSUjaMXE+hPEWgaFq1nJNrFvEBEmTc52PGAD/F6DJODx7V5BP4isI9ZsbXRok07SLe6idpShZ5tr58yT+JgOSF/yJfHHjeXxHcm0s2ePS42+VehmI/ib29B/Xpx8aeZKiblTcwG5jwPc+1a1aib90ypU2l7x7poWg3Wr2UOo+ItXfVEnjR47eMlLYrncpZAFDnp94exBxS/E3/kRrv8A66R/+his3QfGHhbw1o8Ok/2jdSNBkOZbdwdxOW4xwM54qn4x8a+Htd8OS6fb3sod5EJPkNkAMCcZwCcdBkfUVs5R5Gr6mKjLnTtocB4Z8M3vifUha2o2Qpgz3DD5Yl/qT2Hf2AJHvujaNY6DpsdhYRbIk5JPLO3dmPcn/wCsOABXjVj8QrvRY4LTRbC2trGLJMUoMjzMQAWd+MnPPAGOB0Ar0nS/HdvqFs7yaTqkc0UhiljitmmVXHUblHv3wfaoouC9S6ym/Q8V021sL9hbT3QsrhjiOaTmFjxgP3Tv83I9hyaTVdE1DRZljvrZow/Mcg5SQcHKsOG4I6etS2HiK/0/AT7NMg6rcW0cmevdhnv613NxjxX4JXUrlfskkd3Fa+VZM0cTRlk6oSRkbzg+w9KxUVKJs5OMrEL+FLnxh4Ns9bhiCasiGN8t/wAfiodoYnP3+MZPXH0rzl0eORo5FZHUkMrDBBHY19Q28EVrbRW8CBIYkCIo6KoGAPyry74taJY28Vtq8MXl3U03lSleA42k5I9eOta1aVo8xlSq3lynHeEYrWDUZNZ1D/jz0xRNt5/ey/8ALNBjuWGfTCnPGa2fFXiS70+/tINKuJbRTZxy3CQSMimaTMjNgN1O4def0rjZbhzZQWwwIlLPgDqxOCT+AA/D3OXajPJcahM8rbmBCA+yjaP0ArHmtGyNuW8rs//Z" alt="Avatar of swiat">                                    </span>                <div>                    <p title="swiat" class="profile-display-name" aria-label="swiat" tabindex="0">swiat</p>                                    <p class="profile-company" aria-label="Microsoft SWI" tabindex="0">Microsoft SWI</p>                                }                    <p class="profile-affiliations" aria-label="MSFT" tabindex="0">MSFT</p>                                </div>            </div>            <div class="profile-points-bar">                <span class="profile-points" aria-label="111,684 points" tabindex="0">111,684<span class="points-label"> Points</span></span>                <span class="profile-count profile-bronze-points"><span class="profile-bronze-img" title="Achievements Earned" aria-label="2 bronze medal" tabindex="0"></span><span>2</span></span>                <span class="profile-count profile-silver-points"><span class="profile-silver-img" title="Achievements Earned" aria-label="2 silver medal" tabindex="0"></span><span>2</span></span>                <span class="profile-count profile-gold-points"><span class="profile-gold-img" title="Achievements Earned" aria-label="2 gold medal" tabindex="0"></span><span>2</span></span>                        </div>            <div class="profile-achievements-header">                <span class="profile-achievements-title">Recent Achievements</span>            </div>            <div class="profile-achievements-recent">                <div class="profile-achievements-centering">                                                                <span class="profile-achievement profile-achievement-Gold" aria-label="Blog Party Starter" tabindex="0"><span>Blog Party Starter</span></span>                                            <span class="profile-achievement profile-achievement-Silver" aria-label="Blog Conversation Starter" tabindex="0"><span>Blog Conversation Starter</span></span>                                            <span class="profile-achievement profile-achievement-Bronze" aria-label="New Blog Rater" tabindex="0"><span>New Blog Rater</span></span>                                                            </div>            </div>            <div class="profile-footer">                                <a href="https://social.msdn.microsoft.com/profile/swiat/?ws=usercard-hover" class="profile-usercard-profileLink" target="_blank">View Profile</a>            </div>        </div></a></span></span><span class="posted-on posted-on-margin"><span class="screen-reader-text"></span><time class="entry-date published updated" datetime="2013-10-29T04:10:00+00:00">October 29, 2013</time></span><span class="comments-link"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span><a href="https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/#respond" aria-label="0 comments" title="0 comments">0</a></span>				<span class="social-icons-wrap">
+		<ul class="social-icons">
+			<li><div class="fb-share-button fb_iframe_widget" data-href="https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/" data-layout="button_count" data-size="large" data-mobile-iframe="true" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=&amp;container_width=75&amp;href=https%3A%2F%2Fblogs.technet.microsoft.com%2Fsrd%2F2013%2F10%2F29%2Fsoftware-defense-mitigating-heap-corruption-vulnerabilities%2F&amp;layout=button_count&amp;locale=en_GB&amp;mobile_iframe=true&amp;sdk=joey&amp;size=large"><span style="vertical-align: bottom; width: 84px; height: 28px;"><iframe name="f358bc3799f64ac" width="1000px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" title="fb:share_button Facebook Social Plugin" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/share_button.html" style="border: none; visibility: visible; width: 84px; height: 28px;" class=""></iframe></span></div></li>
+			<div id="fb-root" style="display:none" class=" fb_reset"><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe name="fb_xdm_frame_https" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" id="fb_xdm_frame_https" aria-hidden="true" title="Facebook Cross Domain Communication Frame" tabindex="-1" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/QX17B8fU-Vm.html" style="border: none;"></iframe></div></div></div>
+
+			<li class="social-icon twitter"><a data-social="{&quot;type&quot;:&quot;twitter&quot;, &quot;url&quot;:&quot;https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/&quot;, &quot;text&quot;: &quot;Software Defense: mitigating heap corruption vulnerabilities&quot;}" href="https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/#" id="post_tweet_count">0</a></li>
+			<li class="social-icon linkedin"><a data-social="{&quot;type&quot;:&quot;linkedin&quot;, &quot;url&quot;:&quot;https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/&quot;, &quot;text&quot;: &quot;Software Defense: mitigating heap corruption vulnerabilities&quot;}" href="https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/#" id="get_post_linkedin_count">0</a></li>
+		</ul>
+	</span><!-- .social-icons-wrap -->
+	<script type="text/javascript">
+		// Get social counts
+		jQuery( window ).load(function () {
+			jQuery.getScript('https://blogs.technet.microsoft.com/srd/wp-content/themes/microsoft/js/social-counts.js?ver=02092017')
+				.done(function(script,textStatus) {
+					window.msdnsocial.ajax('https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/');
+				});
+		});
+	</script>
+		</div>
+		<hr>
+	</header><!-- .entry-header -->
+
+	<div class="entry-content single">
+		<p><span style="font-family: Calibri; font-size: small;">Heap corruption vulnerabilities are the most common type of vulnerability that Microsoft addresses through security updates today. These vulnerabilities typically occur as a result of programming mistakes that make it possible to write beyond the bounds of a heap buffer (a <em>spatial</em> issue) or to place a heap allocated object in an unexpected state such as by using the object after it has been freed (a <em>temporal</em> issue). Over time, attackers have developed a number of techniques to help them exploit various types of heap corruption vulnerabilities. Starting with Windows XP Service Pack 2, Microsoft began introducing hardening changes to the Windows heap manager that were designed to make it more difficult to exploit heap corruption vulnerabilities. In this blog post, we will review some of the general methods that have been used to exploit and mitigate heap corruption vulnerabilities and highlight hardening changes that have been made in Windows 8 and Windows 8.1 to further complicate exploitation. For more background on the Windows 8 heap architecture, please refer to the </span><a href="https://channel9.msdn.com/Shows/Going+Deep/Inside-Windows-8-Greg-Colombo-Heap-Manager"><span style="color: #0563c1; font-family: Calibri; font-size: small;">Channel 9 interview on the Windows 8 heap manager</span></a><span style="font-size: small;"><span style="font-family: Calibri;">.</span></span></p>
+<h1><span style="color: #2e74b5;">Heap corruption exploitation, then and now</span></h1>
+<p><span style="font-family: Calibri; font-size: small;">In a </span><a href="http://blogs.technet.com/b/srd/archive/2009/08/04/preventing-the-exploitation-of-user-mode-heap-corruption-vulnerabilities.aspx"><span style="color: #0563c1; font-family: Calibri; font-size: small;">previous blog post</span></a><span style="font-size: small;"><span style="font-family: Calibri;">, we covered the history of heap-based exploitation and mitigation techniques from Windows XP through Windows 7. This blog post showed that prior to Windows Vista, most of the research on heap corruption exploitation techniques focused on corrupting heap metadata in order to achieve more powerful exploitation primitives (such as the ability to write an arbitrary value to any location in memory). One of the reasons attackers focused on corrupting heap metadata is because it was always present and therefore could enable application-independent (generic) exploitation techniques. The release of Windows Vista changed the landscape of heap exploitation through numerous heap hardening changes that addressed nearly all of the heap metadata corruption exploitation techniques that were known at the time.</span></span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">As a consequence of the hardening changes in Windows Vista, attackers have largely shifted their focus toward exploitation techniques that rely on corrupting application-specific data stored on the heap. For example, attackers will attempt to use a heap corruption vulnerability to corrupt the C++ virtual table pointer of an object on the heap or to corrupt the base or length field of a heap-allocated array to achieve the ability to read or write to any location in memory. There has been additional research on heap metadata corruption post-Windows Vista and there are a small number of known real-world exploits that have relied on these metadata corruption techniques[1,2,3,4], but as this blog post will show, all of the publicly known exploitation techniques that rely on metadata corruption have been addressed in Windows 8.1.</span></span></p>
+<h1><span style="color: #2e74b5;">Heap corruption mitigations </span></h1>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">The heap manager in Windows 8 and Windows 8.1 builds on the hardening changes of previous Windows releases by incorporating new security features that mitigate not only metadata corruption techniques but also less generic techniques that rely on corrupting application-specific data. These new security features can be broken down into the following threat categories: heap integrity checks, guard pages, and allocation order randomization. All of the security features introduced in Windows 8 have been inherited by Windows 8.1.</span></span></p>
+<p><span style="font-size: medium;"><span style="color: #2e74b5;">Heap integrity checks</span></span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">The heap manager in Windows 8 and Windows 8.1 includes a number of new integrity checks that are designed to detect heap metadata corruption and terminate an application safely if corruption is detected. This section describes some of the noteworthy integrity checks that have been added.</span></span></p>
+<p><span style="color: #1f4d78;">Catch-all exception handling blocks have been removed</span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">Previous versions of the Windows heap made use of catch-all exception handling blocks in certain cases where exceptions were considered non-fatal.&nbsp; This had the potential to make it easier for attackers to exploit heap corruption issues in certain cases, in particular by allowing an attacker multiple attack attempts.&nbsp; Therefore, these catch-all blocks have been removed from the heap in Windows 8, meaning such exceptions now lead to safe termination of the application.</span></span></p>
+<p><span style="color: #1f4d78;">HEAP handle can no longer be freed</span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">The HEAP handle is an internal data structure that is used to maintain the state associated with a given heap.&nbsp; Prior to Windows 8, an attacker could use a heap-based memory corruption vulnerability to coerce the heap into freeing the HEAP handle data structure.&nbsp; After doing this, the attacker could force the heap to reallocate the memory that previously stored the HEAP handle state.&nbsp; This in turn allowed an attacker to corrupt internal heap metadata, including certain function pointer fields.&nbsp; The Windows 8 heap mitigates this attack by preventing a HEAP handle from being freed.</span></span></p>
+<p><span style="color: #1f4d78;">HEAP CommitRoutine encoded by a global key</span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">The HEAP handle data structure includes a function pointer field called CommitRoutine that is called when memory regions within the heap are committed.&nbsp; Starting with Windows Vista, this field was encoded using a random value that was also stored as a field in the HEAP handle data structure.&nbsp; While this mitigated trivial corruption of only the CommitRoutine function pointer, it did not mitigate the case where an attacker could corrupt both the CommitRoutine and the field that stored the encoding key.&nbsp; The Windows 8 heap mitigates this attack by using a global key to encode the CommitRoutine function pointer rather than a key that is stored within the HEAP handle data structure.&nbsp; </span></span></p>
+<p><span style="color: #1f4d78;">Extended block header validation</span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">Each heap allocation returned by the Windows heap has a header that describes the allocation’s size, flags, and other attributes. &nbsp;In some cases, the Windows heap may flag an allocation as having an <em>extended block header</em> which informs the heap that there is additional metadata associated with the allocation.&nbsp; In previous versions of Windows, an attacker could corrupt the header of an allocation and make it appear as if the allocation had an extended block header.&nbsp; This could then be used by an attacker to force the heap to free another allocation that is currently in use by the program.&nbsp; The Windows 8 heap mitigates this attack by performing additional validation on extended block headers to ensure that they are correct.</span></span></p>
+<p><span style="color: #1f4d78;">Blocks cannot be allocated if they are already busy</span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">Some of the attacks that have been proposed by security researchers rely on reallocating memory that is already in use by the program (e.g. [3]).&nbsp; This can allow an attacker to corrupt the state of an in-use heap allocation, such as a C++ object, and thereby gain control of the instruction pointer.&nbsp; The Windows 8 heap mitigates this attack by verifying that an allocation is not already flagged as in-use (“busy”) when it is about to be allocated.&nbsp; If a block is flagged as in-use, the heap takes steps to safely terminate the process.</span></span></p>
+<p><span style="color: #2e74b5;">Encoded FirstAllocationOffset and BlockStride</span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">One of the exploitation techniques proposed in [4] involved corrupting heap metadata (FirstAllocationOffset and BlockStride) that is used by the Low Fragmentation Heap (LFH) to calculate the address of an allocation within a subsegment. By corrupting these fields, an attacker can trick the heap into returning an address that is outside the bounds of a subsegment and potentially enable corruption of other in-use heap allocations. The heap manager in Windows 8.1 addresses this attack by encoding the FirstAllocationOffset and BlockStride fields in order to limit an attacker’s ability to deterministically control the calculation of allocation addresses by the LFH.</span></span></p>
+<p><span style="font-size: medium;"><span style="color: #2e74b5;">Guard pages</span></span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">One of the ways that the Windows 8 heap better protects application data and heap metadata is through the use of <em>guard pages</em>.&nbsp; In this context, a guard page is an inaccessible page of memory that will cause an access violation if an application attempts to read from it or write to it.&nbsp; Placing a guard page between certain types of sub-regions within the heap helps to partition the heap and localize any memory corruptions that may occur.</span></span></p>
+<p><span style="font-family: Calibri; font-size: small;">In an ideal setting, the Windows heap would encapsulate all allocations in guard pages in a manner that is similar to </span><a href="http://technet.microsoft.com/en-us/library/ff549561"><span style="color: #0563c1; font-family: Calibri; font-size: small;">full-page heap verification</span></a><span style="font-size: small;"><span style="font-family: Calibri;">. Unfortunately, this type of protection is not feasible for performance reasons. Instead, the Windows 8 heap uses guard pages to isolate certain types of sub-regions within the heap. In particular, guard pages are enabled for the following types of sub-regions:</span></span></p>
+<ul>
+<li><span style="font-size: small;"><span style="font-family: Calibri;"><strong>Large allocations</strong>. In cases where an application attempts to allocate memory that is larger than 512K (on 32-bit) or 1MB (on 64-bit), the memory allocation request is passed directly to the virtual memory allocator and the size is updated to allocate extra space for a guard page.&nbsp; This ensures that all large allocations have a trailing guard page.</span></span></li>
+<li><span style="font-size: small;"><span style="font-family: Calibri;"><strong>Heap segments</strong>. The Windows heap allocates large chunks of memory, known as heap segments, which are divided up as an application allocates memory.&nbsp; The Windows 8 heap adds a trailing guard page to all heap segments when they are allocated.</span></span></li>
+<li><span style="font-size: small;"><span style="font-family: Calibri;"><strong>Maximally-sized subsegments</strong>. Each heap segment may contain one or more subsegment that is used by the frontend allocator (the Low Fragmentation Heap, or LFH) to allocate blocks of the same size.&nbsp; Once a certain threshold has been reached for allocating blocks of a given size, the LFH will begin allocating <em>maximally-sized subsegments</em>, which are subsegments that contain the maximum number of blocks possible for a given size.&nbsp; The Windows 8 heap adds a trailing guard page to maximally-sized subsegments. For 32-bit applications, guard pages are inserted probabilistically to minimize the amount of virtual address space that is consumed.</span></span></li>
+</ul>
+<p><span style="font-size: medium;"><span style="color: #2e74b5;">Allocation order randomization</span></span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">One of the behaviors that attackers rely on when exploiting heap buffer overruns is that there must be a way to reliably position certain heap allocations adjacent to one another.&nbsp; This requirement stems from the fact that an attacker needs to know how many bytes must be written in order to corrupt a target allocation on the heap (while minimizing collateral damage to the heap that could cause the application and hence the attack to be terminated).&nbsp; Attackers typically try to ensure that allocations are immediately adjacent to each other through techniques that are often referred to as <em>heap massaging</em> or <em>heap normalization</em>.&nbsp; These techniques attempt to bring the heap into a state where new allocations are placed at a desired location with respect to one another.</span></span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">In Windows 8, a new security feature has been added to the LFH which randomizes the order of allocations. This means that allocations that are made through the LFH are no longer guaranteed to be placed immediately adjacent to one another even after an attacker has attempted to normalize the heap.&nbsp; This has the effect of preventing an attacker from reliably assuming that an allocation containing a target object will be positioned after the allocation that they are able to overflow.&nbsp; While an attacker may attempt to increase the reliability of their attack by corrupting more data or allocating more target objects, they run the risk of destabilizing the process by corrupting other heap state or causing the process to terminate by accessing a guard page as described in the previous section. This is a good example of several mitigations working together: neither is foolproof on its own, but combined they result in increasingly complex requirements for a successful attack.</span></span></p>
+<p><span style="font-family: Calibri; font-size: small;">Although allocation order randomization helps make the internal layout of the heap nondeterministic, there are limitations to how far it goes. First and foremost, the performance of the Windows heap is critical as it is used as a general purpose memory allocator by the vast majority of the applications that run on Windows. As a side effect of this, allocation order randomization is currently limited to randomizing allocations within individual LFH subsegments (which accounts for the majority of allocations made by applications). This means backend allocations have no inherent entropy and therefore may be subject to deterministic allocation patterns, as noted in [5]. In addition to performance, there are also inherent limits to the effectiveness of allocation order randomization. If an attacker can read the contents of heap memory, they may be able to overcome the effects of randomization. Similarly, allocation order randomization is not designed to strongly mitigate heap vulnerabilities that are related to object lifetime issues, such as use after free vulnerabilities. This is because an attacker will generally be able to allocate a sufficient number of replacement objects to overcome the effects of allocation order randomization. We’ll discuss some other mitigations that are targeted at addressing use after free issues, which are </span><a href="http://www.microsoft.com/en-us/download/details.aspx?id=39680"><span style="color: #0563c1; font-family: Calibri; font-size: small;">increasingly preferred by exploit writers</span></a><span style="font-size: small;"><span style="font-family: Calibri;">, later in this series.</span></span></p>
+<h1><span style="color: #2e74b5;">Conclusion</span></h1>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">The hardening changes that have been made to the Windows heap manager in Windows 8 and Windows 8.1 have been designed to make it more difficult and costly to exploit heap corruption vulnerabilities. This has been accomplished by adding additional integrity checks to metadata that is used by the heap, by protecting application data stored on the heap through the use of guard pages, and by randomizing the order of allocations. These mitigations do not make heap corruption vulnerabilities impossible to exploit, but they do have an impact on the time it takes to develop an exploit and how reliable an exploit will be. Both of these factors play a role in determining whether or not an attacker will develop an exploit for a vulnerability. With that being said, the fact that heap corruption vulnerabilities are the most common vulnerability class that we address through security updates means it is likely that we will continue to see additional research into new exploitation techniques for heap vulnerabilities in the future. As such, we will continue to look for ways to harden the Windows heap to further increase the difficulty of developing reliable exploits for heap corruption vulnerabilities.</span></span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">- Matt Miller</span></span></p>
+<h1><span style="color: #2e74b5;">References</span></h1>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">[1] Ben Hawkes. Attacking the Vista Heap. Black Hat USA. Aug, 2008.</span></span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">[2] Ben Hawkes. Attacking the Vista Heap. Ruxcon. Nov, 2008.</span></span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">[3] Chris Valasek. Modern Heap Exploitation using the Low Fragmentation Heap. SyScan Taipei. Nov, 2011.</span></span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">[4] Chris Valasek. Windows 8 Heap Internals. Black Hat USA. Aug, 2012.</span></span></p>
+<p><span style="font-size: small;"><span style="font-family: Calibri;">[5] Zhenhua Liu. Advanced Heap Manipulation in Windows 8. Black Hat Europe, Mar, 2013.</span></span></p>
+	</div><!-- .entry-content -->
+
+
+	<footer class="entry-footer single">
+				<hr>
+	</footer><!-- .entry-footer -->
+
+</article><!-- #post-## -->
+
+			
+		</div><!-- #single-content -->
+
+		
+<div id="comments" class="comments-area">
+	<div class="comments-title">
+		Comments (0)	</div>
+
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title"> <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/#respond" style="display:none;">Cancel reply</a></small></h3>			<form action="https://blogs.technet.microsoft.com/srd/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+				<p class="comment-form-comment"><textarea id="comment" name="comment" cols="45" rows="4" aria-required="true"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"><label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit btn btn-default" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="407" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="a54162b804"></p><p style="display: none;"></p>			<input type="hidden" id="ak_js" name="ak_js" value="1535553225311"></form>
+			</div><!-- #respond -->
+	
+	
+	
+</div><!-- .comments-area -->
+	</div><!-- #primary -->
+	<a class="screen-reader-shortcut" href="https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/#primary" tabindex="1">Skip to main content</a>
+
+<div id="secondary" class="sidebar col-sm-3">
+	<div id="sidebar-widget-area" class="sidebar-widget-area" role="complementary">
+		<div class="widget sfmsb_widget"><div class="sfmsb-follow-social-buttons sfmsb-under sfmsb-circle 40 sfmsb-horizontal"><h2 class="widget-title">Follow Us</h2><a title="RSS Feed" aria-label="RSS Feed" target="_blank" href="https://blogs.technet.microsoft.com/srd/feed/"><span class="sfmsb-icon-feed sfmsb-circle" style="color:#ffa500;font-size:40px;" data-color="#ffa500"></span></a><div class="sfmsb-clearfix"></div></div></div><aside id="tag_cloud-2" class="widget widget_tag_cloud"><h2 class="widget-title">Popular Tags</h2><div class="tagcloud"><a href="https://blogs.technet.microsoft.com/srd/tag/risk-asessment/" class="tag-cloud-link tag-link-75 tag-link-position-1" style="font-size: 14px;">Risk Asessment</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/mitigations/" class="tag-cloud-link tag-link-2 tag-link-position-2" style="font-size: 14px;">Mitigations</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/workarounds/" class="tag-cloud-link tag-link-44 tag-link-position-3" style="font-size: 14px;">Workarounds</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/attack-vector/" class="tag-cloud-link tag-link-20 tag-link-position-4" style="font-size: 14px;">Attack Vector</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/exploitability/" class="tag-cloud-link tag-link-49 tag-link-position-5" style="font-size: 14px;">Exploitability</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/rating/" class="tag-cloud-link tag-link-19 tag-link-position-6" style="font-size: 14px;">rating</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/internet-explorer-ie/" class="tag-cloud-link tag-link-32 tag-link-position-7" style="font-size: 14px;">Internet Explorer (IE)</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/emet/" class="tag-cloud-link tag-link-143 tag-link-position-8" style="font-size: 14px;">EMET</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/network-protocol/" class="tag-cloud-link tag-link-51 tag-link-position-9" style="font-size: 14px;">network protocol</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/defense-in-depth/" class="tag-cloud-link tag-link-85 tag-link-position-10" style="font-size: 14px;">Defense-in-depth</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/exploitation/" class="tag-cloud-link tag-link-16 tag-link-position-11" style="font-size: 14px;">exploitation</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/security-science/" class="tag-cloud-link tag-link-72 tag-link-position-12" style="font-size: 14px;">Security Science</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/killbit/" class="tag-cloud-link tag-link-33 tag-link-position-13" style="font-size: 14px;">Killbit</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/microsoft-office/" class="tag-cloud-link tag-link-45 tag-link-position-14" style="font-size: 14px;">Microsoft Office</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/activex/" class="tag-cloud-link tag-link-24 tag-link-position-15" style="font-size: 14px;">ActiveX</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/attack-surface-reduction/" class="tag-cloud-link tag-link-83 tag-link-position-16" style="font-size: 14px;">Attack Surface Reduction</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/detection/" class="tag-cloud-link tag-link-58 tag-link-position-17" style="font-size: 14px;">detection</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/smb/" class="tag-cloud-link tag-link-8 tag-link-position-18" style="font-size: 14px;">SMB</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/dep/" class="tag-cloud-link tag-link-93 tag-link-position-19" style="font-size: 14px;">DEP</a>
+<a href="https://blogs.technet.microsoft.com/srd/tag/attack/" class="tag-cloud-link tag-link-46 tag-link-position-20" style="font-size: 14px;">Attack</a></div>
+</aside><aside id="msdn-archive-widget-2" class="widget msdn-archive-widget"><h2 class="widget-title">Archives</h2>	<li><a href="https://blogs.technet.microsoft.com/srd/2018/08/">August 2018</a>&nbsp;(2)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2018/06/">June 2018</a>&nbsp;(2)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2018/05/">May 2018</a>&nbsp;(2)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2018/04/">April 2018</a>&nbsp;(1)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2018/03/">March 2018</a>&nbsp;(2)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2017/11/">November 2017</a>&nbsp;(1)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2017/10/">October 2017</a>&nbsp;(1)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2017/08/">August 2017</a>&nbsp;(1)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2018/">All of 2018</a>&nbsp;(9)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2017/">All of 2017</a>&nbsp;(8)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2016/">All of 2016</a>&nbsp;(4)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2015/">All of 2015</a>&nbsp;(7)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2014/">All of 2014</a>&nbsp;(27)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2013/">All of 2013</a>&nbsp;(47)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2012/">All of 2012</a>&nbsp;(36)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2011/">All of 2011</a>&nbsp;(31)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2010/">All of 2010</a>&nbsp;(49)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2009/">All of 2009</a>&nbsp;(74)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2008/">All of 2008</a>&nbsp;(50)</li>
+	<li><a href="https://blogs.technet.microsoft.com/srd/2007/">All of 2007</a>&nbsp;(3)</li>
+</aside>	</div>
+</div><!-- #secondary -->
+</div><!-- .site-content -->
+
+<footer id="site-footer" class="site-footer row" role="contentinfo">
+	<div id="site-info" class="site-info">
+		<div id="footer-text" class="col-sm-4 col-sm-offset-6">
+			<span>
+				<a href="https://privacy.microsoft.com/" data-mscc-ic="false">Privacy</a>
+			</span>
+			<span>
+				<a href="https://msdn.microsoft.com/cc300389" data-mscc-ic="false">Terms of Use</a>
+			</span>
+			<span>
+				<a href="https://www.microsoft.com/en-us/legal/intellectualproperty/Trademarks/EN-US.aspx" data-mscc-ic="false">Trademarks</a>
+			</span>
+		</div>
+		<div id="footer-far" class="col-sm-2">
+			<div id="footer-microsoft-logo">
+				<a href="https://www.microsoft.com/" aria-label="Microsoft Logo">
+					<svg id="footer-microsoft-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 347 70.5" enable-background="new 0 0 347 70.5"><g fill="#fff"><path d="M39.5 44.6l-2.8 7.9h-.2c-.5-1.8-1.3-4.5-2.7-7.8l-15-37.7h-14.7v60h9.7v-37c0-2.3 0-5-.1-8.2-.1-1.6-.2-2.9-.3-3.8h.2c.5 2.3 1 4 1.4 5.1l18 43.8h6.8l17.9-44.2c.4-1 .8-3 1.2-4.7h.2c-.2 4.4-.4 8.4-.5 10.8v38.1h10.4v-60h-14.1l-15.4 37.7zM78.8 23.9h10.1v43h-10.1zM83.9 5.7c-1.7 0-3.1.6-4.3 1.7-1.2 1.1-1.8 2.5-1.8 4.2 0 1.6.6 3 1.8 4.1 1.2 1.1 2.6 1.6 4.3 1.6 1.7 0 3.2-.6 4.3-1.6 1.2-1.1 1.8-2.5 1.8-4.1 0-1.6-.6-3-1.8-4.2-1-1.2-2.5-1.7-4.3-1.7M124.7 23.5c-1.9-.4-3.8-.6-5.7-.6-4.6 0-8.8 1-12.3 3s-6.3 4.8-8.1 8.3c-1.9 3.6-2.8 7.7-2.8 12.4 0 4.1.9 7.8 2.7 11.1 1.8 3.3 4.3 5.9 7.6 7.7 3.2 1.8 6.9 2.7 11.1 2.7 4.8 0 8.9-1 12.2-2.9l.1-.1v-9.3l-.4.3c-1.5 1.1-3.2 2-4.9 2.6-1.8.6-3.4.9-4.8.9-4 0-7.2-1.2-9.5-3.7s-3.5-5.9-3.5-10.2c0-4.4 1.2-7.9 3.6-10.5 2.4-2.6 5.6-3.9 9.5-3.9 3.3 0 6.6 1.1 9.6 3.3l.4.3v-9.8l-.1-.1c-1.2-.6-2.8-1.1-4.7-1.5M158 23.2c-2.5 0-4.8.8-6.8 2.4-1.7 1.4-2.9 3.4-3.9 5.8h-.1v-7.4h-10.1v43h10.1v-22c0-3.7.8-6.8 2.5-9.1s3.9-3.5 6.5-3.5c.9 0 1.9.2 3 .4 1.1.3 1.9.6 2.4 1l.4.3v-10.2l-.2-.1c-.8-.4-2.1-.6-3.8-.6M185.5 22.9c-7.1 0-12.7 2.1-16.7 6.2s-6 9.8-6 16.9c0 6.7 2 12.1 5.9 16.1 3.9 3.9 9.2 5.9 15.8 5.9 6.9 0 12.4-2.1 16.4-6.3 4-4.2 6-9.8 6-16.7 0-6.8-1.9-12.3-5.7-16.2-3.7-3.9-9-5.9-15.7-5.9m8 33.1c-1.9 2.4-4.8 3.6-8.5 3.6s-6.6-1.2-8.7-3.7c-2.1-2.4-3.1-5.9-3.1-10.3 0-4.6 1.1-8.1 3.1-10.6 2.1-2.5 5-3.7 8.6-3.7 3.6 0 6.4 1.2 8.4 3.6 2 2.4 3.1 5.9 3.1 10.5s-1 8.2-2.9 10.6M229.3 41.7c-3.2-1.3-5.2-2.3-6.1-3.2-.8-.8-1.2-1.9-1.2-3.3 0-1.2.5-2.3 1.6-3.1 1.1-.8 2.5-1.2 4.4-1.2 1.7 0 3.5.3 5.2.8 1.7.5 3.3 1.2 4.5 2.1l.4.3v-9.4l-.2-.1c-1.2-.5-2.7-.9-4.6-1.3-1.9-.3-3.6-.5-5-.5-4.8 0-8.8 1.2-11.9 3.7-3.1 2.4-4.6 5.7-4.6 9.5 0 2 .3 3.8 1 5.3s1.7 2.9 3.1 4c1.4 1.1 3.4 2.3 6.2 3.5 2.3 1 4.1 1.8 5.2 2.4 1.1.6 1.8 1.3 2.3 1.9.4.6.6 1.4.6 2.4 0 2.9-2.2 4.3-6.6 4.3-1.7 0-3.5-.3-5.6-1-2.1-.7-4-1.7-5.7-2.9l-.4-.3v9.9l.2.1c1.5.7 3.3 1.2 5.4 1.7 2.2.4 4.1.7 5.8.7 5.2 0 9.5-1.2 12.5-3.7 3.1-2.5 4.7-5.7 4.7-9.8 0-2.9-.8-5.4-2.5-7.4-1.8-2-4.7-3.8-8.7-5.4M267.6 22.9c-7.1 0-12.7 2.1-16.7 6.2s-6 9.8-6 16.9c0 6.7 2 12.1 5.9 16.1 3.9 3.9 9.2 5.9 15.8 5.9 6.9 0 12.4-2.1 16.4-6.3 4-4.2 6-9.8 6-16.7 0-6.8-1.9-12.3-5.7-16.2-3.8-3.9-9.1-5.9-15.7-5.9m8 33.1c-1.9 2.4-4.8 3.6-8.5 3.6s-6.6-1.2-8.7-3.7c-2.1-2.4-3.1-5.9-3.1-10.3 0-4.6 1.1-8.1 3.1-10.6 2.1-2.5 5-3.7 8.6-3.7 3.5 0 6.4 1.2 8.4 3.6 2 2.4 3.1 5.9 3.1 10.5s-1 8.2-2.9 10.6"></path><path d="M342.9 32.2v-8.2h-10.2v-12.9l-.3.1-9.6 2.9-.2.1v9.7h-15.2v-5.4c0-2.5.6-4.4 1.7-5.7 1.1-1.3 2.7-1.9 4.7-1.9 1.4 0 2.9.3 4.5 1l.4.2v-8.7l-.2-.1c-1.4-.5-3.3-.8-5.7-.8-3 0-5.7.7-8.1 1.9-2.4 1.3-4.2 3.1-5.5 5.5-1.3 2.3-2 5-2 8v6h-7.2v8.2h7.1v34.8h10.2v-34.7h15.2v22.1c0 9.1 4.3 13.7 12.8 13.7 1.4 0 2.9-.2 4.3-.5 1.5-.3 2.6-.7 3.2-1l.1-.1v-8.3l-.4.3c-.6.4-1.2.7-2.1.9-.8.2-1.5.3-2 .3-2 0-3.4-.5-4.4-1.6-.9-1.1-1.4-2.9-1.4-5.5v-20.3h10.3z"></path></g></svg>
+				</a>
+			</div>
+			<div id="copyright">
+				© 2018 Microsoft
+			</div>
+		</div>
+	</div><!-- .site-info -->
+</footer><!-- .site-footer -->
+
+</div><!-- .site -->
+
+	<script type="text/javascript">
+	jQuery(document).ready(function($){
+		$login_link = $( 'a[href*="wp-login.php?"]' );
+				$login_link.on( 'click', function( evt ) {
+			// evt.preventDefault();
+						// console.log( 'cookie-set', '/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/' );
+			$.cookie( 'aadsso-redirect', '/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/', { expires: 1, path: '/' });
+		});
+	});
+	</script>
+		<script>
+		jQuery(window).load(function () {
+			// Fix Bug #644092:MAS36: Page number
+			jQuery('div.nav-links>a.page-numbers').each(function(){
+				jQuery(this).attr('aria-label', 'Page ' + jQuery(this).html());
+			});
+
+			// Fix Bug #633981:MAS20B:  Talkback: Talkback announces link for Number of Comments as 'Number link'
+			jQuery('span.comments-link>a').each(function () {
+				var num = parseInt(jQuery(this).html());
+				if (isNaN(num)) {
+					return false;
+				}
+				var content = num + (num === 1 ? ' comment' : ' comments');
+				jQuery(this).attr({
+					'aria-label': content,
+					'title': content
+				});
+			});
+
+
+			jQuery('#search-option>div').each(function () {
+				jQuery(this).attr('aria-label',jQuery('span.search-text',this).html());
+			});
+
+			// Fix Bug #671896:MAS40B :Inspect: Header: "Name" property is not descriptive for  "Microsoft | TechNet" link (logo).
+			var currentHost = location.hostname;
+			if (currentHost.indexOf('msdn') !== -1) {
+				jQuery('#home-link').attr('aria-label','Microsoft Developer');
+			} else if (currentHost.indexOf('technet') !== -1) {
+				jQuery('#home-link').attr('aria-label','Microsoft Technet');
+			}
+
+			// Detect High Contrast Mode in non IE/Edge Browsers
+			jQuery('html').css('background-image', 'url("data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==")');
+			if (jQuery('html').css('background-image') === 'none') {
+				jQuery('html').attr('data-high-contrast', 'true');
+			}
+
+			// Fix Bug #670327:MAS40B: Inspect: Header: "Localized control type" property is incorrect for the header elements.
+			// Fix Bug #683788:MAS40B: TalkBack: Header: For menu items in technet link menu bar, expand/collapse pattern available, is not announced by TalkBack 
+			jQuery('#site-navigation>div>ul>li>a').attr('role', 'button').attr('aria-expanded', 'false').click(function () {
+				if (jQuery(this).attr('aria-expanded') === 'true') {
+					jQuery(this).attr('aria-expanded', 'false');
+				} else {
+					jQuery(this).attr('aria-expanded', 'true');
+				}
+			});
+
+		});
+	</script>
+		<!--ADD WEDCS SCRIPT-->
+	<div id="_WEDCSInsertedData" style="display: none;"></div>
+	<script type="text/javascript">
+		jQuery( window ).load(
+			function() {
+				window.varSegmentation = 0;
+				window.varClickTracking = 1;
+				window.varCustomerTracking = 1;
+				window.varAutoFirePV = 1;
+				window.Route = ""; // was 23470 in the windows theme framework
+				window.Ctrl = "";
+
+								var blogPost = {};
+
+								blogPost.permalink = 'https://blogs.technet.microsoft.com/srd/2013/10/29/software-defense-mitigating-heap-corruption-vulnerabilities/';
+				blogPost.title = 'Software Defense: mitigating heap corruption vulnerabilities';
+				blogPost.author = 'swiat';
+				blogPost.post_date = '2013-10-29 04:10:00';
+				blogPost.category = 'Uncategorized';
+				blogPost.tag = '';
+				blogPost.comment_number = '0';
+								window.blogPost = blogPost;
+
+				var wedcs_script = document.createElement('script');
+				wedcs_script.type = 'text/javascript';
+				wedcs_script.async = true;
+				wedcs_script.src = 'https://blogs.technet.microsoft.com/srd/wp-content/mu-plugins/wedcs-script/ms2_blogs.js';
+				if (typeof mscc === 'undefined' || (!mscc || mscc.hasConsent())) {
+					document.getElementsByTagName('body')[0].appendChild(wedcs_script);
+				}
+
+				var script_jsll = document.createElement("script");
+				script_jsll.type = "text/javascript";
+				script_jsll.src = "//az725175.vo.msecnd.net/scripts/jsll-4.2.1.js";
+				script_jsll.onload = function () {
+					var domainAppIdDic = {
+						"blogs.msdn.microsoft.com": "blogsmsdn",
+						"blogs.technet.microsoft.com": "blogstechnet"
+					};
+					var domain = document.domain;
+					var appId = "blogsmsdn";
+					if (domainAppIdDic[domain]) {
+						appId = domainAppIdDic[domain];
+					}
+					var config = {
+						coreData: {
+							appId: appId
+						}
+					};
+					awa.init(config);
+				};
+				if (document.getElementsByTagName("head") && document.getElementsByTagName("head").length > 0) {
+					document.getElementsByTagName("head")[0].appendChild(script_jsll);
+				}
+			});
+	</script>
+	<!--
+	<script src="//c.microsoft.com/ms.js" type="text/javascript"></script>
+	<noscript><img alt="" width="1" height="1" src="http://c.microsoft.com/trans_pixel.aspx"/></noscript>
+	-->
+		<script type="text/javascript">
+			jQuery( window ).load(
+				function () {
+					var stylesheet = document.createElement('link');
+					stylesheet.href = 'https://blogs.technet.microsoft.com/srd/wp-content/plugins/simple-follow-me-social-buttons-widget/assets/css/style.css?ver=3.3.3';
+					stylesheet.rel = 'stylesheet';
+					stylesheet.type = 'text/css';
+					document.getElementsByTagName('head')[0].appendChild(stylesheet);
+				});
+		</script>
+				<script type="text/javascript">
+			jQuery( window ).load(
+				function () {
+					var stylesheet = document.createElement('link');
+					stylesheet.href = 'https://blogs.technet.microsoft.com/srd/wp-content/plugins/simple-follow-me-social-buttons-widget/assets/css/icons.css?ver=3.3.3';
+					stylesheet.rel = 'stylesheet';
+					stylesheet.type = 'text/css';
+					document.getElementsByTagName('head')[0].appendChild(stylesheet);
+				});
+		</script>
+				<script type="text/javascript">
+			jQuery( window ).load(
+				function () {
+					var script = document.createElement('script');
+					script.src = 'https://blogs.technet.microsoft.com/srd/wp-content/plugins/simple-follow-me-social-buttons-widget/assets/js/front-widget.js?ver=3.3.3';
+					script.type = 'text/javascript';
+					script.async = true;
+					document.getElementsByTagName('body')[0].appendChild(script);
+				});
+		</script>
+		
+		<span id="page-view-tracking-info" blog-id="370" post-id="407"></span>
+		<script type="text/javascript">
+			// Check for compatibility before IE8
+			if (!Date.now) {
+ 				 Date.now = function() { return new Date().getTime(); };
+			}
+			jQuery( window ).load( function() {
+				jQuery.ajax({
+					url: 'https://blogs.technet.microsoft.com/srd/wp-admin/admin-ajax.php',
+					type: 'get',
+					data: {
+						action: 'track_page_view',
+						track_page_view_post_id: jQuery('#page-view-tracking-info').attr('post-id'),
+						track_page_view_blog_id: jQuery('#page-view-tracking-info').attr('blog-id'),
+						track_page_view_post_url: window.location.href.split('?')[0],
+						timestamp: Date.now()
+						}
+				});
+			});
+		</script>
+<script>
+dataLayer = [[]];
+</script>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PLR87W" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>jQuery(window).load(function(){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PLR87W')});</script>
+<!-- End Google Tag Manager -->	<script type="text/javascript">
+		jQuery( window ).load(
+			function(i) {
+				var n = window,
+					t = document,
+					e = n.console,
+					f, u, r, o;
+				typeof e == "undefined" && (f = function() {}, e = {
+					log: f,
+					warn: f,
+					assert: f,
+					clear: f,
+					dir: f,
+					error: f,
+					info: f,
+					profile: f,
+					profileEnd: f
+				}), u = {
+					appendToHead: function(n) {
+						if (t.getElementsByTagName("head").length > 0) t.getElementsByTagName("head")[0].appendChild(n);
+						else throw "bootstrapper: no head element found.";
+					},
+					appendToBody: function(n) {
+						if (t.getElementsByTagName("body").length > 0) t.getElementsByTagName("body")[0].appendChild(n);
+						else throw "bootstrapper: no body element found.";
+					},
+					addStyleElement: function(n) {
+						var i = t.createElement("link");
+						i.setAttribute("href", n), i.setAttribute("rel", "stylesheet"), i.setAttribute("type", "text/css"), u.appendToHead(i)
+					},
+					loadFiles: function(n, t) {
+						if (t !== i && u.recursiveScriptLoad(0, t), n !== i)
+							for (var r = 0, r = 0; r < n.length; r++) u.addStyleElement(n[r])
+					},
+					recursiveScriptLoad: function(n, t) {
+						t[n] && u.addScriptElement(t[n], function() {
+							u.recursiveScriptLoad(n + 1, t)
+						})
+					},
+					isCompatible: function(n, t) {
+						var r, u, i;
+						return (r = n.split("."), u = t.split("."), i = function(n) {
+							return isNaN(n) ? 0 : n
+						}, i(r[0]) > i(u[0]) || i(r[0]) === i(u[0]) && i(r[1]) > i(u[1]) || i(r[0]) === i(u[0]) && i(r[1]) === i(u[1]) && i(r[2]) >= i(u[2])) ? !0 : !1
+					},
+					addScriptElement: function(i, r) {
+						var f, e;
+						f = t.createElement("script"), f.setAttribute("type", "text/javascript"), f.async = true, f.setAttribute("src", i), f.attachEvent ? (e = function() {
+							setTimeout(function() {
+								typeof n.jQuery != "undefined" && r ? r() : e()
+							}, 10)
+						}, e()) : f.onload = r, u.appendToBody(f)
+					},
+					load: function(n, t) {
+						setTimeout(function() {
+							if (typeof n == "undefined") try {
+								u.addScriptElement(t.defaultPath, function() {
+									u.loadFiles(t.cssFiles, t.jsFiles)
+								});
+								return
+							} catch (i) {
+								e.warn("bootstrapper: failed to load default jQuery")
+							} else if (!u.isCompatible(n.fn.jquery, t.minimumVersion)) {
+								e.warn("bootstrapper: jQuery version is too old to load UserCard. Use v1.4.2 or later.");
+								return
+							}
+							u.loadFiles(t.cssFiles, t.jsFiles)
+						}, 0)
+					}
+				}, r = {
+					host: n.location.host,
+					search: "",
+					protocol: "https"
+				}, r.host = "widgets.services.microsoft.com", r.search = "?brand=msdn&lang=en&ver=4.9.0.0", r.protocol = "https:", o = {
+					minimumVersion: "1.1.2",
+					defaultPath: "https://code.jquery.com/jquery-1.4.2.min.js",
+					cssFiles: [r.protocol + "//" + r.host + "/v1/UnifiedBaseballCard.css" + r.search, r.protocol + "//" + r.host + "/v1/usercard.css" + r.search],
+					jsFiles: ["https://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js", r.protocol + "//" + r.host + "/v1/jquery.timeago.js" + r.search, r.protocol + "//" + r.host + "/v1/jquery.textfill.js" + r.search, r.protocol + "//" + r.host + "/v1/widgets.js" + r.search]
+				}, typeof n.jQuery == "undefined" ? u.load(i, o) : u.load(n.jQuery, o)
+			}
+		);
+	</script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/form.js"></script>
+<link rel="stylesheet" id="eucookielaw-css-css" href="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/mscc-0.4.0.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="msdn-comment-notification-comment-form-css" href="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/msdn-comment-notification-comment-form.css" type="text/css" media="all">
+<script type="text/javascript">
+/* <![CDATA[ */
+var wpAjax = {"noPerm":"Sorry, you are not allowed to do that.","broken":"Something went wrong."};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/wp-ajax-response.min.js"></script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/msdn-delete-comment-script.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var wds_ratings_config = {"ajaxurl":"https:\/\/blogs.technet.microsoft.com\/srd\/wp-admin\/admin-ajax.php","user_id":"0","nonce":"eb8ea1a2f3","debug":"","no_auth_alert":"You must be logged in to rate this article.","repeatedly_vote_alert":"You can not vote repeatedly in a short time","allow_anonymous_rating":"","blog_id":"370","rating_limit_login_user":"1","rating_limit_anonymous":"1","hide_rating_post_ids":""};
+var wds_ratings_config = {"ajaxurl":"https:\/\/blogs.technet.microsoft.com\/srd\/wp-admin\/admin-ajax.php","user_id":"0","nonce":"eb8ea1a2f3","debug":"","no_auth_alert":"You must be logged in to rate this article.","repeatedly_vote_alert":"You can not vote repeatedly in a short time","allow_anonymous_rating":"","blog_id":"370","rating_limit_login_user":"1","rating_limit_anonymous":"1","hide_rating_post_ids":""};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/wds-ratings.js"></script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/jquery-migrate.min.js"></script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/theme-merged.js"></script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/wp-embed.min.js"></script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/mscc-0.4.0.min.js"></script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/eucookielaw-searchbox-script.js"></script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/msdn-comment-notification-comment-form.js"></script>
+<script type="text/javascript" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/jquery.cookie.js"></script>
+
+
+
+<script src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/front-widget.js" type="text/javascript" async=""></script><script type="text/javascript" async="" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/jquery.tmpl.min.js"></script><script type="text/javascript" async="" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/jquery.timeago.js"></script><script type="text/javascript" async="" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/jquery.textfill.js"></script><script type="text/javascript" async="" src="./Software Defense_ mitigating heap corruption vulnerabilities – Security Research &amp; Defense_files/widgets.js"></script></body></html>

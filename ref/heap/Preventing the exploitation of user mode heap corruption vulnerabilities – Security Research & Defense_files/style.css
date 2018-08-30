@@ -1,0 +1,1018 @@
+/*
+Theme Name: Microsoft
+Theme URI: http://www.microsoft.com/
+Author: the Microsoft team
+Author URI: http://www.microsoft.com/
+Description: Microsoft default parent theme for MSDN/TechNet blog
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: black, blue, gray, pink, purple, white, yellow, dark, light, two-columns, left-sidebar, fixed-layout, responsive-layout, accessibility-ready, custom-background, custom-colors, custom-header, custom-menu, editor-style, featured-images, microformats, post-formats, rtl-language-support, sticky-post, threaded-comments, translation-ready
+Text Domain: microsoft
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/
+
+/* Font */
+@font-face{
+    font-family: "shell-icons";
+    src: url("fonts/shell-icons-0.4.0.eot");
+    src: url("fonts/shell-icons-0.4.0.eot?#iefix") format("embedded-opentype"),
+         url("fonts/shell-icons-0.4.0.woff") format("woff"),
+         url("fonts/shell-icons-0.4.0.ttf") format("truetype");
+}
+
+/* General */
+body {
+    font-family: "Segoe UI", Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+    background: #333;
+}
+
+#page {
+    background: #fff;
+}
+
+#secondary {
+    padding-left: 45px;
+    margin-top: -20px;
+}
+
+.entry-title {
+    word-wrap: break-word;
+}
+
+hr {
+    margin-top: 10px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+.h1, .h2, h1, h2 {
+    font-family: "Segoe UI Light", "Segoe UI", Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+}
+
+h2.screen-reader-text {
+    display: none;
+}
+
+h1.site-title {
+    font-family: "Segoe UI", Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+img.alignright {
+    float:right;
+    margin:0 0 1em 1em
+}
+
+img.alignleft {
+    float:left;
+    margin:0 1em 1em 0
+}
+
+img.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+a img.alignright {
+    float:right;
+    margin:0 0 1em 1em
+}
+
+a img.alignleft {
+    float:left;
+    margin:0 1em 1em 0
+}
+
+a img.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.clear-both {
+    clear: both;
+}
+
+.profile-usercard .profile-header {
+    height: auto !important;
+}
+
+.profile-usercard .profile-achievements-header {
+    line-height: 1 !important;
+
+    overflow: hidden !important;
+
+    height: auto !important;
+    margin-bottom: 5px !important;
+}
+
+@media screen and (max-width: 767px) {
+    #secondary {
+        padding-left: 0;
+    }
+}
+
+/* Header and Footer */
+#site-header-global, #site-header-blog, #site-header-image, #site-info {
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.icon-bar {
+    background: #222;
+}
+
+/* Header */
+#site-header-global {
+    min-height: 50px;
+}
+
+#header-microsoft-logo {
+    margin-top: 13px;
+    margin-left: 15px;
+    float: left;
+}
+
+#header-microsoft-logo img {
+    margin-right: 6px;
+}
+
+#site-logo, #site-header-global-right {
+    margin: 0;
+    padding: 0;
+}
+
+#site-header-global button:focus {
+    outline-color: #4d90fe;
+    outline-width: 5px;
+    outline-style: auto;
+}
+
+#search-form-wrapper {
+    max-width: 40%;
+    display: inline-block;
+}
+
+#search-form {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#search-form .form-control {
+    border-color: #A9A9A9;
+}
+
+#search-form .btn {
+    border-radius: 0;
+    border-left: none;
+    color: gray;
+    box-shadow: none;
+    background: white;
+    border-color: #A9A9A9;
+}
+
+#search-form .btn:hover {
+    color: black;
+}
+
+#search-form .btn:active,
+#search-form .btn:target {
+    color: #555;
+}
+
+#search-form .form-control {
+    box-shadow: none;
+}
+
+#search-option {
+    display: none;
+    font-size: 14px;
+    z-index: 10000;
+    position: absolute;
+    width: 40%;
+    background-color: #fff;
+    color: #000;
+    text-align: left;
+    outline: 0;
+}
+
+#search-option .search-filter {
+    cursor: pointer;
+}
+
+#search-option .search-filter:hover {
+    background-color: #0072C6;
+    color: #fff;
+}
+
+#search-option .glyphicon-ok {
+    visibility: hidden;
+    margin-left: 10px;
+}
+
+#search-option .search-text {
+    margin-left: 5px;
+    font-weight: normal;
+}
+
+#search-option .selected .glyphicon-ok {
+    visibility: visible;
+}
+
+#search-option .selected .search-text {
+    font-weight: bold;
+}
+
+#header-microsoft-logo-svg {
+    height: 23px;
+    width: 102px;
+}
+
+#blog-menu {
+    border-color: transparent;
+}
+
+#blog-menu .navbar-nav li a {
+    padding: 0 15px;
+    height: 70px;
+    line-height: 70px;
+    -webkit-transition: all ease-out .5s;
+    -moz-transition: all ease-out .5s;
+    -o-transition: all ease-out .5s;
+    transition: all ease-out .5s;
+}
+
+#site-header .caret {
+    border: none;
+    margin-left: .3em;
+    height: .7em;
+    width: 6px;
+    margin-top: 3px;
+    overflow: visible;
+    display: inline-block;
+    font-size: 15px;
+}
+
+#site-header .caret:before {
+    content: "\e70d";
+    font-size: 6px;
+    display: block;
+    width: 1em;
+    height: 1em;
+    font-family: "shell-icons";
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#blog-menu .dropdown-menu {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+#blog-menu .dropdown-menu li a {
+    line-height: 1.6em;
+    padding: 15px;
+    font-size: 16px;
+    height: auto;
+}
+
+#blog-menu .dropdown-menu li a:hover {
+    text-decoration: underline;
+}
+
+#blog-menu .dropdown-menu li a:focus {
+    background-color: transparent;
+}
+
+#brand {
+    font-size: 18px;
+    font-family: "Segoe UI", Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+    white-space: nowrap;
+    line-height: 23px;
+    float: right;
+    color: #333;
+}
+
+#site-profile-menu {
+    padding: 0;
+    text-align: right;
+    margin-top: 9px;
+    margin-bottom: 6px;
+    font-size: 0;
+}
+
+#me-control {
+    padding-left: 15px;
+    padding-right: 15px;
+    display: inline-block;
+    line-height: 34px;
+    vertical-align: top;
+    font-size: 14px;
+    border: 1px solid transparent;
+}
+
+#me-control a {
+    color: #555555;
+    display: inline-block;
+    line-height: 34px;
+    border: 1px solid transparent;
+}
+
+#logout {
+    margin-left: 10px;
+}
+
+#site-header-blog {
+    min-height: 70px;
+    background-color: inherit;
+}
+
+#site-header-blog .navbar {
+    margin-bottom: 0;
+    border: none;
+    background-color: inherit;
+}
+
+#blog-logo-area {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#blog-logo {
+    margin: 10px 0;
+    font-family: "Segoe UI", Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+    min-height: 50px;
+    line-height: 50px;
+    font-size: 0;
+}
+
+#blog-logo p {
+    line-height: 1em;
+}
+
+#blog-logo a {
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+#blog-logo-image {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+#blog-logo-image:empty {
+    margin-right: 0;
+}
+
+#blog-logo-text {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 10px 0;
+}
+
+#blog-logo .for-mobile {
+    display: none;
+}
+
+#blog-logo-text .site-title {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#blog-logo-text .site-description {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+#blog-logo-text .site-description:empty {
+    margin-top: 0;
+}
+
+#blog-menu {
+    font-size: 15px;
+    font-family: "Segoe UI", Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+    background-color: inherit;
+}
+
+#site-header-banner, #site-header-widget {
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#site-header-banner, #site-header-widget {
+    padding: 0 15px;
+}
+
+#site-header-banner img {
+    margin: auto;
+}
+
+.page-header {
+    margin: 0;
+    color: #555;
+    padding-bottom: 0;
+    height: 36px;
+}
+
+.page-header>h1 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 24px;
+    height: 24px;
+}
+
+/* Header for Custom Colors */
+.ms-blog-header {
+    background-color: #333;
+    color: white;
+}
+
+.ms-blog-header .ms-blog-logo img {
+    max-height: 50px;
+    width: auto;
+}
+
+.ms-blog-header .ms-blog-title a,
+.ms-blog-header .ms-blog-description,
+.ms-blog-header .ms-blog-menu,
+.ms-blog-header .ms-blog-menu>li,
+.ms-blog-header .ms-blog-menu>li>a,
+.ms-blog-header .ms-blog-dropdown-menu {
+    color: inherit;
+    background-color: inherit;
+}
+
+.ms-blog-header .ms-blog-description {
+    opacity: 0.75;
+}
+
+.ms-blog-header .ms-blog-menu>li.open>a,
+.ms-blog-header .ms-blog-menu>li.active>a,
+.ms-blog-header .ms-blog-menu>li.open>a:hover,
+.ms-blog-header .ms-blog-menu>li.active>a:hover,
+.ms-blog-header .ms-blog-menu>li.open>a:focus,
+.ms-blog-header .ms-blog-menu>li.active>a:focus {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.ms-blog-header .ms-blog-dropdown-menu>li {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.ms-blog-header .ms-blog-dropdown-menu>li>a {
+    color: white;
+}
+
+.ms-blog-header .ms-blog-dropdown-menu>li>a:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.ms-blog-header .ms-blog-menu>li>a:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (max-width: 767px) {
+    #header-microsoft-logo {
+        float: none;
+    }
+
+    #brand-name {
+        display: none;
+    }
+
+    #brand-separator {
+        display: none;
+    }
+
+    #site-header-blog {
+        min-height: 50px;
+    }
+
+    #blog-logo {
+        margin: 0;
+    }
+
+    #blog-logo .for-desktop {
+        display: none;
+    }
+
+    #blog-logo .for-mobile {
+        display: inline-block;
+    }
+
+    #blog-logo .caret.for-mobile {
+        margin-left: 5px;
+    }
+
+    #blog-logo-image+.caret.for-mobile {
+        margin-left: -5px;
+    }
+
+    #blog-logo .caret.for-mobile:before {
+        font-weight: bold;
+        margin-top: 3px;
+    }
+
+    .navbar-toggle {
+        z-index: 10;
+        margin-right: 5px;
+    }
+
+    #search-form-wrapper {
+        float: none;
+        max-width: none;
+    }
+
+    #site-header-global-right {
+        position: relative;
+    }
+
+    #search-form {
+        padding: 10px 15px;
+    }
+
+    #search-form .form-control,
+    #search-form .btn {
+        border-color: white;
+    }
+
+    #search-option {
+        margin-top: -10px;
+        padding: 0 15px 0;
+        background-clip: content-box;
+        width: 100%;
+    }
+
+    #me-control {
+        float: none;
+        padding-left: 0;
+        padding: 0 20px;
+        display: block;
+    }
+
+    #me-control a {
+        display: block;
+        text-align: left;
+        margin: 0;
+        height: 48px;
+        line-height: 48px;
+    }
+
+    #site-profile-menu {
+        float: none;
+        background-color: #eee;
+        margin: 0;
+    }
+
+    #blog-menu {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+    #blog-menu .navbar-nav li a {
+        height: 46px;
+        line-height: 46px;
+        padding: 0 20px;
+    }
+
+    #blog-menu .dropdown-menu li a {
+        padding: 0 20px;
+        color: white;
+    }
+}
+
+/* Footer */
+#site-footer {
+    margin-top: 20px;
+    min-height: 200px;
+    color: white;
+    background: #333;
+    font-size: 13px;
+}
+
+#site-info {
+    margin-top: 50px;
+}
+
+#footer-near {
+}
+
+#footer-far {
+    margin-top: -24px
+}
+
+#footer-microsoft-logo{
+    margin-top: 0px;
+}
+
+#footer-microsoft-logo-svg {
+    height: 24px;
+    width: 105px;
+}
+
+#copyright {
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+#footer-text a {
+    color: gainsboro;
+}
+
+#footer-text span {
+    margin-left: 16px;
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 767px) {
+    #footer-text,
+    #footer-far {
+        margin-top: 20px;
+    }
+
+    #footer-text {
+        margin-left: -16px;
+    }
+}
+
+@media screen and (-ms-high-contrast: black-on-white) {
+    #footer-microsoft-logo-svg g {
+        fill: black;
+    }
+}
+
+/* Content */
+#posts-query-type .filter-option{
+    margin-right: 20px;
+}
+
+#posts-query-type .filter-option a{
+    font-size: 18px;
+    font-family: "Segoe UI", Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+    color: #555555;
+}
+
+#posts-query-type .filter-option.selected a{
+    border-bottom: 2px solid #555555;
+}
+
+#site-content {
+    min-height: 768px;
+    max-width: 1180px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.entry-content {
+    overflow: hidden;
+}
+
+.entry-content p {
+    margin-bottom: 10px;
+}
+
+.entry-content:not(.single) {
+    margin-bottom: -8px;
+}
+
+.entry-content:not(.single) p {
+    margin-bottom: 18px;
+}
+
+
+h2.entry-title a {
+    color: #4A4A4A;
+    font-size: 30px;
+    font-family: "Segoe UI Light", "Segoe UI", Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+}
+
+.post-thumbnail {
+    float: left;
+    margin: 0 1em 1em 0;
+}
+
+.post-thumbnail-right-float {
+    float: right;
+    margin-right: -100000px;
+    margin-top: -1em;
+}
+
+.entry-footer {
+    font-size: 14px;
+}
+
+.entry-footer:not(.single) {
+    clear: right;
+}
+
+.byline , .posted-on.posted-on-margin {
+    margin-left: 10px;
+}
+
+.comments-link {
+    float: right;
+}
+
+.comments-link .glyphicon-comment {
+    margin-left: 8px;
+    margin-right: 3px;
+    font-size: 16px;
+}
+
+.comments-link a {
+    color: #3F3F3F;
+    font-size: 18px;
+}
+
+#site-main .rating-wrap {
+    float: right;
+    position: relative;
+    width: 70px;
+    text-align: right;
+}
+
+#site-main .rating-wrap .wds-ratings-stars {
+    top: 0;
+}
+
+.pagination {
+    font-size: 18px;
+}
+
+.page-numbers {
+    padding-right: 10px;
+}
+
+@media screen and (max-width: 767px) {
+    .entry-footer:not(.single) {
+        margin-top: 40px;
+    }
+
+    #site-main .rating-wrap {
+        clear: right;
+        margin-top: -45px;
+    }
+
+    #site-content {
+        margin-top: 10px;
+    }
+
+    #primary {
+        padding: 0;
+    }
+
+    .pagination {
+        font-size: 18px;
+    }
+}
+
+/* Content - Single */
+
+.entry-header.single .entry-meta{
+    color: #AEAEAE;
+    font-size: 13px;
+}
+
+#single-content .rating-wrap {
+    float: right;
+    position: relative;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+#single-content .wds-ratings:before {
+    content: "Rate this article";
+    margin-right: 70px;
+    white-space: nowrap;
+    color: #8B8B8B;
+}
+
+#single-content .rating-wrap .wds-ratings-stars {
+    top: -20px;
+    left: 102px;
+}
+
+.social-icons-wrap {
+    font-size: 12px;
+    font-size: 1.2rem;
+    float: right;
+}
+
+.social-icons-wrap ul {
+    display: inline-block;
+    margin: 0;
+    list-style: none;
+    padding: 0;
+}
+
+.social-icons-wrap li {
+    float: left;
+    min-width: 60px;
+    height: 28px;
+    margin: 0 6px 0 0;
+    list-style-type: none;
+}
+
+.social-icons-wrap a {
+    line-height: 28px;
+    padding: 0 10px 0 35px;
+    color: #fff;
+    display: block;
+    text-decoration: none;
+}
+
+.social-icons-wrap .facebook {
+    background: url(images/icon-facebook-single.png) 10px 50% no-repeat #537cbe;
+}
+
+.social-icons-wrap .twitter {
+    background: url(images/icon-twitter-single.png) 4px 50% no-repeat #76cdf0;
+}
+
+.social-icons-wrap .linkedin {
+    background: url(images/icon-linkedin-single.png) 4px 50% no-repeat #0e85c9;
+}
+
+@media screen and (max-width: 767px) {
+    #single-content .rating-wrap {
+        float: left;
+    }
+
+    .social-icons-wrap {
+        display: block;
+        margin: 20px 0 10px 0;
+        float: none;
+    }
+}
+
+/* Comments */
+#comments {
+    margin-top: 10px;
+}
+
+.comments-title {
+    font-size: 18px;
+}
+
+#commentform textarea {
+    width: 100%;
+    padding: 8px 0;
+    margin: 10px 0;
+}
+
+#commentform .form-submit #submit {
+    float: right;
+}
+
+.comment-list .comment .avatar {
+    float: left;
+    margin-right: 20px;
+}
+
+.comment-list .says {
+    display: none;
+}
+
+.comment-list .comment-meta {
+}
+
+.comment-list {
+    padding-left: 0;
+}
+
+.comment-list,
+.comment-list .children {
+    list-style-type: none;
+    margin: 0;
+}
+
+.comment-list .children {
+    padding-left: 76px;
+}
+
+.comment-list>.comment {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ececec;
+}
+
+.comment-list .comment {
+    margin-top: 10px;
+}
+
+.comment-list .comment-body>*:not(.comment-author) {
+    margin-left: 76px;
+}
+
+.comment-list p {
+    word-wrap: break-word;
+}
+
+/* Widgets */
+#sidebar-widget-area {
+    margin-left: 10px;
+}
+
+#sidebar-widget-area ul {
+    padding-left: 18px;
+}
+
+#sidebar-widget-area .msdn-archive-widget li {
+    list-style-type: none;
+}
+
+#me-control {
+    position:relative;
+}
+
+#l_profile_link {
+    position:absolute;
+    opacity:0;
+    padding-top:0;
+    padding-bottom:0;
+    background:rgb(61, 61, 61);
+    right:-30px;
+    z-index:-1;
+    -webkit-transition: right 0.7s,opacity 0.7s,z-index 1s;
+    transition: right 0.3s,opacity 0.3s,z-index 0.3s;
+}
+
+
+#current_user {
+    display:inline;
+}
+
+#current_user:hover #l_profile_link{
+    z-index:10;
+    right:-36px;
+    opacity:1;
+}
+
+#l_profile_link a {
+    color:white;
+    line-height:34px;
+    font-size:14px;
+    font-weight: normal;
+}
+
+#comments label {
+    font-weight:normal;
+}
+
+.widget-title {
+    font-size: 18px;
+    font-family: "Segoe UI", Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+}
+
+.widget_tag_cloud a {
+    color: black;
+    background-color: #ddd;
+    display: inline-block;
+    padding: 2px 10px;
+    margin-right: 4px;
+    margin-bottom: 8px;
+}
+
+.screen-reader-shortcut {
+    position: absolute;
+    top: -1000em;
+}
+
+.screen-reader-shortcut:focus {
+    position:fixed;
+    left:20px;
+    top:30px;
+    padding:20px;
+    background-color:white;
+    z-index: 1;
+}
+
+@media screen and (max-width: 767px) {
+    #sidebar-widget-area {
+        margin-left: 0;
+    }
+}

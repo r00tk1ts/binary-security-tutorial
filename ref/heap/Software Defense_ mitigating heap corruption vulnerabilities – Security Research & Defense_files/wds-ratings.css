@@ -1,0 +1,98 @@
+.wds-ratings {
+	font-size: 14px;
+	font-size: 1.4rem;
+	height: 1em;
+	margin: 0 auto;
+	overflow: visible;
+	position: relative;
+	text-align: right;
+}
+
+.wds-ratings-inner-wrap > div {
+	position: relative;
+}
+
+.wds-ratings-stars {
+	font-size: 14px;
+	font-size: 1.4rem;
+	color: #D2D2D2;
+	cursor: pointer;
+	display: inline-table;
+	position: absolute;
+	left: 0;
+	top: -15px;
+	z-index: 0;
+}
+
+.wds-ratings-stars.wds-ratings-active,
+.wds-ratings-stars.current-rating.wds-ratings-active {
+	color: #FFF100;
+}
+
+.wds-ratings-stars.current-rating {
+	color: #FFF100;
+}
+
+.user-current-rating {
+	color: #FCD116;
+}
+
+.wds-ratings-stars span {
+	height: 100%;
+	line-height: 1;
+	position: relative;
+}
+
+html[data-high-contrast] .wds-ratings-stars:not(.wds-ratings-active):not(.current-rating):not(.user-current-rating)>span>span,
+html[data-high-contrast] .wds-ratings-inner-wrap:hover .wds-ratings-stars.wds-ratings-stars-enable-editing:not(.wds-ratings-active)>span>span,
+html[hc] .wds-ratings-stars:not(.wds-ratings-active):not(.current-rating):not(.user-current-rating)>span>span,
+html[hc] .wds-ratings-inner-wrap:hover .wds-ratings-stars.wds-ratings-stars-enable-editing:not(.wds-ratings-active)>span>span {
+	font-size: 0;
+}
+
+.wds-ratings-percent:before {
+	color: #FFFC9E;
+	content: '\2605';
+	height: 100%;
+	left: 0;
+	line-height: 1em;
+	overflow: hidden;
+	position: absolute;
+	text-shadow: none;
+	top: 0;
+	width: 30%;
+}
+
+.has-user-rating .wds-ratings-percent:before {
+	color: #4285f4;
+}
+
+.wds-ratings-active .wds-ratings-percent:before {
+	display: none;
+}
+
+html[data-high-contrast] .wds-ratings-stars:not(.wds-ratings-active):not(.current-rating):not(.user-current-rating)>span:after,
+html[data-high-contrast] .wds-ratings-inner-wrap:hover .wds-ratings-stars.wds-ratings-stars-enable-editing:not(.wds-ratings-active)>span:after,
+html[hc] .wds-ratings-stars:not(.wds-ratings-active):not(.current-rating):not(.user-current-rating)>span:after,
+html[hc] .wds-ratings-inner-wrap:hover .wds-ratings-stars.wds-ratings-stars-enable-editing:not(.wds-ratings-active)>span:after {
+    content: "☆";
+    line-height: 19px;
+}
+
+html[hc] .wds-ratings-stars:not(.wds-ratings-active):not(.current-rating):not(.user-current-rating)>span:after,
+html[hc] .wds-ratings-inner-wrap:hover .wds-ratings-stars.wds-ratings-stars-enable-editing:not(.wds-ratings-active)>span:after {
+    color: #FFF100;
+}
+
+@media screen and (-ms-high-contrast: active) {
+	.wds-ratings-stars:not(.wds-ratings-active):not(.current-rating):not(.user-current-rating)>span>span,
+	.wds-ratings-inner-wrap:hover .wds-ratings-stars.wds-ratings-stars-enable-editing:not(.wds-ratings-active)>span>span {
+		font-size: 0;
+	}
+
+	.wds-ratings-stars:not(.wds-ratings-active):not(.current-rating):not(.user-current-rating)>span:after,
+	.wds-ratings-inner-wrap:hover .wds-ratings-stars.wds-ratings-stars-enable-editing:not(.wds-ratings-active)>span:after {
+		content: "☆";
+		line-height: 19px;
+	}
+}

@@ -1,0 +1,62 @@
+
+/* @group clearfix */
+
+.sfmsb-clearfix:after {
+	visibility: hidden;
+	display: block;
+	content: "";
+	clear: both;
+	height: 0;
+	}
+* html .sfmsb-clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .sfmsb-clearfix { zoom: 1; } /* IE7 */
+
+
+/* @end */
+
+/* @group social buttons */
+
+.sfmsb-follow-social-buttons a,
+.sfmsb-follow-social-buttons .sfmsb-text{
+	display: block;
+	float: left;
+	margin-bottom: 5px;
+}
+
+.sfmsb-follow-social-buttons.sfmsb-vertical a{
+	float: none;
+} 
+
+/* Smartphones  */
+/*@media only screen and (max-width : 480px) {
+	
+	.sfmsb-follow-social-buttons.sfmsb-vertical a{
+		float: left;
+	} 
+
+}*/
+
+.sfmsb-follow-social-buttons.sfmsb-under .sfmsb-text{
+	float: none;
+}
+
+
+.sfmsb-follow-social-buttons.sfmsb-float .sfmsb-text,
+.sfmsb-follow-social-buttons.sfmsb-float a{
+	
+	padding: 0 5px 0 5px;
+	margin-right: 0;
+}
+
+.sfmsb-follow-social-buttons.sfmsb-under a{
+	margin-right: 10px;	
+}
+
+.sfmsb-follow-social-buttons a,
+.sfmsb-follow-social-buttons a:hover{
+	text-decoration: none !important;
+}
+
+/* @end */
+
+

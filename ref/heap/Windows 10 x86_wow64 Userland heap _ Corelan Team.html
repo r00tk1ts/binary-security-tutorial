@@ -1,0 +1,1784 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0078)https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" class="chrome mac"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8">
+<title>Windows 10 x86/wow64 Userland heap | Corelan Team</title>
+<link rel="stylesheet" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/style.css" type="text/css" media="screen">
+<!--[if IE 6]><link rel="stylesheet" href="https://www.corelan.be/wp-content/themes/corelan/style.ie6.css" type="text/css" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="https://www.corelan.be/wp-content/themes/corelan/style.ie7.css" type="text/css" media="screen" /><![endif]-->
+<link rel="pingback" href="https://www.corelan.be/xmlrpc.php">
+<style>
+.stb-container-css {margin: 10px 10px 10px 10px;}.stb-box {}.stb-caption-box {}.stb-body-box {}
+/* Class Dependent Parameters */
+.stb-border.stb-alert-container {border: 1px solid #FF4F4A;}.stb-side.stb-alert-container {background: #1D1A1A;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1D1A1A', endColorstr='#504848',GradientType=0 );background: -moz-linear-gradient(top,  #1D1A1A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#1D1A1A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -o-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -ms-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: linear-gradient(#1D1A1A 30%, #504848 90%);}.stb-side-none.stb-alert-container {background: #fDCBC9;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fDCBC9', endColorstr='#FB7D78',GradientType=0 );background: -moz-linear-gradient(top,  #fDCBC9 30%, #FB7D78 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#fDCBC9), color-stop(90%,#FB7D78));background: -webkit-linear-gradient(top,  #fDCBC9 30%,#FB7D78 90%);background: -o-linear-gradient(top,  #fDCBC9 30%,#FB7D78 90%);background: -ms-linear-gradient(top,  #fDCBC9 30%,#FB7D78 90%);background: linear-gradient(#fDCBC9 30%, #FB7D78 90%);}.stb-alert_box {background: #fDCBC9;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fDCBC9', endColorstr='#FB7D78',GradientType=0 );background: -moz-linear-gradient(top,  #fDCBC9 30%, #FB7D78 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#fDCBC9), color-stop(90%,#FB7D78));background: -webkit-linear-gradient(top,  #fDCBC9 30%,#FB7D78 90%);background: -o-linear-gradient(top,  #fDCBC9 30%,#FB7D78 90%);background: -ms-linear-gradient(top,  #fDCBC9 30%,#FB7D78 90%);background: linear-gradient(#fDCBC9 30%, #FB7D78 90%);color: #000000;}.stb-alert-caption_box {background: #1D1A1A;background: -moz-linear-gradient(top,  #1D1A1A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#1D1A1A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -o-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -ms-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: linear-gradient(#1D1A1A 30%, #504848 90%);color: #FFFFFF;}.stb-alert-body_box {background: #fDCBC9;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fDCBC9', endColorstr='#FB7D78',GradientType=0 );background: -moz-linear-gradient(top,  #fDCBC9 30%, #FB7D78 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#fDCBC9), color-stop(90%,#FB7D78));background: -webkit-linear-gradient(top,  #fDCBC9 30%,#FB7D78 90%);background: -o-linear-gradient(top,  #fDCBC9 30%,#FB7D78 90%);background: -ms-linear-gradient(top,  #fDCBC9 30%,#FB7D78 90%);background: linear-gradient(#fDCBC9 30%, #FB7D78 90%);color: #000000;}.stb-border.stb-black-container {border: 1px solid #6E6E6E;}.stb-side.stb-black-container {background: #4B4747;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4B4747', endColorstr='#141414',GradientType=0 );background: -moz-linear-gradient(top,  #4B4747 30%, #141414 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#4B4747), color-stop(90%,#141414));background: -webkit-linear-gradient(top,  #4B4747 30%,#141414 90%);background: -o-linear-gradient(top,  #4B4747 30%,#141414 90%);background: -ms-linear-gradient(top,  #4B4747 30%,#141414 90%);background: linear-gradient(#4B4747 30%, #141414 90%);}.stb-side-none.stb-black-container {background: #3B3B3B;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3B3B3B', endColorstr='#000000',GradientType=0 );background: -moz-linear-gradient(top,  #3B3B3B 30%, #000000 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#3B3B3B), color-stop(90%,#000000));background: -webkit-linear-gradient(top,  #3B3B3B 30%,#000000 90%);background: -o-linear-gradient(top,  #3B3B3B 30%,#000000 90%);background: -ms-linear-gradient(top,  #3B3B3B 30%,#000000 90%);background: linear-gradient(#3B3B3B 30%, #000000 90%);}.stb-black_box {background: #3B3B3B;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3B3B3B', endColorstr='#000000',GradientType=0 );background: -moz-linear-gradient(top,  #3B3B3B 30%, #000000 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#3B3B3B), color-stop(90%,#000000));background: -webkit-linear-gradient(top,  #3B3B3B 30%,#000000 90%);background: -o-linear-gradient(top,  #3B3B3B 30%,#000000 90%);background: -ms-linear-gradient(top,  #3B3B3B 30%,#000000 90%);background: linear-gradient(#3B3B3B 30%, #000000 90%);color: #FFFFFF;}.stb-black-caption_box {background: #4B4747;background: -moz-linear-gradient(top,  #4B4747 30%, #141414 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#4B4747), color-stop(90%,#141414));background: -webkit-linear-gradient(top,  #4B4747 30%,#141414 90%);background: -o-linear-gradient(top,  #4B4747 30%,#141414 90%);background: -ms-linear-gradient(top,  #4B4747 30%,#141414 90%);background: linear-gradient(#4B4747 30%, #141414 90%);color: #FFFFFF;}.stb-black-body_box {background: #3B3B3B;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3B3B3B', endColorstr='#000000',GradientType=0 );background: -moz-linear-gradient(top,  #3B3B3B 30%, #000000 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#3B3B3B), color-stop(90%,#000000));background: -webkit-linear-gradient(top,  #3B3B3B 30%,#000000 90%);background: -o-linear-gradient(top,  #3B3B3B 30%,#000000 90%);background: -ms-linear-gradient(top,  #3B3B3B 30%,#000000 90%);background: linear-gradient(#3B3B3B 30%, #000000 90%);color: #FFFFFF;}.stb-border.stb-download-container {border: 1px solid #65ADFE;}.stb-side.stb-download-container {background: #1D1A1A;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1D1A1A', endColorstr='#504848',GradientType=0 );background: -moz-linear-gradient(top,  #1D1A1A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#1D1A1A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -o-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -ms-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: linear-gradient(#1D1A1A 30%, #504848 90%);}.stb-side-none.stb-download-container {background: #78C0F7;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#78C0F7', endColorstr='#2E7CB9',GradientType=0 );background: -moz-linear-gradient(top,  #78C0F7 30%, #2E7CB9 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#78C0F7), color-stop(90%,#2E7CB9));background: -webkit-linear-gradient(top,  #78C0F7 30%,#2E7CB9 90%);background: -o-linear-gradient(top,  #78C0F7 30%,#2E7CB9 90%);background: -ms-linear-gradient(top,  #78C0F7 30%,#2E7CB9 90%);background: linear-gradient(#78C0F7 30%, #2E7CB9 90%);}.stb-download_box {background: #78C0F7;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#78C0F7', endColorstr='#2E7CB9',GradientType=0 );background: -moz-linear-gradient(top,  #78C0F7 30%, #2E7CB9 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#78C0F7), color-stop(90%,#2E7CB9));background: -webkit-linear-gradient(top,  #78C0F7 30%,#2E7CB9 90%);background: -o-linear-gradient(top,  #78C0F7 30%,#2E7CB9 90%);background: -ms-linear-gradient(top,  #78C0F7 30%,#2E7CB9 90%);background: linear-gradient(#78C0F7 30%, #2E7CB9 90%);color: #000000;}.stb-download-caption_box {background: #1D1A1A;background: -moz-linear-gradient(top,  #1D1A1A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#1D1A1A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -o-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -ms-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: linear-gradient(#1D1A1A 30%, #504848 90%);color: #FFFFFF;}.stb-download-body_box {background: #78C0F7;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#78C0F7', endColorstr='#2E7CB9',GradientType=0 );background: -moz-linear-gradient(top,  #78C0F7 30%, #2E7CB9 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#78C0F7), color-stop(90%,#2E7CB9));background: -webkit-linear-gradient(top,  #78C0F7 30%,#2E7CB9 90%);background: -o-linear-gradient(top,  #78C0F7 30%,#2E7CB9 90%);background: -ms-linear-gradient(top,  #78C0F7 30%,#2E7CB9 90%);background: linear-gradient(#78C0F7 30%, #2E7CB9 90%);color: #000000;}.stb-border.stb-info-container {border: 1px solid #7AD975;}.stb-side.stb-info-container {background: #1D1A1A;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1D1A1A', endColorstr='#504848',GradientType=0 );background: -moz-linear-gradient(top,  #1D1A1A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#1D1A1A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -o-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -ms-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: linear-gradient(#1D1A1A 30%, #504848 90%);}.stb-side-none.stb-info-container {background: #A1EA94;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#A1EA94', endColorstr='#79B06E',GradientType=0 );background: -moz-linear-gradient(top,  #A1EA94 30%, #79B06E 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#A1EA94), color-stop(90%,#79B06E));background: -webkit-linear-gradient(top,  #A1EA94 30%,#79B06E 90%);background: -o-linear-gradient(top,  #A1EA94 30%,#79B06E 90%);background: -ms-linear-gradient(top,  #A1EA94 30%,#79B06E 90%);background: linear-gradient(#A1EA94 30%, #79B06E 90%);}.stb-info_box {background: #A1EA94;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#A1EA94', endColorstr='#79B06E',GradientType=0 );background: -moz-linear-gradient(top,  #A1EA94 30%, #79B06E 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#A1EA94), color-stop(90%,#79B06E));background: -webkit-linear-gradient(top,  #A1EA94 30%,#79B06E 90%);background: -o-linear-gradient(top,  #A1EA94 30%,#79B06E 90%);background: -ms-linear-gradient(top,  #A1EA94 30%,#79B06E 90%);background: linear-gradient(#A1EA94 30%, #79B06E 90%);color: #000000;}.stb-info-caption_box {background: #1D1A1A;background: -moz-linear-gradient(top,  #1D1A1A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#1D1A1A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -o-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -ms-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: linear-gradient(#1D1A1A 30%, #504848 90%);color: #FFFFFF;}.stb-info-body_box {background: #A1EA94;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#A1EA94', endColorstr='#79B06E',GradientType=0 );background: -moz-linear-gradient(top,  #A1EA94 30%, #79B06E 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#A1EA94), color-stop(90%,#79B06E));background: -webkit-linear-gradient(top,  #A1EA94 30%,#79B06E 90%);background: -o-linear-gradient(top,  #A1EA94 30%,#79B06E 90%);background: -ms-linear-gradient(top,  #A1EA94 30%,#79B06E 90%);background: linear-gradient(#A1EA94 30%, #79B06E 90%);color: #000000;}.stb-border.stb-warning-container {border: 1px solid #FE9A05;}.stb-side.stb-warning-container {background: #1D1A1A;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1D1A1A', endColorstr='#504848',GradientType=0 );background: -moz-linear-gradient(top,  #1D1A1A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#1D1A1A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -o-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -ms-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: linear-gradient(#1D1A1A 30%, #504848 90%);}.stb-side-none.stb-warning-container {background: #F8FC91;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F8FC91', endColorstr='#F0D208',GradientType=0 );background: -moz-linear-gradient(top,  #F8FC91 30%, #F0D208 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#F8FC91), color-stop(90%,#F0D208));background: -webkit-linear-gradient(top,  #F8FC91 30%,#F0D208 90%);background: -o-linear-gradient(top,  #F8FC91 30%,#F0D208 90%);background: -ms-linear-gradient(top,  #F8FC91 30%,#F0D208 90%);background: linear-gradient(#F8FC91 30%, #F0D208 90%);}.stb-warning_box {background: #F8FC91;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F8FC91', endColorstr='#F0D208',GradientType=0 );background: -moz-linear-gradient(top,  #F8FC91 30%, #F0D208 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#F8FC91), color-stop(90%,#F0D208));background: -webkit-linear-gradient(top,  #F8FC91 30%,#F0D208 90%);background: -o-linear-gradient(top,  #F8FC91 30%,#F0D208 90%);background: -ms-linear-gradient(top,  #F8FC91 30%,#F0D208 90%);background: linear-gradient(#F8FC91 30%, #F0D208 90%);color: #000000;}.stb-warning-caption_box {background: #1D1A1A;background: -moz-linear-gradient(top,  #1D1A1A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#1D1A1A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -o-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -ms-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: linear-gradient(#1D1A1A 30%, #504848 90%);color: #FFFFFF;}.stb-warning-body_box {background: #F8FC91;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F8FC91', endColorstr='#F0D208',GradientType=0 );background: -moz-linear-gradient(top,  #F8FC91 30%, #F0D208 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#F8FC91), color-stop(90%,#F0D208));background: -webkit-linear-gradient(top,  #F8FC91 30%,#F0D208 90%);background: -o-linear-gradient(top,  #F8FC91 30%,#F0D208 90%);background: -ms-linear-gradient(top,  #F8FC91 30%,#F0D208 90%);background: linear-gradient(#F8FC91 30%, #F0D208 90%);color: #000000;}.stb-border.stb-grey-container {border: 1px solid #BBBBBB;}.stb-side.stb-grey-container {background: #B5B5B5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#B5B5B5', endColorstr='#6E6E6E',GradientType=0 );background: -moz-linear-gradient(top,  #B5B5B5 30%, #6E6E6E 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#B5B5B5), color-stop(90%,#6E6E6E));background: -webkit-linear-gradient(top,  #B5B5B5 30%,#6E6E6E 90%);background: -o-linear-gradient(top,  #B5B5B5 30%,#6E6E6E 90%);background: -ms-linear-gradient(top,  #B5B5B5 30%,#6E6E6E 90%);background: linear-gradient(#B5B5B5 30%, #6E6E6E 90%);}.stb-side-none.stb-grey-container {background: #E3E3E3;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E3E3E3', endColorstr='#ABABAB',GradientType=0 );background: -moz-linear-gradient(top,  #E3E3E3 30%, #ABABAB 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#E3E3E3), color-stop(90%,#ABABAB));background: -webkit-linear-gradient(top,  #E3E3E3 30%,#ABABAB 90%);background: -o-linear-gradient(top,  #E3E3E3 30%,#ABABAB 90%);background: -ms-linear-gradient(top,  #E3E3E3 30%,#ABABAB 90%);background: linear-gradient(#E3E3E3 30%, #ABABAB 90%);}.stb-grey_box {background: #E3E3E3;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E3E3E3', endColorstr='#ABABAB',GradientType=0 );background: -moz-linear-gradient(top,  #E3E3E3 30%, #ABABAB 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#E3E3E3), color-stop(90%,#ABABAB));background: -webkit-linear-gradient(top,  #E3E3E3 30%,#ABABAB 90%);background: -o-linear-gradient(top,  #E3E3E3 30%,#ABABAB 90%);background: -ms-linear-gradient(top,  #E3E3E3 30%,#ABABAB 90%);background: linear-gradient(#E3E3E3 30%, #ABABAB 90%);color: #000000;}.stb-grey-caption_box {background: #B5B5B5;background: -moz-linear-gradient(top,  #B5B5B5 30%, #6E6E6E 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#B5B5B5), color-stop(90%,#6E6E6E));background: -webkit-linear-gradient(top,  #B5B5B5 30%,#6E6E6E 90%);background: -o-linear-gradient(top,  #B5B5B5 30%,#6E6E6E 90%);background: -ms-linear-gradient(top,  #B5B5B5 30%,#6E6E6E 90%);background: linear-gradient(#B5B5B5 30%, #6E6E6E 90%);color: #FFFFFF;}.stb-grey-body_box {background: #E3E3E3;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E3E3E3', endColorstr='#ABABAB',GradientType=0 );background: -moz-linear-gradient(top,  #E3E3E3 30%, #ABABAB 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#E3E3E3), color-stop(90%,#ABABAB));background: -webkit-linear-gradient(top,  #E3E3E3 30%,#ABABAB 90%);background: -o-linear-gradient(top,  #E3E3E3 30%,#ABABAB 90%);background: -ms-linear-gradient(top,  #E3E3E3 30%,#ABABAB 90%);background: linear-gradient(#E3E3E3 30%, #ABABAB 90%);color: #000000;}.stb-border.stb-custom-container {border: 1px solid #F844EE;}.stb-side.stb-custom-container {background: #1D1A1A;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1D1A1A', endColorstr='#504848',GradientType=0 );background: -moz-linear-gradient(top,  #1D1A1A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#1D1A1A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -o-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -ms-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: linear-gradient(#1D1A1A 30%, #504848 90%);}.stb-side-none.stb-custom-container {background: #F7CDF5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F7CDF5', endColorstr='#F77DF1',GradientType=0 );background: -moz-linear-gradient(top,  #F7CDF5 30%, #F77DF1 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#F7CDF5), color-stop(90%,#F77DF1));background: -webkit-linear-gradient(top,  #F7CDF5 30%,#F77DF1 90%);background: -o-linear-gradient(top,  #F7CDF5 30%,#F77DF1 90%);background: -ms-linear-gradient(top,  #F7CDF5 30%,#F77DF1 90%);background: linear-gradient(#F7CDF5 30%, #F77DF1 90%);}.stb-custom_box {background: #F7CDF5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F7CDF5', endColorstr='#F77DF1',GradientType=0 );background: -moz-linear-gradient(top,  #F7CDF5 30%, #F77DF1 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#F7CDF5), color-stop(90%,#F77DF1));background: -webkit-linear-gradient(top,  #F7CDF5 30%,#F77DF1 90%);background: -o-linear-gradient(top,  #F7CDF5 30%,#F77DF1 90%);background: -ms-linear-gradient(top,  #F7CDF5 30%,#F77DF1 90%);background: linear-gradient(#F7CDF5 30%, #F77DF1 90%);color: #000000;}.stb-custom-caption_box {background: #1D1A1A;background: -moz-linear-gradient(top,  #1D1A1A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#1D1A1A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -o-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: -ms-linear-gradient(top,  #1D1A1A 30%,#504848 90%);background: linear-gradient(#1D1A1A 30%, #504848 90%);color: #FFFFFF;}.stb-custom-body_box {background: #F7CDF5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F7CDF5', endColorstr='#F77DF1',GradientType=0 );background: -moz-linear-gradient(top,  #F7CDF5 30%, #F77DF1 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#F7CDF5), color-stop(90%,#F77DF1));background: -webkit-linear-gradient(top,  #F7CDF5 30%,#F77DF1 90%);background: -o-linear-gradient(top,  #F7CDF5 30%,#F77DF1 90%);background: -ms-linear-gradient(top,  #F7CDF5 30%,#F77DF1 90%);background: linear-gradient(#F7CDF5 30%, #F77DF1 90%);color: #000000;}</style>
+
+<!-- All in One SEO Pack 2.7.3 by Michael Torbert of Semper Fi Web Designob_start_detected [-1,-1] -->
+<meta name="keywords" content="back-end allocator,bea,block,breakpoint,c#,chunk,fea,front-end allocator,heap,heap management,heap spray,lfh,low fragmentation heap,rtlallocateheap,rtlfreeheap,spray,userland,visual studio,windbg,windows 10,wow64,x86,exploit writing tutorials,windows internals">
+
+<link rel="canonical" href="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/">
+<!-- /all in one seo pack -->
+<link rel="dns-prefetch" href="https://s0.wp.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Corelan Team » Feed" href="https://www.corelan.be/index.php/feed/">
+<link rel="alternate" type="application/rss+xml" title="Corelan Team » Comments Feed" href="https://www.corelan.be/index.php/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Corelan Team » Windows 10 x86/wow64 Userland heap Comments Feed" href="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/feed/">
+		<script src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/ca-pub-8134501503628637.js"></script><script src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/f(5).txt"></script><script src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/ca-pub-8134501503628637.js"></script><script type="text/javascript" async="" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/ga.js"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.corelan.be\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.8"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/wp-emoji-release.min.js" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="cptch_stylesheet-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/front_end_style.css" type="text/css" media="all">
+<link rel="stylesheet" id="dashicons-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/dashicons.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="cptch_desktop_style-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/desktop_style.css" type="text/css" media="all">
+<link rel="stylesheet" id="toc-screen-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/screen.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-pagenavi-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/pagenavi-css.css" type="text/css" media="all">
+<link rel="stylesheet" id="thickbox-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/thickbox.css" type="text/css" media="all">
+<link rel="stylesheet" id="auto-thickbox-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/styles-pre39.css" type="text/css" media="all">
+<link rel="stylesheet" id="an_style-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/zmYpsREicHWQ.css" type="text/css" media="all">
+<style id="an_style-inline-css" type="text/css">
+/*	an_style.css	AdBlock Notify	Copyright: (c) 2016 Themeisle, themeisle.com	Version: 2.0.12*/.OjdNNcYauKjD-bg {	display: none;	position: fixed;	z-index: 100;	top: 0;	left: 0;	width: 100%;	height: 100%;	background: #000;	background: rgba(0,0,0,0.75);}.OjdNNcYauKjD {	visibility: hidden;	position: fixed;	z-index: 101;	top: 100px;	right: 0;	left: 0;	max-width: 640px;	margin-right: auto;	margin-left: auto;	background: #fff;	-webkit-box-shadow: 0 3px 5px 2px rgba(0,0,0,0.25);	box-shadow: 0 3px 5px 2px rgba(0,0,0,0.25);	font-family: Arial, Helvetica, sans-serif;}.OjdNNcYauKjD-default,.OjdNNcYauKjD-ok {	padding: 30px 30px 15px;}.OjdNNcYauKjD-image {	overflow: hidden;	position: relative;	width: 100%;}.OjdNNcYauKjD-image .OjdNNcYauKjD-left {	position: absolute;	top: 0;	left: 0;	width: 50%;	height: 100%;}.OjdNNcYauKjD-image .OjdNNcYauKjD-right {	float: right;	width: 50%;	padding: 30px;}.OjdNNcYauKjD.small {	width: 200px;	margin-left: -140px;}.OjdNNcYauKjD.medium {	width: 400px;	margin-left: -240px;}.OjdNNcYauKjD.large {	width: 600px;	margin-left: -340px;}.OjdNNcYauKjD.xlarge {	width: 800px;	margin-left: -440px;}.close-OjdNNcYauKjD {	display: inline-block;	position: absolute;	top: 15px;	right: 15px;	width: 30px;	height: 30px;	color: #bbb;	font-size: 32px;	font-weight: 700;	line-height: 30px;	text-align: center;	cursor: pointer;	-webkit-transition: 0.3s;	transition: 0.3s;}.close-OjdNNcYauKjD:hover {	color: #252b37;}.OjdNNcYauKjD h1 {	margin-bottom: 15px;	padding: 0 30px;	color: #252b37;	font-size: 28px;	line-height: 1.25;	text-align: center;}.OjdNNcYauKjD-right h1 {	padding: 0 30px 0 0;	text-align: left;}.OjdNNcYauKjD p {	margin-bottom: 15px;	color: #333745;	font-size: 14px;}.OjdNNcYauKjD p a {	color: #ff6160;}.OjdNNcYauKjD-right .close-modal,.OjdNNcYauKjD-footer .close-modal {	padding: 15px !important;	border-radius: 0 !important;	background-color: #ff6160;	font-size: 14px;	letter-spacing: 2px !important;	-webkit-transition: 0.3s;	transition: 0.3s;}.OjdNNcYauKjD-right .close-modal:hover,.OjdNNcYauKjD-footer .close-modal:hover {	background-color: #252b37 !important;}.OjdNNcYauKjD-footer .grey-button-modal {	margin-right: 15px;	background-color: #a5a5a5;}.OjdNNcYauKjD-footer {	display: block;	padding: 15px 30px;	background-color: #eff4f7;	text-align: right;}@media only screen and (max-width: 640px) {	.OjdNNcYauKjD {		right: 5%;		left: 5%;		max-width: 90%;	}	.OjdNNcYauKjD-default {		padding: 20px;	}	.OjdNNcYauKjD-image .OjdNNcYauKjD-left {		width: 100%;		height: 250px;	}	.OjdNNcYauKjD-image .OjdNNcYauKjD-right {		float: left;		width: 100%;		margin-top: 250px;		padding: 20px;	}	.OjdNNcYauKjD h1 {		margin-bottom: 10px;		font-size: 20px;	}	.OjdNNcYauKjD-right h1 {		padding: 0;	}	.OjdNNcYauKjD p {		margin-bottom: 10px;	}	.close-OjdNNcYauKjD {		color: #fcfcfc;		background-color: #252b37;	}	.close-OjdNNcYauKjD:hover {		color: #252b37;		background-color: #fcfcfc;	}	.OjdNNcYauKjD-footer {		padding: 15px 20px;	}}@media only screen and (max-width: 480px) {	.OjdNNcYauKjD-image .OjdNNcYauKjD-left {		height: 200px;	}	.OjdNNcYauKjD-image .OjdNNcYauKjD-right {		margin-top: 200px;	}	.OjdNNcYauKjD-footer {		text-align: center;	}	.OjdNNcYauKjD-footer .close-modal {		width: 80%;		margin: 5px 10%;	}}
+</style>
+<link rel="stylesheet" id="moove_gdpr_frontend-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/main.css" type="text/css" media="all">
+<link rel="stylesheet" id="stbCoreCSS-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/stb-core.css" type="text/css" media="all">
+<link rel="stylesheet" id="social-logos-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/social-logos.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="jetpack_css-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/jetpack.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-downloadmanager-css" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/download-css.css" type="text/css" media="all">
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/jquery.js"></script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/jquery-migrate.min.js"></script>
+<link rel="https://api.w.org/" href="https://www.corelan.be/index.php/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.corelan.be/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.corelan.be/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="EncFSGui – GUI Wrapper around encfs for OSX" href="https://www.corelan.be/index.php/2016/01/31/encfsgui-gui-wrapper-around-encfs-for-osx/">
+<link rel="shortlink" href="https://www.corelan.be/?p=11044">
+<link rel="alternate" type="application/json+oembed" href="https://www.corelan.be/index.php/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.corelan.be%2Findex.php%2F2016%2F07%2F05%2Fwindows-10-x86wow64-userland-heap%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://www.corelan.be/index.php/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.corelan.be%2Findex.php%2F2016%2F07%2F05%2Fwindows-10-x86wow64-userland-heap%2F&amp;format=xml">
+
+<style type="text/css">
+div.aka_half {
+	float: left;
+	overflow: auto;
+	width: 45%;
+}
+div.aka_clear {
+	clear: both;
+	float: none;
+}
+</style>
+		
+<script type="text/javascript">
+/* <![CDATA[ */
+var thickboxL10n = {"next":"Next &gt;","prev":"&lt; Prev","image":"Image","of":"of","close":"Close","loadingAnimation":"https:\/\/www.corelan.be\/wp-content\/plugins\/auto-thickbox\/images\/loadingAnimation.gif"};
+try{convertEntities(thickboxL10n);}catch(e){};;
+/* ]]> */
+</script>
+
+<link rel="dns-prefetch" href="https://jetpack.wordpress.com/">
+<link rel="dns-prefetch" href="https://s0.wp.com/">
+<link rel="dns-prefetch" href="https://s1.wp.com/">
+<link rel="dns-prefetch" href="https://s2.wp.com/">
+<link rel="dns-prefetch" href="https://public-api.wordpress.com/">
+<link rel="dns-prefetch" href="https://0.gravatar.com/">
+<link rel="dns-prefetch" href="https://1.gravatar.com/">
+<link rel="dns-prefetch" href="https://2.gravatar.com/">
+<link rel="shortcut icon" href="https://www.corelan.be/wp-content/themes/corelan/favicon.ico">
+		
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows 10 x86/wow64 Userland heap">
+<meta property="og:url" content="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/">
+<meta property="og:description" content="Introduction Hi all, Over the course of the past few weeks ago, I received a number of &quot;emergency&quot; calls from some relatives, asking me to look at their computer because &quot;things were…">
+<meta property="article:published_time" content="2016-07-05T21:59:38+00:00">
+<meta property="article:modified_time" content="2016-07-21T08:42:13+00:00">
+<meta property="og:site_name" content="Corelan Team">
+<meta property="og:image" content="https://www.corelan.be/wp-content/uploads/2016/07/heap1_thumb.png">
+<meta property="og:image:width" content="462">
+<meta property="og:image:height" content="327">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:site" content="@corelanc0d3r">
+<meta name="twitter:text:title" content="Windows 10 x86/wow64 Userland heap">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@corelanc0d3r">
+
+<!-- End Jetpack Open Graph Tags -->
+<style type="text/css" id="syntaxhighlighteranchor"></style>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/script.js"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31176335-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<!-- AdSense -->
+<script async="" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/f(6).txt"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8134501503628637",
+    enable_page_level_ads: true
+  });
+</script>
+<!-- End AdSense -->
+
+
+<link rel="preload" href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/f(7).txt" as="script"><script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/f(7).txt"></script><link href="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/lity.css" rel="stylesheet"></head>
+<body class="post-template-default single single-post postid-11044 single-format-standard">
+<div id="art-main">
+    <div class="art-header">
+        <div class="art-header-center">
+            <div class="art-header-png"></div>
+        </div>
+    <div class="art-header-wrapper">
+    <div class="art-header-inner">
+        <div class="art-headerobject"></div>
+        <div class="art-logo">
+                <h1 id="name-text" class="art-logo-name"><a href="https://www.corelan.be/">Corelan Team</a></h1>
+                            <h2 id="slogan-text" class="art-logo-text">:: Knowledge is not an object, it's a flow ::</h2>
+                </div>
+    </div>
+    </div>
+    </div>
+    <div class="art-sheet">
+        <div class="art-sheet-tl"></div>
+        <div class="art-sheet-tr"></div>
+        <div class="art-sheet-bl"></div>
+        <div class="art-sheet-br"></div>
+        <div class="art-sheet-tc"></div>
+        <div class="art-sheet-bc"></div>
+        <div class="art-sheet-cl"></div>
+        <div class="art-sheet-cr"></div>
+        <div class="art-sheet-cc"></div>
+        <div class="art-sheet-body">
+            <div class="art-nav">
+            	<div class="art-nav-l"></div>
+            	<div class="art-nav-r"></div>
+            	
+<ul class="art-menu">
+	<li><a href="https://www.corelan.be/" title="Home"><span class="l"> </span><span class="r"> </span><span class="t">Home</span></a>
+	</li>
+	<li class="art-menu-li-separator"><span class="art-menu-separator"> </span></li>
+	<li><a href="https://www.corelan.be/wp-login.php" title="Login/Register/Logout"><span class="l"> </span><span class="r"> </span><span class="t">Login/Register/Logout</span></a>
+	</li>
+	<li class="art-menu-li-separator"><span class="art-menu-separator"> </span></li>
+	<li><a href="https://www.corelan.be/index.php/articles/" title="Articles"><span class="l"> </span><span class="r"> </span><span class="t">Articles</span></a>
+	</li>
+	<li class="art-menu-li-separator"><span class="art-menu-separator"> </span></li>
+	<li><a href="https://www.corelan.be/?cat=11" title="Free Tools"><span class="l"> </span><span class="r"> </span><span class="t">Free Tools</span></a>
+	<ul>
+		<li><a href="https://www.corelan.be/index.php/category/active-directory/" title="AD &amp; CS">AD &amp; CS</a>
+		<ul>
+			<li><a href="https://www.corelan.be/index.php/2007/11/18/free-tool-pve-active-directory-disable-users/" title="AD Disable Users">AD Disable Users</a>
+			</li>
+			<li><a href="https://www.corelan.be/index.php/2009/04/10/free-tool-windows-2008-certificate-authority-certificate-list-utility-for-pending-requests-and-about-to-expire-certificates/" title="Certificate List Utility">Certificate List Utility</a>
+			</li>
+			<li><a href="https://www.corelan.be/index.php/my-free-tools/ad-cs/pve-find-ad-user/" title="PVE Find AD User">PVE Find AD User</a>
+			</li>
+		</ul>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/category/exchange/" title="Exchange Transport Agents">Exchange Transport Agents</a>
+		<ul>
+			<li><a href="https://www.corelan.be/index.php/2008/07/21/free-tool-attachment-filtering-with-exchange-2007-custom-transport-agent/" title="Attachment filter">Attachment filter</a>
+			</li>
+			<li><a href="https://www.corelan.be/index.php/2009/06/20/exchange-20072010-renaming-attachments-on-the-fly-custom-transport-agent/" title="Attachment rename">Attachment rename</a>
+			</li>
+		</ul>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/category/networking/" title="Networking">Networking</a>
+		<ul>
+			<li><a href="https://www.corelan.be/index.php/my-free-tools/networking/cisco-switch-backup-utility/" title="Cisco switch backup utility">Cisco switch backup utility</a>
+			</li>
+			<li><a href="https://www.corelan.be/index.php/2009/01/28/monitoring-your-network-with-powershell/" title="Network monitoring with powershell">Network monitoring with powershell</a>
+			</li>
+			<li><a href="https://www.corelan.be/index.php/2008/09/26/free-tool-pve-tcp-ping-utility/" title="TCP Ping">TCP Ping</a>
+			</li>
+		</ul>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/category/security/" title="Security Related Tools">Security Related Tools</a>
+		</li>
+	</ul>
+	</li>
+	<li class="art-menu-li-separator"><span class="art-menu-separator"> </span></li>
+	<li><a href="https://www.corelan.be/index.php/category/security/" title="Security"><span class="l"> </span><span class="r"> </span><span class="t">Security</span></a>
+	<ul>
+		<li><a href="https://www.corelan.be/index.php/security/corelan-team-members/" title="Corelan Team Members">Corelan Team Members</a>
+		<ul>
+			<li><a href="https://www.corelan.be/index.php/security/corelan-team-members/membership-how-to/" title="Corelan Team Membership">Corelan Team Membership</a>
+			</li>
+		</ul>
+		</li>
+		<li><a href="http://www.corelan-training.com/index.php/training/corelan-live/" title="Corelan Training &quot;Corelan Live - Win32 Exploit Development Bootcamp&quot;">Corelan Training "Corelan Live…</a>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/forum/writing-exploits" title="Exploit writing - forum">Exploit writing – forum</a>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/category/security/exploit-writing-tutorials/" title="Exploit writing tutorials">Exploit writing tutorials</a>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/security/metasploit/" title="Metasploit">Metasploit</a>
+		<ul>
+			<li><a href="https://www.corelan.be/index.php/2010/10/12/death-of-an-ftp-client/" title="FTP Client fuzzer">FTP Client fuzzer</a>
+			</li>
+			<li><a href="https://www.corelan.be/index.php/2010/11/12/metasploit-module-http-form-field-fuzzer/" title="HTTP Form field fuzzer">HTTP Form field fuzzer</a>
+			</li>
+			<li><a href="https://www.corelan.be/index.php/security/metasploit/simple-ftp-fuzzer-metasploit-module/" title="Simple FTP Fuzzer - Metasploit Module">Simple FTP Fuzzer – Metasploit…</a>
+			</li>
+		</ul>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/2009/01/31/nessus-wrapper-for-ike-scan/" title="Nessus/Openvas ike-scan wrapper">Nessus/Openvas ike-scan wrapper</a>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/disclosure-policy/" title="Vulnerability Disclosure Policy">Vulnerability Disclosure Policy</a>
+		</li>
+		<li><a href="http://redmine.corelan.be/projects/mona" title="mona.py PyCommand for Immunity Debugger">mona.py PyCommand for Immunity Debugger</a>
+		<ul>
+			<li><a href="https://redmine.corelan.be/projects/mona" title="Download mona.py">Download mona.py</a>
+			</li>
+			<li><a href="https://www.corelan.be/index.php/2011/07/14/mona-py-the-manual/" title="Mona.py - documentation">Mona.py – documentation</a>
+			</li>
+		</ul>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/security/corelan-ropdb/" title="Corelan ROPdb">Corelan ROPdb</a>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/security/mirror-for-bobs-immunity-debugger-projects/" title="Mirror for BoB&#39;s Immunity Debugger projects">Mirror for BoB’s Immunity Debugger…</a>
+		</li>
+	</ul>
+	</li>
+	<li class="art-menu-li-separator"><span class="art-menu-separator"> </span></li>
+	<li><a href="https://www.corelan.be/index.php/terms-of-use/" title="Terms of use"><span class="l"> </span><span class="r"> </span><span class="t">Terms of use</span></a>
+	</li>
+	<li class="art-menu-li-separator"><span class="art-menu-separator"> </span></li>
+	<li><a href="https://www.corelan.be/index.php/donate/" title="Donate"><span class="l"> </span><span class="r"> </span><span class="t">Donate</span></a>
+	</li>
+	<li class="art-menu-li-separator"><span class="art-menu-separator"> </span></li>
+	<li><a href="https://www.corelan.be/index.php/about-us/about-corelan-team" title="About..."><span class="l"> </span><span class="r"> </span><span class="t">About…</span></a>
+	<ul>
+		<li><a href="https://www.corelan.be/index.php/about-us/about-corelan-team/" title="About Corelan Team">About Corelan Team</a>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/about-us/about-me/" title="About me">About me</a>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/about-us/antivirusantimalware/" title="Antivirus/antimalware">Antivirus/antimalware</a>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/about-us/publickeys/" title="Corelan public keys">Corelan public keys</a>
+		</li>
+		<li><a href="https://www.corelan.be/index.php/about-us/sitemap/" title="Sitemap">Sitemap</a>
+		</li>
+	</ul>
+	</li>
+</ul>
+            </div>
+<div class="art-content-layout">
+    <div class="art-content-layout-row">
+        <div class="art-layout-cell art-content">
+			
+
+
+<div id="stb-container-5670" class="stb-container-css stb-black-container stb-no-caption stb-image-big stb-ltr stb-corners stb-shadow stb-border stb-side"><aside class="stb-icon"><img src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/earth.png" scale="0"></aside><div id="stb-box-5670" class="stb-black_box stb-box">Please take a moment to read http://bit.ly/demandglobalchange, to help share the message and support the initiative to tell our leaders to focus on addressing the global world problems, instead of complaining about the effects of their lack of leadership.  Be a leader yourself, and share this with as many people as possible. #demandglobalchange // https://www.facebook.com/demandglobalchange</div></div><br><center><script type="text/javascript"><!--
+google_ad_client = "pub-8134501503628637";
+/* CorelanTopBottom */
+google_ad_slot = "7639469771";
+google_ad_width = 468;
+google_ad_height = 60;
+//-->
+</script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/f(8).txt">
+</script><ins id="aswift_1_expand" style="display:inline-table;border:none;height:60px;margin:0;padding:0;position:relative;visibility:visible;width:468px;background-color:transparent;"><ins id="aswift_1_anchor" style="display:block;border:none;height:60px;margin:0;padding:0;position:relative;visibility:visible;width:468px;background-color:transparent;"><iframe width="468" height="60" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;width:468px;height:60px;" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/saved_resource(2).html"></iframe></ins></ins></center><br><div class="art-post">
+	    <div class="art-post-tl"></div>
+	    <div class="art-post-tr"></div>
+	    <div class="art-post-bl"></div>
+	    <div class="art-post-br"></div>
+	    <div class="art-post-tc"></div>
+	    <div class="art-post-bc"></div>
+	    <div class="art-post-cl"></div>
+	    <div class="art-post-cr"></div>
+	    <div class="art-post-cc"></div>
+	    <div class="art-post-body">
+	            <div class="art-post-inner art-article">
+	            	                <div class="art-postcontent">
+	                    <!-- article-content -->
+	                    	<div class="navigation">
+		<div class="alignleft">« <a href="https://www.corelan.be/index.php/2016/01/31/encfsgui-gui-wrapper-around-encfs-for-osx/" title="EncFSGui – GUI Wrapper around encfs for OSX" rel="prev">EncFSGui – GUI Wrapper around encfs for OSX</a></div>
+		<div class="alignright"></div>
+	 </div>	                    <!-- /article-content -->
+	                </div>
+	                <div class="cleared"></div>
+	                	            </div>
+			<div class="cleared"></div>
+	    </div>
+	</div>
+	
+	<br><b><center><i>Please consider donating: <a href="https://www.corelan.be/index.php/donate/">https://www.corelan.be/index.php/donate/</a></i></center></b><br><center><br><b>21,037 views</b><br></center><div class="art-post post-11044 post type-post status-publish format-standard hentry category-exploit-writing-tutorials category-windows-internals tag-back-end-allocator tag-bea tag-block tag-breakpoint tag-c tag-chunk tag-fea tag-front-end-allocator tag-heap tag-heap-management tag-heap-spray tag-lfh tag-low-fragmentation-heap tag-rtlallocateheap tag-rtlfreeheap tag-spray tag-userland tag-visual-studio tag-windbg tag-windows-10 tag-wow64 tag-x86" id="post-11044">
+	    <div class="art-post-tl"></div>
+	    <div class="art-post-tr"></div>
+	    <div class="art-post-bl"></div>
+	    <div class="art-post-br"></div>
+	    <div class="art-post-tc"></div>
+	    <div class="art-post-bc"></div>
+	    <div class="art-post-cl"></div>
+	    <div class="art-post-cr"></div>
+	    <div class="art-post-cc"></div>
+	    <div class="art-post-body">
+	            <div class="art-post-inner art-article">
+	            <h2 class="art-postheader"><img src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/postheadericon.png" width="32" height="30" alt="" scale="0">Windows 10 x86/wow64 Userland heap</h2><div class="art-postmetadataheader"><div class="art-postheadericons art-metadata-icons"><span class="date">Published</span> <span class="entry-date"><abbr class="published" title="23:59">July 5, 2016</abbr></span> | <img src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/postauthoricon.png" width="18" height="18" alt="" scale="0"><span class="author">By</span> <span class="author vcard"><a class="url fn n" href="https://www.corelan.be/index.php/author/admin1/" title="View all posts by Corelan Team (corelanc0d3r)">Corelan Team (corelanc0d3r)</a></span></div></div>	                <div class="art-postcontent">
+	                    <!-- article-content -->
+	                    <h2>Introduction</h2>
+<p>Hi all,</p>
+<p>Over the course of the past few weeks ago, I received a number of "emergency" calls from some relatives, asking me to look at their computer because "things were broken", "things looked different" and "I think my computer got hacked".� I quickly realized that their computers got upgraded to Windows 10.</p>
+<p>We could have a lengthy discussion about the strategy to force upgrades onto people, but in any case it is clear that Windows 10 is gaining market share.� This also means that it has become a Windows version that is relevant enough to investigate.</p>
+<p>In this post, I have gathered some notes on how the userland heap manager behaves for 32bit processes in Windows 10.� The main focus of my investigation is to document the similarities and differences with Windows 7, and hopefully present some ideas on how to manipulate the heap to increase predictability of its behavior.�� More specifically, aside from documenting behavior, I am particularly interested in getting answers to the following questions:</p>
+<ol>
+<li><font color="#ffffff">How does the back-end allocator behave?</font></li>
+<li><font color="#ffffff">What does it take to activate the LFH?</font></li>
+<li><font color="#ffffff">What are the differences in terms of LFH behavior between Win7 and Win10, if any?</font></li>
+<li><font color="#ffffff">What options do we have to create a specific heap layout that involves certain objects to be adjacent in memory?� (objects of the same size, objects of different sizes)</font></li>
+<li><font color="#ffffff">Can we perform a "reliable" and precise heap spray?</font></li>
+</ol>
+<p>As I am a terrible reverse engineer, it’s worth noting that the notes below are merely a transcript of my observations, and not backed by disassembling/decompiling/reverse engineering ntdll.dll.� Furthermore, as the number of tests were limited (far below what would be needed to provide some level of statistical certainty), I am not 100% sure that my descriptions can be considered a true representation of reality.�� In any case, I hope the notes will inspire people to do more tests, to perform reverse engineering on some of the heap management related code, and share more details on how things were implemented.</p>
+<p>This post assumes that you already have experience with the Windows 7 heap and its front-end and back-end allocators, and that you understand the output of various !heap commands.�� </p>
+<p>In my test applications, I’ll be using the default process heap.� It would be fair to assume that the notes below apply to all windows heaps and applications that rely on the windows heap management system.</p>
+<p>Throughout this post, I will use the following terminology:</p>
+<ul>
+<li><font color="#ffffff">chunk: a contiguous piece of memory</font></li>
+<li><font color="#ffffff">block: size unit, referring to 8 bytes of memory.� (Don’t be confused when you see the word "block" in WinDBG output. WinDBG uses the term "block" to reference a chunk.� I am using different terminology.</font></li>
+<li><font color="#ffffff">virtualallocdblock: a chunk that was allocated through RtlAllocateHeap, but is larger than the VirtualMemoryTHreshold (and thus is not stored inside a segment, but rather as a separate chunk in memory), and managed through the VirtualAllocdBlocks list. (offset 0x9c in the heap header)</font></li>
+<li><font color="#ffffff">segment: the heap management unit, managed by a heap, used to allocate &amp; manage chunks.� The segment list is managed inside the heap header (offset 0xa4)</font></li>
+<li><font color="#ffffff">SubSegment: the LFH management unit used to manage LFH chunks</font></li>
+</ul>
+<h3>Test environment</h3>
+<p>My test environment consists of the following components:</p>
+<ul>
+<li><font color="#ffffff">Windows 10 Enterprise x64, fully patched� (running as a virtual machine inside VirtualBox) with 2 CPUs and 1.8Gb of RAM</font></li>
+<li><font color="#ffffff">Visual Studio Express 2015 for desktop : </font><a href="https://go.microsoft.com/fwlink/?LinkId=691984&amp;clcid=0x409"><font color="#ffffff">https://go.microsoft.com/fwlink/?LinkId=691984&amp;clcid=0x409</font></a></li>
+<li><font color="#ffffff">WinDBG (for Windows 10) : </font><a href="https://go.microsoft.com/fwlink/p/?LinkId=536682"><font color="#ffffff">https://go.microsoft.com/fwlink/p/?LinkId=536682</font></a><font color="#ffffff">.� (Make sure to run a recent version of WinDBG to make sure all heap related structures are properly parsed and represented)</font></li>
+</ul>
+<p>I have set up Symbol support for WinDBG by creating a system environment variable:</p>
+<ul>
+<li><font color="#ffffff"><strong>Variable</strong>:� _NT_SYMBOL_PATH</font></li>
+<li><font color="#ffffff"><strong>Value</strong>: srv*c:\symbols*http://msdl.microsoft.com/download/symbols</font></li>
+</ul>
+<p>The source code (Visual Studio C++ projects) for all test cases used in this post can be found here:� <a href="https://github.com/corelan/win10_heap">https://github.com/corelan/win10_heap</a>�</p>
+<h3>The Heap</h3>
+<p>Similar to previous Windows versions, the Windows 10 heap sits at an ASLR-influenced ("random") address and starts with a header. As the base address of the heap management unit sits at a non-static address, you’ll see different heap base addresses throughout this post.� In order to avoid confusion, I’ll use the term "address of default process heap" to refer to this base address.� Similarly, any address you’ll see in the post will be different on your machine.� </p>
+<p>Dumping the header contents of a heap, we can oberve the following fields:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:003&gt; dt _HEAP 00a40000
+</p><p>ntdll!_HEAP <br>+0x000 Segment : _HEAP_SEGMENT <br>+0x000 Entry : _HEAP_ENTRY <br>+0x008 SegmentSignature : 0xffeeffee <br>+0x00c SegmentFlags : 2 <br>+0x010 SegmentListEntry : _LIST_ENTRY [ 0xa400a4 - 0xa400a4 ] <br>+0x018 Heap : 0x00a40000 _HEAP <br>+0x01c BaseAddress : 0x00a40000 Void <br>+0x020 NumberOfPages : 0xff <br>+0x024 FirstEntry : 0x00a40498 _HEAP_ENTRY <br>+0x028 LastValidEntry : 0x00b3f000 _HEAP_ENTRY <br>+0x02c NumberOfUnCommittedPages : 0xe9 <br>+0x030 NumberOfUnCommittedRanges : 1 <br>+0x034 SegmentAllocatorBackTraceIndex : 0 <br>+0x036 Reserved : 0 <br>+0x038 UCRSegmentList : _LIST_ENTRY [ 0xa55ff0 - 0xa55ff0 ] <br>+0x040 Flags : 2 <br>+0x044 ForceFlags : 0 <br>+0x048 CompatibilityFlags : 0 <br>+0x04c EncodeFlagMask : 0x100000 <br>+0x050 Encoding : _HEAP_ENTRY <br>+0x058 Interceptor : 0 <br>+0x05c VirtualMemoryThreshold : 0xfe00 <br>+0x060 Signature : 0xeeffeeff <br>+0x064 SegmentReserve : 0x100000 <br>+0x068 SegmentCommit : 0x2000 <br>+0x06c DeCommitFreeBlockThreshold : 0x800 <br>+0x070 DeCommitTotalFreeThreshold : 0x2000 <br>+0x074 TotalFreeSize : 0x462 <br>+0x078 MaximumAllocationSize : 0x7ffdefff <br>+0x07c ProcessHeapsListIndex : 1 <br>+0x07e HeaderValidateLength : 0x248 <br>+0x080 HeaderValidateCopy : (null) <br>+0x084 NextAvailableTagIndex : 0 <br>+0x086 MaximumTagIndex : 0 <br>+0x088 TagEntries : (null) <br>+0x08c UCRList : _LIST_ENTRY [ 0xa55fe8 - 0xa55fe8 ] <br>+0x094 AlignRound : 0xf <br>+0x098 AlignMask : 0xfffffff8 <br>+0x09c VirtualAllocdBlocks : _LIST_ENTRY [ 0xa4009c - 0xa4009c ] <br>+0x0a4 SegmentList : _LIST_ENTRY [ 0xa40010 - 0xa40010 ] <br>+0x0ac AllocatorBackTraceIndex : 0 <br>+0x0b0 NonDedicatedListLength : 0 <br>+0x0b4 BlocksIndex : 0x00a40260 Void <br>+0x0b8 UCRIndex : (null) <br>+0x0bc PseudoTagEntries : (null) <br>+0x0c0 FreeLists : _LIST_ENTRY [ 0xa4cd80 - 0xa53e70 ] <br>+0x0c8 LockVariable : 0x00a40248 _HEAP_LOCK <br>+0x0cc CommitRoutine : 0x4807219e long +4807219e <br>+0x0d0 FrontEndHeap : 0x003f0000 Void <br>+0x0d4 FrontHeapLockCount : 0 <br>+0x0d6 FrontEndHeapType : 0x2 '' <br>+0x0d7 RequestedFrontEndHeapType : 0x2 '' <br>+0x0d8 FrontEndHeapUsageData : 0x00a43fe8 -&gt; 0 <br>+0x0dc FrontEndHeapMaximumIndex : 0x802 <br>+0x0de FrontEndHeapStatusBitmap : [257] "???" <br>+0x1e0 Counters : _HEAP_COUNTERS <br>+0x23c TuningParameters : _HEAP_TUNING_PARAMETERS</p></pre>
+<p>The header starts with information about the segments associated with this heap.</p>
+<p>Offset 0x4c (EncodeFlagMask) and 0x50 (Encoding) are used to store information about the chunk header encoding in the heap (= same offsets as in Windows 7).�� The actual key used to encode and decode the chunk header fields (XOR) is stored at offset 0x50.�� Fortunately the WinDBG !heap extension will perform all decoding for us.�� As you can imagine, this key is 1/ random for each process and 2/ different for each heap in the process, which means it is (still) quite effective at preventing heap header attacks.</p>
+<p>Also, similar to Windows 7, the VirtualMemoryThreshold field (offset 0x5c) contains value 0xfe00.� As this value denotes the number of blocks, we need to multiply the value with 8 to get the actual number of bytes. (0x7F000 bytes).� In other words, we can still trigger VirtualAllocdBlocks by causing a regular (HeapAlloc) allocation of a size that is larger than this value.� Some of the heap spray techniques documented <a href="https://www.corelan.be/index.php/2011/12/31/exploit-writing-tutorial-part-11-heap-spraying-demystified/">here</a> and <a href="https://www.corelan.be/index.php/2013/02/19/deps-precise-heap-spray-on-firefox-and-ie10/">here</a> were based on triggering VirtualAllocBlock chunks.� We’ll see if the current implementation still allows for a precise heap spray.</p>
+<p>Offset 0x0d6 (FrontEndHeapType) indicates what front-end allocator is being used.� Value 0x2 refers to LFH.�� The address of the FrontEndHeap "master" header structure can be found at the address referenced at offset 0xd0 (FrontEndHeap).� In the example above, the LFH header is stored at 0x003f0000 and contains the following information:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:003&gt; dt _LFH_HEAP 0x003f0000 </p><p>ntdll!_LFH_HEAP 
++0x000 Lock : _RTL_SRWLOCK 
++0x004 SubSegmentZones : _LIST_ENTRY [ 0xa48910 - 0xa48910 ] 
++0x00c Heap : 0x00a40000 Void 
++0x010 NextSegmentInfoArrayAddress : 0x003f0a08 Void 
++0x014 FirstUncommittedAddress : 0x003f1000 Void 
++0x018 ReservedAddressLimit : 0x003f8000 Void 
++0x01c SegmentCreate : 7 
++0x020 SegmentDelete : 1 
++0x024 MinimumCacheDepth : 0 
++0x028 CacheShiftThreshold : 0 
++0x02c SizeInCache : 0 
++0x030 RunInfo : _HEAP_BUCKET_RUN_INFO 
++0x038 UserBlockCache : [12] _USER_MEMORY_CACHE_ENTRY 
++0x1b8 MemoryPolicies : _HEAP_LFH_MEM_POLICIES 
++0x1bc Buckets : [129] _HEAP_BUCKET 
++0x3c0 SegmentInfoArrays : [129] (null) 
++0x5c4 AffinitizedInfoArrays : [129] (null) 
++0x7c8 SegmentAllocator : (null) 
++0x7d0 LocalData : [1] _HEAP_LOCAL_DATA</p></pre>
+<p>We can see references to various LFH terms, including "Bucket", "SubSegment" and "Heap local data".</p>
+<p>Based on some quick tests, it looks like the LFH_HEAP header is (usually/always?) stored within the first segment of the heap on Windows 7, but on Windows 10 it seems to be stored outside of the memory range used by the first segment.</p>
+<p>Putting things in a graphical (but very high-level and abstract) manner, the heap pretty much consists of the following building blocks:</p>
+<p><a class="thickbox no_icon" href="https://www.corelan.be/wp-content/uploads/2016/07/heap1.png" rel="gallery-11044"><img title="heap1" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 7px; border-left: 0px; display: inline; padding-right: 0px" border="0" alt="heap1" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/heap1_thumb.png" width="462" height="327" scale="0"></a></p>
+<h3>The back-end allocator</h3>
+<h4>BEA_Alloc1</h4>
+<p>On Windows 7, the back-end allocator (BEA) is the default/active mechanism used to manage freed chunks.� Based on my observations, this is still the case on Windows 10. It uses the chunks available inside the segment(s) and starts empty.� As soon as a chunk gets freed, it will "remember" these free chunks in some kind of list.� The free chunks are organized per size, and the mechanism uses a table to do so. Each entry in the table represents a size (increment of 8 bytes), and index 0 is used to manage chunks that are larger than the chunk size managed by index 127.</p>
+<p>The FreeList table is now referenced at offset 0xc0 from the heap base.� I didn’t check in detail, but I am assuming that the table stil consists of 128 elements, and that each entry is basically a Flink/Blink to the double linked list of free chunks managed in the table entry, or null pointers (to indicate there are no free chunks of the size that is managed by the corresponding table entry).� Again, I didn’t verify in detail, as I’m more interested in how it behaves at this time.</p>
+<p>In order to evaluate its behavior on Windows 10, we’ll run some basic tests using a couple of example applications.� You can find the sourcecode and binary for this first test in the "BEA_Alloc1" folder in the github repository.</p>
+<p>This first test application starts by allocating 2 chunks of 0x300 bytes each.� This should not be a common object size in my simple test application, and should be large enough to</p>
+<ul>
+<li><font color="#ffffff">avoid that the back-end allocator already has chunks of that size on its freelist</font></li>
+<li><font color="#ffffff">avoid that the back-end allocator already has chunks that are bigger that this size on its freelist</font></li>
+<li><font color="#ffffff">avoid that the LFF is already active for the bucket that contains chunks of this size</font></li>
+</ul>
+<div>(I don’t really know if these ‘conditions’ will be met, but we’ll find out)</div>
+<p>In any case, the goal of these 2 allocations is to check where these 2 chunks will be allocated from (i.e. from a normal segment) and if they are placed next to each other.�� If that is the case, and if we free both chunks, we’ll check if they get coalesced (merged together) by the BEA and managed in its free list.� Finally, if we then ask for a new allocation, let’s see if the BEA is going to split the chunk and use it to satisfy new requests.</p>
+<p>Let’s go ahead &amp; compile + run the binary.� The application will first print the address of the default process heap and will then wait for you to press return.</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>C:\Users\corelan\Desktop\vc++\win10\BEA_Alloc1\Release&gt;BEA_Alloc1.exe 
+</p><p>Default process heap found at 0x01550000 <br>Press a key to start...</p></pre>
+<p>Attach WinDBG and check the state of the default process heap allocations at this point with !heap -p -h </p><address of="" default="" process="" heap="">. <p></p>
+<p>As I am only interested in the "free" chunks at this point, I have removed all lines from the output that correspond with a "busy" chunk and/or are part of a LFH subsegment for a different bucket size.� (in case you’re wondering how to recognize those: simply look for lines that are preceded by an asterisk (*), indicating a large busy/internal chunk, and followed by a list a smaller chunks of similar sizes within the address range of this larger busy/internal chunk.�� This larger one is the subsegment, the smaller ones are the LFH managed chunks inside that subsegment).</p>
+<p>In other words, I’m only listing the chunks that are managed by the BEA and could potentially be used to satisfy the allocation requests caused by my test application.</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:003&gt; !heap -p -h 0x01550000 _HEAP @ 1550000 
+_LFH_HEAP @ f80000 
+_HEAP_SEGMENT @ 1550000 
+CommittedRange @ 1550498 
+HEAP_ENTRY Size Prev Flags UserPtr UserSize - state
+</p><p>01551db0 0005 0045 [00] 01551db8 00020 - (free)</p><p>01552b00 0021 0012 [00] 01552b08 00100 - (free)
+01552cb0 0015 0015 [00] 01552cb8 000a0 - (free) 
+015573a8 0008 000b [00] 015573b0 00038 - (free) 
+01557578 0002 0008 [00] 01557580 00008 - (free) 
+01559080 0003 0041 [00] 01559088 00010 - (free) 
+01559098 0003 0003 [00] 015590a0 00010 - (free) 
+015590e0 0003 0003 [00] 015590e8 00010 - (free) 
+01559110 0003 0003 [00] 01559118 00010 - (free) 
+01559128 0003 0003 [00] 01559130 00010 - (free) 
+01559140 0003 0003 [00] 01559148 00010 - (free) 
+01559158 0003 0003 [00] 01559160 00010 - (free) 
+01559170 0003 0003 [00] 01559178 00010 - (free) 
+01559188 0003 0003 [00] 01559190 00010 - (free) 
+015591a0 0003 0003 [00] 015591a8 00010 - (free) 
+015591d0 0003 0003 [00] 015591d8 00010 - (free) 
+015591e8 0003 0003 [00] 015591f0 00010 - (free) 
+01559200 0003 0003 [00] 01559208 00010 - (free) 
+01559218 0003 0003 [00] 01559220 00010 - (free) 
+01559230 0003 0003 [00] 01559238 00010 - (free) 
+0155d9b0 0018 000a [00] 0155d9b8 000b8 - (free) 
+0155dcc8 0012 000a [00] 0155dcd0 00088 - (free) 
+0155e538 002e 0021 [00] 0155e540 00168 - (free) 
+0155e6d0 0004 0081 [00] 0155e6d8 00018 - (free) 
+0155e6f0 0004 0004 [00] 0155e6f8 00018 - (free) 
+0155e710 0004 0004 [00] 0155e718 00018 - (free) 
+0155e730 0004 0004 [00] 0155e738 00018 - (free) 
+0155e750 0004 0004 [00] 0155e758 00018 - (free) 
+0155e770 0004 0004 [00] 0155e778 00018 - (free) 
+0155e790 0004 0004 [00] 0155e798 00018 - (free) 
+0155e7b0 0004 0004 [00] 0155e7b8 00018 - (free) 
+0155e7d0 0004 0004 [00] 0155e7d8 00018 - (free) 
+0155e7f0 0004 0004 [00] 0155e7f8 00018 - (free) 
+0155e810 0004 0004 [00] 0155e818 00018 - (free) 
+0155e830 0004 0004 [00] 0155e838 00018 - (free) 
+0155e890 0004 0004 [00] 0155e898 00018 - (free) 
+0155e990 0004 0004 [00] 0155e998 00018 - (free) 
+0155e9d0 0004 0004 [00] 0155e9d8 00018 - (free) 
+0155e9f0 0004 0004 [00] 0155e9f8 00018 - (free) 
+0155ea10 0004 0004 [00] 0155ea18 00018 - (free) 
+0155ea30 0004 0004 [00] 0155ea38 00018 - (free) 
+0155ea70 0004 0004 [00] 0155ea78 00018 - (free) 
+01561438 0175 0201 [00] 01561440 00ba0 - (free)</p></pre>
+<p>As you can see, there are no free chunks of exactly 0x300 bytes, however the last line in the output shows a free chunk of 0xba0 bytes (01561440 – 01561FE0). </p>
+<p>This is quite normal, as this is the remaining space in the segment that has not been allocated yet. It shows up as a free chunk (because that’s exactly what it is) and will be split to satisfy new allocation requests ( = that’s pretty much how the BEA works when it has to use a larger chunk to satisfy an allocation request).� </p>
+<p>Since there are no free chunks of 0x300 bytes, a larger free chunk should be split (providing that the one in the list above is not being used by LFH… but as the flag is set to "free" and as it is not part of a larger subsegment, it shouldn’t be related with LFH at all.� After all, a subsegment typically shows up as a larger chunk that is marked as "busy" and "internal"). </p>
+<p>Anyway, let’s verify to be sure:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:003&gt; !heap -p -a 01561438 </p><p>address 01561438 found in 
+_HEAP @ 1550000 
+HEAP_ENTRY </p><p>    Size Prev Flags     UserPtr  UserSize - state 
+01561438 0175 0000 [00] 01561440 00ba0 - (free)
+</p><p>0:003&gt; !heap -x 01561438 </p><p>Entry User Heap Segment Size PrevSize Unused Flags 
+----------------------------------------------------------------------------- 
+01561438 01561440 01550000 01550000 ba8 1008 0 free</p></pre>
+<p>The "flags" indicate that this is not an LFH managed chunk.� (Otherwise, the output would have mentioned the word "LFH" as well)</p>
+<p>Continue to run the application &amp; see what happens:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>Allocated chunk of 0x300 bytes at 0x01561440
+</p><p>Allocated chunk of 0x300 bytes at 0x01561748 <br>Press return to continue</p></pre>
+<p>Based on the addresses returned by HeapAlloc, it looks like the final free chunk of 0xba0 bytes (at 0x1561440) was indeed split into pieces:</p>
+<ul>
+<li><font color="#ffffff">a chunk of 0x300 bytes, taken from the start of the larger free chunk, allocated at 0x01561440. The larger free chunk is now smaller, but still big enough to satisfy another request.� </font></li>
+<li><font color="#ffffff">another piece of 0x300 bytes bytes, allocated at 0x01561748, taken from the (new) start of the larger free chunk.</font></li>
+</ul>
+<p>Both allocations sit next to each other, because allocations are taken from the start of a free chunk when splitting.� As both allocations are taken from the same larger chunk, it is expected from them to sit together. What is left of the original 0xba0 byte chunk is 0x590 bytes (as expected, showing up as a free chunk which starts at 01561a50 and ends at 01561FE0)</p>
+<p>WinDBG: !heap -p -h </p><address of="" default="" process="" heap=""> (output limited to the 3 chunks that are relevant to this exercise: the 2 "new" allocations, and the remaining space)<p></p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>01561438 0061 0201 [00] 01561440 00300 - (busy) </p><p>01561740 0061 0061 [00] 01561748 00300 - (busy) 
+</p><p>01561a48 00b3 0061 [00] 01561a50 00590 - (free)</p></pre>
+<p>Great, but we have not been really using the FreeList mechanisms of the BEA at this point.�� All we have been doing is allocate chunks from within a normal segment, consuming the free space that was there all the time.�� To trigger the BEA FreeList mechanism and see how it behaves, we’ll have to "free" some chunks ourselves first.</p>
+<h4>BEA_Alloc2</h4>
+<p>In this second example, we’ll create a series of allocations of 0x300 bytes.�� We’ll free the last one and then cause 2 allocations of 0x100 bytes.� </p>
+<p>The purpose of the exercise is to check where these 2 allocations will be placed.� </p>
+<p>As we intend to evaluate the BEA mechanism, we have to avoid that the LFH gets triggered.� We know that the heap manager in Windows 7 will trigger the LFH when it sees 18 consecutive allocations of a size in the same bucket (i.e. the next request will be allocated from within a LFH managed subsegment). </p>
+<p>For that reason, we’ll only cause 10 allocations of 0x300 bytes, hopefully avoiding that the LFH will be used.</p>
+<p>After causing the 10 allocations, let’s examine the last one and see if LFH is on or off.</p>
+<p>App:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>C:\Users\corelan\Desktop\vc++\win10\BEA_Alloc2\Release&gt;BEA_Alloc2.exe
+Default process heap found at 0x009B0000
+Press a key to start...
+Allocated chunk of 0x300 bytes at 0x009BF1D0
+Allocated chunk of 0x300 bytes at 0x009BF4D8
+Allocated chunk of 0x300 bytes at 0x009BF7E0
+Allocated chunk of 0x300 bytes at 0x009BFAE8
+Allocated chunk of 0x300 bytes at 0x009BFDF0
+Allocated chunk of 0x300 bytes at 0x009C00F8
+Allocated chunk of 0x300 bytes at 0x009C0400
+Allocated chunk of 0x300 bytes at 0x009C0708
+Allocated chunk of 0x300 bytes at 0x009C0A10
+Allocated chunk of 0x300 bytes at 0x009C0D18<br>
+Press return to continue</p></pre>
+<p>WinDBG:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:003&gt; !heap -x 0x009C0D18
+</p><p>Entry���� User����� Heap����� Segment������ Size� PrevSize� Unused��� Flags
+</p><p>-----------------------------------------------------------------------------
+</p><p>009c0d10� 009c0d18� 009b0000� 009b0000������ 308������ 308�������� 8� busy</p></pre>
+<div></div>
+<div>So far so good, no sign of LFH at this point.�� Next, the application will free this last chunk:</div>
+<div></div>
+<div>App:</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>Free chunk at 0x009C0D18
+Press return to continue
+</div></pre>
+<div></div>
+<div>WinDBG:</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>0:003&gt; !heap -x 0x009C0D18  <div>Entry���� User����� Heap����� Segment������ Size� PrevSize� Unused��� Flags
+</div><div>-----------------------------------------------------------------------------
+</div><div>009c0d10� 009c0d18� 009b0000� 009b0000����� 12d0������ 308�������� 0� free </div></div></pre>
+<p>Before running the rest of the application, let’s look at the current state of the heap, looking for "free" chunks of 0x300 bytes or larger.� The output below only contains the relevant lines:</p>
+<p>WinDBG:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:003&gt; !heap -p -h 0x009B0000
+</p><p>_HEAP @ 9b0000
+</p><p>_LFH_HEAP @ 610000
+</p><p>_HEAP_SEGMENT @ 9b0000
+</p><p>CommittedRange @ 9b0498
+</p><p>HEAP_ENTRY Size Prev Flags��� UserPtr UserSize - state
+</p><p>009c0d10 025a 0061� [00]�� 009c0d18��� 012c8 - (free)</p></pre>
+<div>As we can see in the output, as the last chunk of 0x300 bytes was allocated right before the remaining free space in the segment, this now freed chunk got merged with the adjacent free space in the segment, and has now become a 0x12c8 byte free chunk. This larger free chunk starts at 009c0d10, which is also the start address of the 0x300 byte chunk that was freed.�� </div>
+<div></div>
+<div>Our test application will now cause 2 allocations of 0x100 bytes each. Sure enough, this is large enough to satisfy 2 requests for 0x100 bytes, but in order to predict what exactly will happen, we need to look at the heap state again first.</div>
+<div></div>
+<div>The output of !heap -p -h <default process="" heap=""> shows the following lines that refer to free chunks of 0x100 bytes or more:</default></div>
+<div></div>
+<div>WinDBG:</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>
+<div>0:003&gt; !heap -p -h 0x009B0000  </div><div>��� _HEAP @ 9b0000  </div><div>����� _LFH_HEAP @ 610000
+</div><div>����� _HEAP_SEGMENT @ 9b0000
+</div><div>������ CommittedRange @ 9b0498  </div><div>����� HEAP_ENTRY Size Prev Flags��� UserPtr UserSize - state
+</div><div>������� 009b2b00 0021 0012� [00]�� 009b2b08��� 00100 - (free)
+</div><div>������� 009bc330 0034 0089� [00]�� 009bc338��� 00198 - (free)
+</div><div>������� 009c0d10 025a 0061� [00]�� 009c0d18��� 012c8 - (free)
+</div></div></pre>
+<div>Based on the output, we can see</div>
+<div>
+<ul>
+<li><font color="#ffffff">A free chunk of exactly 0x100 bytes (entry starts at 009b2b00, userptr is 009b2b08)� </font></li>
+<li><font color="#ffffff">A free chunk of 0x198 bytes (entry starts at 009bc330, userptr is 009bc338) </font></li>
+<li><font color="#ffffff">The remaining free space in the segment, at 009c0d10</font></li>
+</ul>
+</div>
+<div></div>
+<div>Let’s see what logic is applied by the BEA to reuse those freed chunks:</div>
+<div></div>
+<div>App:</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>Allocated chunk of 0x100 bytes at 0x009B2B08
+</div><div>Allocated chunk of 0x100 bytes at 0x009BC338
+</div><div>Done...</div></pre>
+<div>This makes sense.� The chunk that is exactly the size of the allocation request gets reused first.� Next, the next one that is larger gets split.� The remaining space near the end of the segment, which is now a combination of the original free space and the 0x300 byte chunk that was freed, does not get used.</div>
+<div></div>
+<div>The 2 chunks are not adjacent (despite the allocations happened right after each other).� None of the 2 chunks were able to take memory space back from one the 0x300 byte chunk that was freed earlier. </div>
+<div></div>
+<div>The behavior is absolutely normal, but this means that we cannot simply use the BEA to take a previously-allocated-and-now-freed chunk back… at least not without doing some "massaging".� </div>
+<div>On the other hand, because the BEA does not keep chunks together based on buckets, and if we can improve control, we may be able to use a smaller or a larger allocation size to take a position back in memory that has been freed, regardless of the original size of that freed chunk. </div>
+<div></div>
+<div>Let’s try to increase control over what happens, increasing our chances that we can take a freed chunk back.</div>
+<div></div>
+<div></div>
+<h4>BEA_Alloc3</h4>
+<div>As demonstrated in the previous exercise, the fact that the BEA is managing freed chunks means that, by default, we may not be able to predict where a new allocation will be placed relative to another chunk or in relation with taking the space of a freed chunk (which would be useful in a Use After Free scenario).� </div>
+<div></div>
+<div>Let’s start with the latter scenario first.�� What does it take to take a freed chunk back?</div>
+<div></div>
+<div>The answer is quite simple: it depends on what else is free.�� </div>
+<div>A possible approach to control what else is free, is to simply reduce what is free at the time the free happens that you would like to take back. The idea is to exhaust the freelist as much as possible… and to do that, we need to cause allocations.</div>
+<div></div>
+<div>Additionally, we may want to check that the freed chunk (the one we’re trying to take back… we’ll call this one the ‘vulnerable’ freed chunk) does not sit after an already freed chunk.� This would cause both chunks to be merged, and subsequent allocation requests would start consuming the start of the new (bigger chunk).� Depending on the size of the first part, it may be difficult to get perfect control over the contents.� On the other hand, if you can control the size of that first freed chunk (which will eventually get merged with the ‘vulnerable’ freed chunk), it might actually allow you to improve control over what bytes exactly you will manage if you don’t control all bytes of the new allocation.� </div>
+<div></div>
+<div>Again, it all depends on the layout that you create, and your understanding of what is inside the free list at the time of the allocation that is supposed to take the place of the "vulnerable" freed chunk.</div>
+<div></div>
+<div>Anyway, let’s look at an example.� BEA_Alloc3 contains the following scenario: we’ll free a 0x58 byte chunk, and the goal is to use a 0x58 byte allocation that will take its position back</div>
+<div></div>
+<div>Obviously we have to make sure that LFH is never activated (as we are playing with the BEA), and that we can avoid that the 0x58 byte chunk gets merged with an adjacent free chunk.�� This means that we could try to surround the 0x58 byte chunk by 2 allocations that we created as well, but won’t allow to be freed.�� </div>
+<div></div>
+<div>In order for all 3 allocations to be adjacent, we have to make sure there is nothing on the free list already that will satisfy any of the 3 allocation requests.� In the example application, I am using 10 allocations for both sizes, but of course in reality, you’ll need to check how many allocations you need to truly remove all free chunks; while being careful about avoiding LFH at the same time.</div>
+<div></div>
+<div>As the size of the 1st and 3rd allocation (the ones before and after the 0x58 byte chunk) is not so important, we can choose a size that is not on the freelist yet.� (Sizes are not important, because we don’t have to take LFH bucket sizes into account. Again, we’re playing with the BEA).� Anyway, I’ll use 0x100 byte chunk to surround the 0x58 chunk.</div>
+<div></div>
+<div>Run the application, and check the heap after causing a series of allocations for 0x58 and 0x100 bytes, to exhaust the freelist for those sizes.</div>
+<div></div>
+<div>App:</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>
+C:\Users\corelan\Desktop\vc++\win10\BEA_Alloc3\Release&gt;BEA_Alloc3.exe 
+    <br>Default process heap found at 0x016C0000 <br>Press a key to start...
+<p>Allocated chunk of 0x58 bytes at 0x016C96D0     <br>Allocated chunk of 0x100 bytes at 0x016C2B08 <br>Allocated chunk of 0x58 bytes at 0x016CDF50 <br>Allocated chunk of 0x100 bytes at 0x016CD328 <br>Allocated chunk of 0x58 bytes at 0x016CD430 <br>Allocated chunk of 0x100 bytes at 0x016CFFF8 <br>Allocated chunk of 0x58 bytes at 0x016C2CB8 <br>Allocated chunk of 0x100 bytes at 0x016D0100 <br>Allocated chunk of 0x58 bytes at 0x016CDC18 <br>Allocated chunk of 0x100 bytes at 0x016D0208 <br>Allocated chunk of 0x58 bytes at 0x016CDC78 <br>Allocated chunk of 0x100 bytes at 0x016D0310 <br>Allocated chunk of 0x58 bytes at 0x016D0418 <br>Allocated chunk of 0x100 bytes at 0x016D0478 <br>Allocated chunk of 0x58 bytes at 0x016D0580 <br>Allocated chunk of 0x100 bytes at 0x016D05E0 <br>Allocated chunk of 0x58 bytes at 0x016D06E8 <br>Allocated chunk of 0x100 bytes at 0x016D0748 <br>Allocated chunk of 0x58 bytes at 0x016D0850 <br>Allocated chunk of 0x100 bytes at 0x016D08B0 
+<br>Press return to continue
+</p></div></pre>
+<div>WinDBG shows that the last 2 allocations are not part of LFH (which means LFH is not active yet).�� We can also see that these allocations are taken from the large free chunk at the end of the segment (thus no longer taking already freed chunks that might have been part of the freelist)</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>
+0:003&gt; !heap -x 0x016D08B0 
+    <br>Entry User Heap Segment Size PrevSize Unused Flags <br>----------------------------------------------------------------------------- <br>016d08a8 016d08b0 016c0000 016c0000 108 60 8 busy
+
+<p>0:003&gt; !heap -x 0x016D0850     <br></p><p>Entry User Heap Segment Size PrevSize Unused Flags <br>----------------------------------------------------------------------------- <br>016d0848 016d0850 016c0000 016c0000 60 108 8 busy
+</p></div></pre>
+<div>Next, the application will cause the necessary layout.� As a segment doesn’t necessarily want to keep chunks of the same bucket size together, and operates in a first ask, first serve manner (unlike the LFH), the 3 allocations should be placed right next to each other:</div>
+<div></div>
+<div>App:</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>
+Allocated chunk of 0x100 bytes at 0x016D09B8 <br>Allocated chunk of 0x58 bytes at 0x016D0AC0, filled with 'A' <br>Allocated chunk of 0x100 bytes at 0x016D0B20 
+<br>Press return to continue
+  </div></pre>
+<p>Great! We can use WinDBG to confirm that the 3 chunks are adjacent indeed, and that the middle chunk (0x58) is filled with A’s</p>
+<p>(from output of !heap -p -h 0x016C0000)</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>016d09b0 0021 0021 [00] 016d09b8 00100 - (busy)    <br>016d0ab8 000c 0021 [00] 016d0ac0 00058 - (busy)<br>016d0b18 0021 000c [00] 016d0b20 00100 - (busy)
+</p><p>0:001&gt; dd 0x016d0ac0 L 0x58/4     <br>016d0ac0 41414141 41414141 41414141 41414141 <br>016d0ad0 41414141 41414141 41414141 41414141 <br>016d0ae0 41414141 41414141 41414141 41414141 <br>016d0af0 41414141 41414141 41414141 41414141 <br>016d0b00 41414141 41414141 41414141 41414141 <br>016d0b10 41414141 41414141
+  </p></pre>
+<p>Next, the 0x58 byte chunk will be freed (which means it should end up on the freelist, and not merged with an adjacent free chunk as long as we don’t free the adjacent 0x100 byte chunks ourselves).� Finally, a new allocation request for 0x58 is supposed to take that position back.� The example application will populate it with B’s:</p>
+<p>App:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>Free chunk of 0x58 bytes at 0x016D0AC0 <br>Allocated chunk of 0x58 bytes at 0x016D0AC0, filled with 'B' 
+    <br>Done...    </p></pre>
+<p>WinDBG:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>
+0:001&gt; dd 0x016d0ac0 L 0x58/4     <br>016d0ac0 42424242 42424242 42424242 42424242 <br>016d0ad0 42424242 42424242 42424242 42424242 <br>016d0ae0 42424242 42424242 42424242 42424242 <br>016d0af0 42424242 42424242 42424242 42424242 <br>016d0b00 42424242 42424242 42424242 42424242 <br>016d0b10 42424242 42424242
+
+</div></pre>
+<p>Bingo.</p>
+<h4>BEA_Alloc4</h4>
+<p>Let’s take it one step further.</p>
+<p>This time we’ll free a 0x58 byte chunk, and we’ll try to use a 0x80 byte allocation (where we only control the last 4 dwords), to control the exact 4 first dwords in the original 0x58 byte chunk. (I know, replacing one object with another object of a different size sounds kinky… but hey, who knows this could be useful one time … or not)</p>
+<div>The approach is pretty much the same: we’ll start by (trying) to exhaust the freelist for the sizes that we are going to use, to make sure we have better control over what will be returned when we ask for a chunk of those sizes.� </div>
+<div>What is different in this case, is the layout we need to allow magic to happen – i.e. to take the first 4 dwords of the 0x58 byte chunk using the last 4 dwords of the 0x80 byte allocation.</div>
+<div></div>
+<div>The idea is to try to force 2 freed chunks to merge (by placing them next to each other and then freeing both).� The so-called "vulnerable" object that gets freed in our imaginary "use after free" scenario is 0x58 bytes, and the goal is to to control the first 4 dwords.� The object we can use to replace it with is 0x80 bytes, and we’ll pretend we can only control the last 4 dwords of that one.� In other words, we have to make sure that we position those 4 dwords with surgical precision, making sure that the "overlap" will happen in the right place.�� </div>
+<div></div>
+<div>I generally suck at math, but after spending some time on the abacus, finger counting and scratching my head, I came up with the complex formula that results in trying to position a 0x80-4-4-4-4-8 = 0x68 byte object before the 0x58 byte object.� The 4 times 4 bytes are needed to cause overlap, and the additional 8 bytes are there to compensate for the chunk header of the 0x58 byte chunk that sits before the contents of the 0x58 byte chunk, and is thus also consuming space in memory.�� </div>
+<div>This means that we also have to make sure to remove 0x68 byte chunks from the free list in order to increase control over allocations of that size.� </div>
+<div></div>
+<div>We’ll create a layout that consists of 4 allocations:� our ‘magic’ 0x68 and 0x58 objects in the middle, surrounded by 2 other objects, to avoid that a merge of one of the 2 in the middle will cause us to lose control when things start to merge with the wrong objects. We’ll also cause a little bit more allocations to try to exhaust the heap, as some of these sizes may be popular sizes.� </div>
+<div></div>
+<div>(Again, the number of allocations you need to properly clear out the free list depends on the applicaiton, the context, basically on what is already free at that time)</div>
+<div></div>
+<div>Let’s see what it looks like:</div>
+<div></div>
+<div>App:</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>
+C:\Users\corelan\Desktop\vc++\win10\BEA_Alloc4\Release&gt;BEA_Alloc4.exe</p><p>Default process heap found at 0x010D0000
+</p><div>Press a key to start...</div>
+<div>&lt;...snip...&gt;</div>    <div>Allocated chunk of 0x68 bytes at 0x010E1D68</div><div>Allocated chunk of 0x58 bytes at 0x010E1DD8
+</div><div>Allocated chunk of 0x80 bytes at 0x010E1E38
+</div><div>Allocated chunk of 0x68 bytes at 0x010E1EC0
+</div><div>Allocated chunk of 0x58 bytes at 0x010E1F30
+</div><div>Allocated chunk of 0x80 bytes at 0x010E1F90
+</div><div>Allocated chunk of 0x68 bytes at 0x010E2018</div>
+
+<div>Press return to continue</div></pre>
+<div>(Check the last 3 chunks in WinDBG (using !heap -x <address>) to make sure that none of them is LFH managed at this point.)</address></div>
+<div></div>
+<div>Next, the application creates the initial layout (0x80 // 0x68 // 0x58 // 0x80).� The first and last one are just there to prevent the 0x68 and 0x58 sized chunks to accidentally merge with the wrong one. </div>
+<div></div>
+<div>App:</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>
+Allocated start chunk (0x80 bytes) at 0x010E2088  <div>Allocated first chunk (0x68 bytes) at 0x010E2110
+</div><div>Allocated second 'vulnerable' chunk (0x58 bytes) at 0x010E2180, filled with 'A'
+</div><div>Allocated end chunk (0x80 bytes) at 0x010E21E0</div>
+<div>Press return to continue</div>
+</div></pre>
+<div>WinDBG (output from !heap -p -h <address of="" default="" process="" heap="">):</address></div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>������� 010e2080 0011 000e� [00]�� 010e2088��� 00080 - (busy)    <div><div>������� 010e2108 000e 0011� [00]�� 010e2110��� 00068 - (busy)
+</div><div>������� 010e2178 000c 000e� [00]�� 010e2180��� 00058 - (busy)
+</div><div>������� 010e21d8 0011 000c� [00]�� 010e21e0��� 00080 - (busy)</div></div></div></pre>
+<div>Sure enough, the 4 chunks are in the right place.� When the ‘vulnerable’ 0x58 byte chunk gets freed, we’ll also cause the first one to free ourselves.� This should merge the 2 together.</div>
+<div></div>
+<div>App:</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>
+Free chunk of 0x58 bytes at 0x010E2180
+<div>Free first chunk of 0x68 bytes at 0x010E2110</div>  <div>Press return to continue</div></div></pre>
+<div>WinDBG shows that we now have one big free chunk at 0x010E2110, of 0xc8 bytes.� If we dump it, we see the original 0x68 chunk followed by the vulnerable 0x58 byte chunk.</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div> 0:003&gt; !heap -p -a 0x010E2110
+<div>��� address 010e2110 found in  </div><div>��� _HEAP @ 10d0000
+</div><div>����� HEAP_ENTRY Size Prev Flags��� UserPtr UserSize - state
+</div><div>������� 010e2108 001a 0000� [00]�� 010e2110��� 000c8 - (free)</div>
+<div>0:003&gt; dd 0x010E2110 L 0xc8/4</div><div>010e2110� 010e2268 010de858 00000000 00000000  </div><div>010e2120� 00000000 00000000 00000000 00000000</div><div>010e2130� 00000000 00000000 00000000 00000000</div><div>010e2140� 00000000 00000000 00000000 00000000</div><div>010e2150� 00000000 00000000 00000000 00000000</div><div>010e2160� 00000000 00000000 00000000 00000000</div><div>010e2170� 00000000 00000000 0c00000c 00008812</div><div>010e2180� 010e2268 010de858 41414141 41414141</div><div>010e2190� 41414141 41414141 41414141 41414141</div><div>010e21a0� 41414141 41414141 41414141 41414141  </div><div>010e21b0� 41414141 41414141 41414141 41414141</div><div>010e21c0� 41414141 41414141 41414141 41414141</div><div>010e21d0� 41414141 41414141</div>
+</div></pre>
+<div>Finally, our 0x80 byte allocation is now supposed to take the first 0x80 bytes of this free chunk, overwriting the first 4 dwords inside the chunk with A’s with the last 4 dwords of the 0x80 byte chunk. </div>
+<div></div>
+<div>App:</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>  <div>Allocated chunk of 0x80 bytes at 0x010E2110, filled with 'B'</div>  <div>Done...</div></div></pre>
+<div>WinDBG:</div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>  <div>0:001&gt; !heap -p -a 0x010E2110</div><div>��� address 010e2110 found in</div><div>��� _HEAP @ 10d0000</div><div>����� HEAP_ENTRY Size Prev Flags��� UserPtr UserSize - state</div><div>������� 010e2108 0011 0000� [00]�� 010e2110��� 00080 - (busy)</div></div><div>
+  <div>0:001&gt; dd 0x010E2110 L 0xc8/4</div><div>010e2110� 42424242 42424242 42424242 42424242</div><div>010e2120� 42424242 42424242 42424242 42424242</div><div>010e2130� 42424242 42424242 42424242 42424242</div><div>010e2140� 42424242 42424242 42424242 42424242</div><div>010e2150� 42424242 42424242 42424242 42424242</div><div>010e2160� 42424242 42424242 42424242 42424242</div><div>010e2170� 42424242 42424242 42424242 42424242</div><div>010e2180� 42424242 42424242 42424242 42424242</div><div>010e2190� 6a309389 0000880d 010dee10 010d1db8</div><div>010e21a0� 41414141 41414141 41414141 41414141</div><div>010e21b0� 41414141 41414141 41414141 41414141  </div><div>010e21c0� 41414141 41414141 41414141 41414141</div><div>010e21d0� 41414141 41414141</div></div></pre>
+<div>Damn, it looks like we missed our target with 8 bytes (as I said, I suck at math… but perhaps I should have used a 0x60 byte chunk instead of 0x68… )� anyway I’m sure you get the point…� </div>
+<div></div>
+<div>Nice – but all of this was only possible because none of the sizes involved were managed by the LFH already, and because we were able to avoid the LFH from being triggered.� </div>
+<div></div>
+<div>Perhaps this is the right time to look at the LFH under WIndows 10 and see how it behaves.� After all, we may not always have the luxury of avoiding the LFH in the first place.</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<h3>The Front-End Allocator – LFH</h3>
+<h4>LFH_Alloc1</h4>
+<p>In this first exercise, we’ll examine if it still takes 0x12 (18) consecutive allocations for a size in the same bucket before the LFH will start taking care of allocations and frees of those sizes. </p>
+<p>In order to avoid any influencing or assumptions, I’ll use chunksizes that has not been allocated yet. (0x1500 bytes, 0x2100 bytes, 0x3000 bytes, 0x800 bytes)</p>
+<p>I’ll combine a couple of tests in this test:</p>
+<ol>
+<li><font color="#ffffff">check how many allocations it takes before LFH kicks in</font></li>
+<li><font color="#ffffff">see if the LFH trigger is influenced when an allocation happens of a different bucket size during the series of allocations</font></li>
+<li><font color="#ffffff">see if the LFH trigger is influenced when a free happens during the allocations, of a chunk in a different bucket/of a different size</font></li>
+<li><font color="#ffffff">see if the LFH trigger is influenced when a chunk of the same bucket is freed again, during the series of allocations</font></li>
+</ol>
+<p><strong><span style="text-decoration: underline">Step1: how many allocations are needed to trigger LFH</span></strong></p>
+<p>App:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>C:\Users\corelan\Desktop\vc++\win10\LFH_Alloc1\Release&gt;LFH_Alloc1.exe 
+Default process heap found at 0x00D30000 Press a key to start...
+
+
+[1] Allocated chunk of 0x1500 bytes at 0x00D4CF68
+[2] Allocated chunk of 0x1500 bytes at 0x00D4E470 
+[3] Allocated chunk of 0x1500 bytes at 0x00D4F978 
+[4] Allocated chunk of 0x1500 bytes at 0x00D50E80 
+[5] Allocated chunk of 0x1500 bytes at 0x00D52388 
+[6] Allocated chunk of 0x1500 bytes at 0x00D53890 
+[7] Allocated chunk of 0x1500 bytes at 0x00D54D98 
+[8] Allocated chunk of 0x1500 bytes at 0x00D562A0 
+[9] Allocated chunk of 0x1500 bytes at 0x00D577A8 
+[10] Allocated chunk of 0x1500 bytes at 0x00D58CB0 
+[11] Allocated chunk of 0x1500 bytes at 0x00D5A1B8 
+[12] Allocated chunk of 0x1500 bytes at 0x00D5B6C0 
+[13] Allocated chunk of 0x1500 bytes at 0x00D5CBC8 
+[14] Allocated chunk of 0x1500 bytes at 0x00D5E0D0 
+[15] Allocated chunk of 0x1500 bytes at 0x00D5F5D8 
+[16] Allocated chunk of 0x1500 bytes at 0x00D60AE0 
+[17] Allocated chunk of 0x1500 bytes at 0x00D61FE8 
+[18] Allocated chunk of 0x1500 bytes at 0x00D6B348 
+[19] Allocated chunk of 0x1500 bytes at 0x00D64A20 
+[20] Allocated chunk of 0x1500 bytes at 0x00D69E40 
+[21] Allocated chunk of 0x1500 bytes at 0x00D6C850 
+[22] Allocated chunk of 0x1500 bytes at 0x00D63518 
+[23] Allocated chunk of 0x1500 bytes at 0x00D6DD58 
+[24] Allocated chunk of 0x1500 bytes at 0x00D67430 
+[25] Allocated chunk of 0x1500 bytes at 0x00D6F260 
+[26] Allocated chunk of 0x1500 bytes at 0x00D65F28 
+[27] Allocated chunk of 0x1500 bytes at 0x00D70768 
+[28] Allocated chunk of 0x1500 bytes at 0x00D68938 
+[29] Allocated chunk of 0x1500 bytes at 0x00D71C70 
+[30] Allocated chunk of 0x1500 bytes at 0x00D77438 
+Press return to continue</p></pre>
+<p>If you pay close attention to the addresses, you can see a bigger gap between allocations 17 and 18.� This is a good indication that allocations are no longer individual chunks inside a normal segment, but are now being consumed from an LFH subsegment.� To be sure, let’s validate the findings in WinDBG.</p>
+<p>Simply run !heap -x� on all addresses (starting from the first one in the list), until you find the first one that has the "LFH" marker.</p>
+<p>Allocation 17:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:001&gt; !heap -x 0x00D61FE8 </p><p>Entry User Heap Segment Size PrevSize Unused Flags </p><p>----------------------------------------------------------------------------- </p><p>00d61fe0 00d61fe8 00d30000 00d30000 1508 1508 8 busy</p></pre>
+<p>Allocation 18:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:001&gt; !heap -x 0x00D6B348 </p><p>Entry User Heap Segment Size PrevSize Unused Flags </p><p>----------------------------------------------------------------------------- </p><p>00d6b340 00d6b348 00d30000 00d3ae28 1508 - 8 LFH;busy</p></pre>
+<p>So – it looks like the LFH takes over with allocation 18.</p>
+<p><strong><span style="text-decoration: underline"></span></strong></p><strong>
+</strong><p><strong></strong></p>
+<p><strong><span style="text-decoration: underline">Step 2: will the LFH trigger be influenced if another allocation (of a size in a different bucket) occurs in the series of 18 allocations.</span></strong></p>
+<p>App:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc">[1] Allocated chunk of 0x2100 bytes at 0x00D93500 
+[2] Allocated chunk of 0x2100 bytes at 0x00D95608 
+[3] Allocated chunk of 0x2100 bytes at 0x00D97710 
+[4] Allocated chunk of 0x2100 bytes at 0x00D99818 
+[5] Allocated chunk of 0x2100 bytes at 0x00D9B920 
+[6] Allocated chunk of 0x2100 bytes at 0x00D9DA28 
+[7] Allocated chunk of 0x2100 bytes at 0x00D9FB30 
+[8] Allocated chunk of 0x2100 bytes at 0x00DA1C38 
+[9] Allocated chunk of 0x2100 bytes at 0x00DA3D40 
+[10] Allocated chunk of 0x2100 bytes at 0x00DA5E48 
+Allocated chunk of 0x300 bytes at 0x00D49450 
+[11] Allocated chunk of 0x2100 bytes at 0x00DA7F50 
+[12] Allocated chunk of 0x2100 bytes at 0x00DAA058 
+[13] Allocated chunk of 0x2100 bytes at 0x00DAC160 
+[14] Allocated chunk of 0x2100 bytes at 0x00DAE268 
+[15] Allocated chunk of 0x2100 bytes at 0x00DB0370 
+[16] Allocated chunk of 0x2100 bytes at 0x00DB2478 
+[17] Allocated chunk of 0x2100 bytes at 0x00DB4580 
+[18] Allocated chunk of 0x2100 bytes at 0x00DC10D8 
+[19] Allocated chunk of 0x2100 bytes at 0x00DBAAC0 
+[20] Allocated chunk of 0x2100 bytes at 0x00DC32E0 
+Press return to continue</pre>
+<p>Focusing on allocation 17 and 18 (of 0x2100 bytes), we can see that alloc 17 was not LFH yet, but the 18th one did it again, despite the allocation of a 0x300 byte chunk in the middle of the series.</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:001&gt; !heap -x 0x00DB4580 </p><p>Entry User Heap Segment Size PrevSize Unused Flags 
+----------------------------------------------------------------------------- 
+00db4578 00db4580 00d30000 00d30000 2108 2108 8 busy</p><p>
+</p><p>0:001&gt; !heap -x 0x00DC10D8 </p><p>Entry User Heap Segment Size PrevSize Unused Flags 
+----------------------------------------------------------------------------- 
+00dc10d0 00dc10d8 00d30000 00d3ae78 2208 - 3f LFH;busy</p></pre>
+<p>Interesting indeed :)</p>
+<p><strong><span style="text-decoration: underline">Step 3: will a free (of a different chunk size) influence the LFH trigger ?</span></strong></p>
+<p>App:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>[1] Allocated chunk of 0x3000 bytes at 0x00DD6690 </p><p>[2] Allocated chunk of 0x3000 bytes at 0x00DD9698 
+[3] Allocated chunk of 0x3000 bytes at 0x00DDC6A0 
+[4] Allocated chunk of 0x3000 bytes at 0x00DDF6A8 
+[5] Allocated chunk of 0x3000 bytes at 0x00DE26B0 
+[6] Allocated chunk of 0x3000 bytes at 0x00DE56B8 
+[7] Allocated chunk of 0x3000 bytes at 0x00DE86C0 
+[8] Allocated chunk of 0x3000 bytes at 0x00DEB6C8 
+[9] Allocated chunk of 0x3000 bytes at 0x00DEE6D0 
+[10] Allocated chunk of 0x3000 bytes at 0x00DF16D8 
+Freed chunk at 0x00D49C80 
+Freed chunk at 0x00D4A188 
+[11] Allocated chunk of 0x3000 bytes at 0x00DF46E0 
+[12] Allocated chunk of 0x3000 bytes at 0x00DF76E8 
+[13] Allocated chunk of 0x3000 bytes at 0x00DFA6F0 
+[14] Allocated chunk of 0x3000 bytes at 0x00DFD6F8 
+[15] Allocated chunk of 0x3000 bytes at 0x00E00700 
+[16] Allocated chunk of 0x3000 bytes at 0x00E03708 
+[17] Allocated chunk of 0x3000 bytes at 0x00E06710 
+[18] Allocated chunk of 0x3000 bytes at 0x00E0C748 
+[19] Allocated chunk of 0x3000 bytes at 0x00E15760 
+[20] Allocated chunk of 0x3000 bytes at 0x00E1B770 
+Done...</p></pre>
+<p>WinDBG (focus on allocation 17 and 18 again):</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:001&gt; !heap -x 0x00E06710 </p><p>Entry User Heap Segment Size PrevSize Unused Flags 
+----------------------------------------------------------------------------- 
+00e06708 00e06710 00d30000 00d30000 3008 3008 8 busy</p>
+<p>0:001&gt; !heap -x 0x00E0C748 </p><p>Entry User Heap Segment Size PrevSize Unused Flags 
+----------------------------------------------------------------------------- 
+00e0c740 00e0c748 00d30000 00d3aea0 3008 - 8 LFH;busy</p></pre>
+<p>Interesting once more:)</p>
+<p><strong><span style="text-decoration: underline">Step 4: free a chunk from the same bucket during the allocation series.</span></strong></p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>[1] Allocated chunk of 0x800 bytes at 0x004EAE70 </p><p>[2] Allocated chunk of 0x800 bytes at 0x0053E910 
+[3] Allocated chunk of 0x800 bytes at 0x0053F118 
+[4] Allocated chunk of 0x800 bytes at 0x0053F920 
+[5] Allocated chunk of 0x800 bytes at 0x00540128 
+[6] Allocated chunk of 0x800 bytes at 0x00540930 
+[7] Allocated chunk of 0x800 bytes at 0x00541138 
+[8] Allocated chunk of 0x800 bytes at 0x00541940 
+[9] Allocated chunk of 0x800 bytes at 0x00542148 
+[10] Allocated chunk of 0x800 bytes at 0x00542950 
+Freed chunk at 0x00542950 
+[11] Allocated chunk of 0x800 bytes at 0x00542950 
+[12] Allocated chunk of 0x800 bytes at 0x00543158 
+[13] Allocated chunk of 0x800 bytes at 0x00543960 
+[14] Allocated chunk of 0x800 bytes at 0x00544168 
+[15] Allocated chunk of 0x800 bytes at 0x00544970 
+[16] Allocated chunk of 0x800 bytes at 0x00545178 
+[17] Allocated chunk of 0x800 bytes at 0x00545980 
+[18] Allocated chunk of 0x800 bytes at 0x009F0070 
+[19] Allocated chunk of 0x800 bytes at 0x009F2090 
+[20] Allocated chunk of 0x800 bytes at 0x009F68D8 
+Done...</p></pre>
+<p>WinDBG (looking again at allocation 17 and 18)</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:004&gt; !heap -x 0x00545980 </p><p>Entry User Heap Segment Size PrevSize Unused Flags 
+----------------------------------------------------------------------------- 
+00545978 00545980 00450000 00450000 808 808 8 busy</p>
+<p>0:004&gt; !heap -x 0x009F0070 </p><p>Entry User Heap Segment Size PrevSize Unused Flags 
+----------------------------------------------------------------------------- 
+009f0068 009f0070 00450000 00458c60 808 - 8 LFH;busy</p></pre>
+<p>Interestingly enough, the free did not really impact the LFH trigger at all.� 18 allocations still did the trick.</p>
+<p>I guess more exhaustive testing is needed to confirm this behaviour, including checking what happens if there are more frees etc… but at least we are able to see some kind of pattern that indicates it may be more difficult to avoid that the LFH will be get enabled eventually, especially if you have no other option that to cause a certain number of allocations (more than 18) of chunks in the same bucket.� </p>
+<p>If you know of a way to prevent this from happening, please let me know :)</p>
+<h4>LFH_Alloc2</h4>
+<p>In the second exercise, we’ll see if the LFH still behaves the same way as under Windows 7 – i.e. returning freed chunks in a LIFO manner.�� We’ll activate the LFH using 20 allocations of 0x500 bytes.� The last one will be freed, and then another allocation of 0x500 bytes will happen. </p>
+<p>The goal is to see if the last one to be freed will be the first one to be returned again. (LIFO).</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>C:\Users\corelan\Desktop\vc++\win10\LFH_Alloc2\Release&gt;LFH_Alloc2.exe </p><p>Default process heap found at 0x008D0000 
+Press a key to start...
+</p><p>[1] Allocated chunk of 0x500 bytes at 0x008E0440 </p><p>[2] Allocated chunk of 0x500 bytes at 0x008E0948 
+[3] Allocated chunk of 0x500 bytes at 0x008E0E50 
+[4] Allocated chunk of 0x500 bytes at 0x008E1358 
+[5] Allocated chunk of 0x500 bytes at 0x008E1860 
+[6] Allocated chunk of 0x500 bytes at 0x008E1D68 
+[7] Allocated chunk of 0x500 bytes at 0x008E2270 
+[8] Allocated chunk of 0x500 bytes at 0x008E2778 
+[9] Allocated chunk of 0x500 bytes at 0x008E2C80 
+[10] Allocated chunk of 0x500 bytes at 0x008E3188 
+[11] Allocated chunk of 0x500 bytes at 0x008E3690 
+[12] Allocated chunk of 0x500 bytes at 0x008E3B98 
+[13] Allocated chunk of 0x500 bytes at 0x008E40A0 
+[14] Allocated chunk of 0x500 bytes at 0x008E45A8 
+[15] Allocated chunk of 0x500 bytes at 0x008E4AB0 
+[16] Allocated chunk of 0x500 bytes at 0x008E4FB8 
+[17] Allocated chunk of 0x500 bytes at 0x008E54C0 
+[18] Allocated chunk of 0x500 bytes at 0x008E7D28 
+[19] Allocated chunk of 0x500 bytes at 0x008E5EF8 
+[20] Allocated chunk of 0x500 bytes at 0x008E6E10 
+Press return to continue
+</p><p>Freed chunk at 0x008E6E10 </p><p>Press return to continue
+</p><p>Allocated chunk of 0x500 bytes at 0x008E9148 </p><p>Press return to continue</p></pre>
+<div>In WinDBG, we can see that the LFH was indeed activated, but it also looks like the LIFO is behavior from Windows 7 is no longer there. </div>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><div>
+0:003&gt; !heap -x 0x008E6E10     <br>Entry User Heap Segment Size PrevSize Unused Flags <br>----------------------------------------------------------------------------- <br>008e6e08 008e6e10 008d0000 008d8d90 508 - 0 LFH;free
+
+  <p>0:003&gt; !heap -x 0x008E9148 <br>Entry User Heap Segment Size PrevSize Unused Flags <br>----------------------------------------------------------------------------- <br>008e9140 008e9148 008d0000 008d8d90 508 - 8 LFH;busy
+</p></div></pre>
+<p>Perhaps causing a series of allocations of 0x500 byte will allow us to take the freed chunk back.� Press return to cause another 20 allocations of 0x500 bytes and see what happens:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>Allocated chunk of 0x500 bytes at 0x008E59F0 </p><p>Allocated chunk of 0x500 bytes at 0x008E7318 
+Allocated chunk of 0x500 bytes at 0x008E8738 
+Allocated chunk of 0x500 bytes at 0x008E6400 
+Allocated chunk of 0x500 bytes at 0x008E8C40 
+Allocated chunk of 0x500 bytes at 0x008E6908 
+Allocated chunk of 0x500 bytes at 0x008E7820 
+Allocated chunk of 0x500 bytes at 0x008E8230 
+Allocated chunk of 0x500 bytes at 0x008E6E10 
+--- got it back --- 
+Allocated chunk of 0x500 bytes at 0x008EC740 
+Allocated chunk of 0x500 bytes at 0x008EEA78 
+Allocated chunk of 0x500 bytes at 0x008EBD30 
+Allocated chunk of 0x500 bytes at 0x008EC238 
+Allocated chunk of 0x500 bytes at 0x008EDB60 
+Allocated chunk of 0x500 bytes at 0x008EF488 
+Allocated chunk of 0x500 bytes at 0x008ECC48 
+Allocated chunk of 0x500 bytes at 0x008F0DB0 
+Allocated chunk of 0x500 bytes at 0x008E99F8 
+Allocated chunk of 0x500 bytes at 0x008EEF80 
+Allocated chunk of 0x500 bytes at 0x008EB828 
+Press return to continue</p></pre>
+<p>In this case, it took another 9 allocations to get the freed chunk back.� In fact, if you’d run the same application a couple of times, you’ll see that the number of times it takes to get the freed chunk back, varies largely between 0 (sometimes you’ll get it back LIFO style) and never (at least, not in the first 20 allocations or so)… but in most cases I got it back within the first 10 allocations.� (A lot more structured testing would be needed to find the sweet spot that would provide some sort of predictability. It’ll probably never be 100% reliable, but it may not be too messy either.)</p>
+<p><strong><em><font color="#ffff00">Update (7/7/2016) – I added "LFH_TakeBack" to the github repository, which will automate some statistic gathering.� For each chunksize between 8 and 0x4000, it will enable LFH, alloc a chunk and free it again, and then measure how many allocations are needed to take it back.� The application calculates an average, a minimum and maximum number of tries, and also keeps track how many times the object was not taken back within the first 2000 allocations.</font></em></strong></p>
+<p><strong><em><font color="#ffff00">After running the app, it looks like the maximum number of allocations needed sits around 50.</font> </em></strong></p>
+<p><strong><em></em></strong></p>
+<p>Anyway, looking at the addresses of the allocations, it also looks like the chunks are no longer adjacent (as they were in Windows 7, at least as long as the chunks are inside the same subsegment). </p>
+<p>This will certainly make it more complex to create a specific layout/sequence of objects when the LFH is enabled.</p>
+<h4>LFH_Alloc3 </h4>
+<p>Is LFH still limited to 0x4000 byte chunks (max)?</p>
+<p>App:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>C:\Users\corelan\Desktop\vc++\win10\LFH_Alloc3\Release&gt;LFH_Alloc3.exe </p><p>Default process heap found at 0x00930000 
+Press a key to start...
+</p><p>[1] Allocated chunk of 0x4000 bytes at 0x00940FF8 </p><p>[2] Allocated chunk of 0x4000 bytes at 0x00945000 
+[3] Allocated chunk of 0x4000 bytes at 0x00949008 
+[4] Allocated chunk of 0x4000 bytes at 0x0094D010 
+[5] Allocated chunk of 0x4000 bytes at 0x00951018 
+[6] Allocated chunk of 0x4000 bytes at 0x00955020 
+[7] Allocated chunk of 0x4000 bytes at 0x00959028 
+[8] Allocated chunk of 0x4000 bytes at 0x0095D030 
+[9] Allocated chunk of 0x4000 bytes at 0x00961038 
+[10] Allocated chunk of 0x4000 bytes at 0x00965040 
+[11] Allocated chunk of 0x4000 bytes at 0x00969048 
+[12] Allocated chunk of 0x4000 bytes at 0x0096D050 
+[13] Allocated chunk of 0x4000 bytes at 0x00971058 
+[14] Allocated chunk of 0x4000 bytes at 0x00975060 
+[15] Allocated chunk of 0x4000 bytes at 0x00979068 
+[16] Allocated chunk of 0x4000 bytes at 0x0097D070 
+[17] Allocated chunk of 0x4000 bytes at 0x00981078 
+[18] Allocated chunk of 0x4000 bytes at 0x0098D0B8 
+[19] Allocated chunk of 0x4000 bytes at 0x009950C8 
+[20] Allocated chunk of 0x4000 bytes at 0x009910C0 
+Press return to continue</p>
+<p>[1] Allocated chunk of 0x4008 bytes at 0x009C7008 </p><p>[2] Allocated chunk of 0x4008 bytes at 0x009CB018 
+[3] Allocated chunk of 0x4008 bytes at 0x009CF028 
+[4] Allocated chunk of 0x4008 bytes at 0x009D3038 
+[5] Allocated chunk of 0x4008 bytes at 0x009D7048 
+[6] Allocated chunk of 0x4008 bytes at 0x009DB058 
+[7] Allocated chunk of 0x4008 bytes at 0x009DF068 
+[8] Allocated chunk of 0x4008 bytes at 0x009E3078 
+[9] Allocated chunk of 0x4008 bytes at 0x009E7088 
+[10] Allocated chunk of 0x4008 bytes at 0x009EB098 
+[11] Allocated chunk of 0x4008 bytes at 0x009EF0A8 
+[12] Allocated chunk of 0x4008 bytes at 0x009F30B8 
+[13] Allocated chunk of 0x4008 bytes at 0x009F70C8 
+[14] Allocated chunk of 0x4008 bytes at 0x009FB0D8 
+[15] Allocated chunk of 0x4008 bytes at 0x009FF0E8 
+[16] Allocated chunk of 0x4008 bytes at 0x00A030F8 
+[17] Allocated chunk of 0x4008 bytes at 0x00A07108 
+[18] Allocated chunk of 0x4008 bytes at 0x00A0B118 
+[19] Allocated chunk of 0x4008 bytes at 0x00A0F128 
+[20] Allocated chunk of 0x4008 bytes at 0x00A13138 
+Press return to continue</p></pre>
+<p>WinDBG: 0x4000 bytes</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:001&gt; !heap -x 0x00981078 </p><p>Entry User Heap Segment Size PrevSize Unused Flags 
+----------------------------------------------------------------------------- 
+00981070 00981078 00930000 00930000 4008 4008 8 busy</p>
+<p>0:001&gt; !heap -x 0x0098D0B8 </p><p>Entry User Heap Segment Size PrevSize Unused Flags 
+----------------------------------------------------------------------------- 
+0098d0b0 0098d0b8 00930000 00938c48 4008 - 8 LFH;busy</p></pre>
+<p>WinDBG: 0x4008 bytes</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:001&gt; !heap -x 0x00A07108 </p><p>Entry User Heap Segment Size PrevSize Unused Flags 
+----------------------------------------------------------------------------- 
+00a07100 00a07108 00930000 00930000 4010 4010 8 busy
+
+</p><p>0:001&gt; !heap -x 0x00A0B118 </p><p>Entry User Heap Segment Size PrevSize Unused Flags 
+----------------------------------------------------------------------------- 
+00a0b110 00a0b118 00930000 00930000 4010 4010 8 busy</p></pre>
+<p>Answer:� YES, 0x4000 seems to be the maximum size (just like on Windows 7)</p>
+<h4>LFH_TakeBack2</h4>
+<p>The LFH_Alloc* exercises demonstrate that chunks are no longer allocated in an consecutive manner inside a LFH subsegment. Of course, this complicates creating a specific layout within the subsegment.�� I still wanted to know if it would be possible to replace the memory space used by a LFH chunk by an LFH allocation of a size from a different bucket. As an example, can I take the space of a 0x58 byte chunk using a 0x88 byte allocation, within the LFH.</p>
+<p>As the LFH subsegments are used to keep chunks of the same bucket size together, this would require clearing out the entire subsegment used for storing the vulnerable object, and hopefully the Heap Manager will reuse those pages for another subsegment (allocations for a different bucket size).</p>
+<p>LFH_TakeBack2 demonstrates if it works or not.�� The idea is to try to place the "vulnerable" object in a subsegment where you control all the other chunks.� As soon as the vulnerable object gets freed, you cause all the other chunks to be freed as well.� Hopefully, this will also release the entire subsegment and its pages, so they can be reused again (even for a subsegment associated with chunksizes that fall in a different bucket). </p>
+<p>App:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>C:\Users\corelan\Desktop\vc++\win10_heap\LFH_TakeBack2\Release&gt;LFH_TakeBack2.exe
+  <br>Vulnerable object of 0x00000058 bytes at 0x01136B98, filled with 'A'
+<br>Allocations done. Press return to start free process</p></pre>
+<p>WinDBG:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:003&gt; dd 0x01136B98<br>01136b98� 41414141 41414141 41414141 41414141<br>01136ba8� 41414141 41414141 41414141 41414141<br>01136bb8� 41414141 41414141 41414141 41414141<br>01136bc8� 41414141 41414141 41414141 41414141<br>01136bd8� 41414141 41414141 41414141 41414141<br>01136be8� 41414141 41414141 07fe9621 88011d00<br>01136bf8� 00000000 00000000 00000000 00000000<br>01136c08� 00000000 00000000 00000000 00000000
+
+  <br>0:003&gt; !heap -p -a 0x01136B98<br>��� address 01136b98 found in<br>��� _HEAP @ e30000<br>����� HEAP_ENTRY Size Prev Flags��� UserPtr UserSize - state<br>������� 01136b90 000c 0000� [00]�� 01136b98��� 00058 - (busy)
+</p><p>� <br>0:003&gt; !heap -x 0x01136B98<br>Entry���� User����� Heap����� Segment������ Size� PrevSize� Unused��� Flags<br>-----------------------------------------------------------------------------<br>01136b90� 01136b98� 00e30000� 00e45638������� 60����� -����������� 8� LFH;busy
+</p></pre>
+<p>Continue with App:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>Vulnerable object at 0x01136B98 was freed<br>Free done. Press return to start new allocations (size 0x00000088)
+</p><p>Allocations done.�� Check if 0x01136B98 contains 'B' now
+</p></pre>
+<p>WinDBG:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:001&gt; dd 0x01136B98<br>01136b98� 42424242 42424242 42424242 42424242<br>01136ba8� 42424242 42424242 42424242 42424242<br>01136bb8� 42424242 42424242 42424242 42424242  <br>01136bc8� 42424242 42424242 42424242 42424242<br>01136bd8� 42424242 42424242 42424242 42424242<br>01136be8� 42424242 42424242 42424242 42424242<br>01136bf8� 42424242 42424242 42424242 42424242<br>01136c08� 42424242 42424242 07f296dd 8800bf00
+
+  <br>0:001&gt; !heap -x 0x01136B98<br>Entry���� User����� Heap����� Segment������ Size� PrevSize� Unused��� Flags<br>-----------------------------------------------------------------------------<br>01136b80� 01136b88� 00e30000� 00e38ca0������� 90����� -����������� 8� LFH;busy 
+</p></pre>
+<p>Size is now 0x90.�� So, the mechanism still works (just like in older Windows versions). Of course, because the sequence of chunks inside a segment is not fully under our control, it will be difficult to control specific bytes of the freed object when you replace it with a different sized chunk.�� </p>
+<h3>Large chunks</h3>
+<h4>Large_Alloc1</h4>
+<p>What do virtualallocdblock chunks/allocations look like under WIndows 10?</p>
+<p>In order to create such chunks, we need to cause HeapAlloc/RtlAllocateHeap allocations of a size that is larger than the VirtualMemoryThreshold value in the heap header.� In the example application, I am triggering 20 allocations of 0x7ffb0 bytes (which is larger than the 7ff00 byte threshold).</p>
+<p>App:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>C:\Users\corelan\Desktop\vc++\win10\Large_Alloc1\Release&gt;Large_Alloc1.exe </p><p>Default process heap found at 0x00E20000 
+Press a key to start...
+</p><p>[1] Allocated chunk of 0x7ffb0 bytes at 0x00C48020 </p><p>[2] Allocated chunk of 0x7ffb0 bytes at 0x01110020 
+[3] Allocated chunk of 0x7ffb0 bytes at 0x011A1020 
+[4] Allocated chunk of 0x7ffb0 bytes at 0x0123F020 
+[5] Allocated chunk of 0x7ffb0 bytes at 0x01326020 
+[6] Allocated chunk of 0x7ffb0 bytes at 0x013BA020 
+[7] Allocated chunk of 0x7ffb0 bytes at 0x0144C020 
+[8] Allocated chunk of 0x7ffb0 bytes at 0x014D2020 
+[9] Allocated chunk of 0x7ffb0 bytes at 0x0156D020 
+[10] Allocated chunk of 0x7ffb0 bytes at 0x015F4020 
+[11] Allocated chunk of 0x7ffb0 bytes at 0x01680020 
+[12] Allocated chunk of 0x7ffb0 bytes at 0x01712020 
+[13] Allocated chunk of 0x7ffb0 bytes at 0x017AB020 
+[14] Allocated chunk of 0x7ffb0 bytes at 0x0183B020 
+[15] Allocated chunk of 0x7ffb0 bytes at 0x018C9020 
+[16] Allocated chunk of 0x7ffb0 bytes at 0x01957020 
+[17] Allocated chunk of 0x7ffb0 bytes at 0x019EA020 
+[18] Allocated chunk of 0x7ffb0 bytes at 0x01A75020 
+[19] Allocated chunk of 0x7ffb0 bytes at 0x01B09020 
+[20] Allocated chunk of 0x7ffb0 bytes at 0x01B9D020 
+Press return to continue</p></pre>
+<p>WinDBG: (output of !heap -p -h </p><address of="" default="" process="" heap="">, limited to information related with VirtualAllocdBlocks)<p></p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>VirtualAllocdBlocks @ e2009c </p><p>00c48018 10000 0004 [00] 00c48020 7ffb0 - (busy VirtualAlloc) 
+01110018 10000 0000 [00] 01110020 7ffb0 - (busy VirtualAlloc) 
+011a1018 10000 0000 [00] 011a1020 7ffb0 - (busy VirtualAlloc) 
+0123f018 10000 0000 [00] 0123f020 7ffb0 - (busy VirtualAlloc) 
+01326018 10000 0000 [00] 01326020 7ffb0 - (busy VirtualAlloc) 
+013ba018 10000 0000 [00] 013ba020 7ffb0 - (busy VirtualAlloc) 
+0144c018 10000 0000 [00] 0144c020 7ffb0 - (busy VirtualAlloc) 
+014d2018 10000 0000 [00] 014d2020 7ffb0 - (busy VirtualAlloc) 
+0156d018 10000 0000 [00] 0156d020 7ffb0 - (busy VirtualAlloc) 
+015f4018 10000 0000 [00] 015f4020 7ffb0 - (busy VirtualAlloc) 
+01680018 10000 0000 [00] 01680020 7ffb0 - (busy VirtualAlloc) 
+01712018 10000 0000 [00] 01712020 7ffb0 - (busy VirtualAlloc) 
+017ab018 10000 0000 [00] 017ab020 7ffb0 - (busy VirtualAlloc) 
+0183b018 10000 0000 [00] 0183b020 7ffb0 - (busy VirtualAlloc) 
+018c9018 10000 0000 [00] 018c9020 7ffb0 - (busy VirtualAlloc) 
+01957018 10000 0000 [00] 01957020 7ffb0 - (busy VirtualAlloc) 
+019ea018 10000 0000 [00] 019ea020 7ffb0 - (busy VirtualAlloc) 
+01a75018 10000 0000 [00] 01a75020 7ffb0 - (busy VirtualAlloc) 
+01b09018 10000 0000 [00] 01b09020 7ffb0 - (busy VirtualAlloc) 
+01b9d018 10000 0000 [00] 01b9d020 7ffb0 - (busy VirtualAlloc)</p></pre>
+<p>Yes, we can still trigger this kind of allocations.� Due to the nature of this type of allocations they are still placed at the start of a fresh new page (which is why we’re seeing the start address alignments).� On the other hand, the gaps between 2 allocations seems to be larger than under Windows 7.� </p>
+<p>This means that it will become harder to use this type of allocations to fill up a larger memory region as part of a heap spray.� There will be much bigger holes in between allocations, and the locations of the holes are also non-predictable, which means we may not be able to rely on absolute heap spray addresses as much as we could in Windows 7.</p>
+<p>Perhaps a larger series of allocations is needed, and a larger number of runs, to find "sweet spots", addresses that are allocated more often than others.� Not sure what kind of percentage of predictability we may be able to obtain, but it might be worth the try.</p>
+<h4>Large_Alloc2</h4>
+<p>So… can we do a precise heap spray under Windows 10?</p>
+<p>Well…. yes.� The key is to avoid LFH, and to avoid virtualallocdblocks as well.</p>
+<p>Use a "sweet" size and a "sweet" number of allocs to get aligned consecutive allocations (starting at ????0048) as a normal chunk, inside a normal segment.� Perhaps the first few allocations won’t start at that aligned address (because there are already some smaller allocations in the segment), but as soon as the allocations trigger the creation of another segment, and you manage to take the first spot, your allocations should be aligned.</p>
+<p>App:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>C:\Users\corelan\Desktop\vc++\win10\Large_Alloc2\Release&gt;Large_Alloc2.exe </p><p>Default process heap found at 0x012B0000 
+Press a key to start...
+</p><p>[1] Allocated chunk at 0x012C0FF8 </p><p>[2] Allocated chunk at 0x01300FF8 
+[3] Allocated chunk at 0x01340FF8 
+[4] Allocated chunk at 0x015B0048 
+[5] Allocated chunk at 0x015F0048 
+[6] Allocated chunk at 0x01630048 
+[7] Allocated chunk at 0x016B0048 
+[8] Allocated chunk at 0x016F0048 
+[9] Allocated chunk at 0x01730048 
+[10] Allocated chunk at 0x01770048 
+[11] Allocated chunk at 0x017B0048 
+[12] Allocated chunk at 0x017F0048 
+[13] Allocated chunk at 0x01830048 
+[14] Allocated chunk at 0x018B0048 
+[15] Allocated chunk at 0x018F0048 
+[16] Allocated chunk at 0x01930048 
+[17] Allocated chunk at 0x01970048 
+[18] Allocated chunk at 0x019B0048 
+[19] Allocated chunk at 0x019F0048 
+[20] Allocated chunk at 0x01A30048 
+[21] Allocated chunk at 0x01A70048 
+[22] Allocated chunk at 0x01AB0048
+</p><p>...</p></pre>
+<p>WinDBG:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:003&gt; d 0c0c0c0c </p><p>0c0c0c0c 41 41 41 41 41 41 41 41-41 41 41 41 41 41 41 41 AAAAAAAAAAAAAAAA 
+0c0c0c1c 41 41 41 41 41 41 41 41-41 41 41 41 41 41 41 41 AAAAAAAAAAAAAAAA 
+0c0c0c2c 41 41 41 41 41 41 41 41-41 41 41 41 41 41 41 41 AAAAAAAAAAAAAAAA 
+0c0c0c3c 41 41 41 41 41 41 41 41-41 41 41 41 41 41 41 41 AAAAAAAAAAAAAAAA 
+0c0c0c4c 41 41 41 41 41 41 41 41-41 41 41 41 41 41 41 41 AAAAAAAAAAAAAAAA 
+0c0c0c5c 41 41 41 41 41 41 41 41-41 41 41 41 41 41 41 41 AAAAAAAAAAAAAAAA 
+0c0c0c6c 41 41 41 41 41 41 41 41-41 41 41 41 41 41 41 41 AAAAAAAAAAAAAAAA 
+0c0c0c7c 41 41 41 41 41 41 41 41-41 41 41 41 41 41 41 41 AAAAAAAAAAAAAAAA</p></pre>
+<p>To turn this into a precise heap spray, we need to overcome the fact that we don’t know the exact start address of the first one.� As we know that the start addresses will be aligned eventually to the start of a page, and we can control the size of the allocations, we simply have to repeat the same structure� (junk + ROP + shellcode + junk) every 0x1000 bytes inside each allocation (as explained in the heap spray tutorials on this site). This should allow you to put/find your content at a predictable address.� The same logic applies if you need to put specific values at specific places… simply repeat the layout every 0x1000 bytes and you should be fine.</p>
+<p>In "Precise_Spray", the goal is to put marker "$$$$" (\x24\x24\x24\x24) at� 0x0c0c0c0c:</p>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>C:\Users\corelan\Desktop\vc++\win10_heap\Precise_Spray\Release&gt;Precise_Spray.exe
+Default process heap found at 0x00550000
+Press a key to start...</p><p>Spray done, check 0x0c0c0c0c
+&gt;&gt; Contents at 0x0c0c0c0c: 24242424</p></pre>
+<pre style="overflow: auto; border-top: #cecece 1px solid; border-right: #cecece 1px solid; width: 98%; border-bottom: #cecece 1px solid; color: #010101; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; min-height: 40px; border-left: #cecece 1px solid; padding-right: 5px; background-color: #cccccc"><p>0:003&gt; db 0c0c0c0c
+
+0c0c0c0c� 24 24 24 24 20 20 20 20-20 20 20 20 20 20 20 20� $$$$����������� 
+0c0c0c1c� 20 20 20 20 20 20 20 20-20 20 20 20 20 20 20 20����������������� 
+0c0c0c2c� 20 20 20 20 20 20 20 20-20 20 20 20 20 20 20 20����������������� 
+0c0c0c3c� 20 20 20 20 20 20 20 20-20 20 20 20 20 20 20 20����������������� 
+0c0c0c4c� 20 20 20 20 20 20 20 20-20 20 20 20 20 20 20 20����������������� 
+0c0c0c5c� 20 20 20 20 20 20 20 20-20 20 20 20 20 20 20 20����������������� 
+0c0c0c6c� 20 20 20 20 20 20 20 20-20 20 20 20 20 20 20 20����������������� 
+0c0c0c7c� 20 20 20 20 20 20 20 20-20 20 20 20 20 20 20 20����������������� </p></pre>
+<p>Of course, in a complex/multithreaded application, there will be ‘noise’ (other allocations and frees) at the same time your heapspray is running, and which could affect the placement of your allocations within the segment.��� A possible approach could be to cause some large allocations first (50 allocations of 0x1ff00 bytes or so… any big size, smaller than the chunk size you’re using for the actual spray), each time followed by a small allocation (which we will keep allocated, to avoid that the big ones get coalesced),� and then free the large ones.� That way, the application can use those freed chunks, split them, consume them, without bothering your aligned spray at all.� </p>
+<p>I’ve had good results with spraying using chunk sizes of 0x20000-8 bytes, and 0x40000-8 bytes, but I guess any similar aligned size that is a multiple of a page size will work.</p>
+<p>Good luck y’all.� &lt;3</p>
+<p>Peter</p>
+<hr>
+<p>Oh yeah, before I forget, please check out:</p>
+<p><a href="https://facebook.com/demandglobalchange">https://facebook.com/demandglobalchange</a> // <a title="https://bit.ly/demandglobalchange_full" href="https://bit.ly/demandglobalchange_full">https://bit.ly/demandglobalchange_full</a> // <a href="https://bit.ly/demandglobalchange">https://bit.ly/demandglobalchange</a></p>
+<p>Read &amp; share. Give people reasons to live, not to die for.� thank you.</p>
+<hr>
+<p style="text-align:left">� 2016, <a href="https://www.corelan.be/">Corelan Team (corelanc0d3r)</a>. All rights reserved. </p>
+<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow" data-shared="sharing-twitter-11044" class="share-twitter sd-button share-icon" href="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/?share=twitter&amp;nb=1" target="_blank" title="Click to share on Twitter"><span>Twitter</span></a></li><li class="share-reddit"><a rel="nofollow" data-shared="" class="share-reddit sd-button share-icon" href="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/?share=reddit&amp;nb=1" target="_blank" title="Click to share on Reddit"><span>Reddit</span></a></li><li class="share-facebook"><a rel="nofollow" data-shared="sharing-facebook-11044" class="share-facebook sd-button share-icon" href="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/?share=facebook&amp;nb=1" target="_blank" title="Click to share on Facebook"><span>Facebook<span class="share-count">132</span></span></a></li><li class="share-google-plus-1"><a rel="nofollow" data-shared="sharing-google-11044" class="share-google-plus-1 sd-button share-icon" href="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/?share=google-plus-1&amp;nb=1" target="_blank" title="Click to share on Google+"><span>Google</span></a></li><li class="share-linkedin"><a rel="nofollow" data-shared="sharing-linkedin-11044" class="share-linkedin sd-button share-icon" href="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/?share=linkedin&amp;nb=1" target="_blank" title="Click to share on LinkedIn"><span>LinkedIn</span></a></li><li class="share-email share-service-visible"><a rel="nofollow" data-shared="" class="share-email sd-button share-icon" href="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/?share=email&amp;nb=1" target="_blank" title="Click to email this to a friend"><span>Email</span></a></li><li class="share-pinterest"><a rel="nofollow" data-shared="sharing-pinterest-11044" class="share-pinterest sd-button share-icon" href="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/?share=pinterest&amp;nb=1" target="_blank" title="Click to share on Pinterest"><span>Pinterest</span></a></li><li class="share-end"></li></ul></div></div></div><h3 class="related_post_title">Related Posts:</h3><ul class="related_post"><li><a href="https://www.corelan.be/index.php/2014/08/16/analyzing-heap-objects-with-mona-py/" title="Analyzing heap objects with mona.py">Analyzing heap objects with mona.py</a></li><li><a href="https://www.corelan.be/index.php/2013/01/18/heap-layout-visualization-with-mona-py-and-windbg/" title="Heap Layout Visualization with mona.py and WinDBG">Heap Layout Visualization with mona.py and WinDBG</a></li><li><a href="https://www.corelan.be/index.php/2012/05/25/hitb2012ams-day-2-ghost-in-the-allocator/" title="HITB2012AMS Day 2 – Ghost in the Allocator">HITB2012AMS Day 2 – Ghost in the Allocator</a></li><li><a href="https://www.corelan.be/index.php/2011/12/31/exploit-writing-tutorial-part-11-heap-spraying-demystified/" title="Exploit writing tutorial part 11 : Heap Spraying Demystified">Exploit writing tutorial part 11 : Heap Spraying Demystified</a></li><li><a href="https://www.corelan.be/index.php/2013/03/15/blackhateu2013-day2-advanced-heap-manipulation-in-windows-8/" title="BlackHatEU2013 – Day2 – Advanced Heap Manipulation in Windows 8">BlackHatEU2013 – Day2 – Advanced Heap Manipulation in Windows 8</a></li><li><a href="https://www.corelan.be/index.php/2013/02/19/deps-precise-heap-spray-on-firefox-and-ie10/" title="DEPS – Precise Heap Spray on Firefox and IE10">DEPS – Precise Heap Spray on Firefox and IE10</a></li><li><a href="https://www.corelan.be/index.php/2011/07/27/metasploit-bounty-the-good-the-bad-and-the-ugly/" title="Metasploit Bounty – the Good, the Bad and the Ugly">Metasploit Bounty – the Good, the Bad and the Ugly</a></li><li><a href="https://www.corelan.be/index.php/2013/07/02/root-cause-analysis-integer-overflows/" title="Root Cause Analysis – Integer Overflows">Root Cause Analysis – Integer Overflows</a></li><li><a href="https://www.corelan.be/index.php/2013/02/26/root-cause-analysis-memory-corruption-vulnerabilities/" title="Root Cause Analysis – Memory Corruption Vulnerabilities">Root Cause Analysis – Memory Corruption Vulnerabilities</a></li><li><a href="https://www.corelan.be/index.php/2010/04/16/blackhat-europe-2010-barcelona-day-10/" title="Blackhat Europe 2010 Barcelona – Day 10">Blackhat Europe 2010 Barcelona – Day 10</a></li></ul>	                    <!-- /article-content -->
+	                </address></address></address></div>
+	                <div class="cleared"></div>
+	                <div class="art-postmetadatafooter"><div class="art-postfootericons art-metadata-icons"><span class="categories">Posted in</span> <a href="https://www.corelan.be/index.php/category/security/exploit-writing-tutorials/" rel="category tag">Exploit Writing Tutorials</a>, <a href="https://www.corelan.be/index.php/category/windows-internals/" rel="category tag">Windows Internals</a> | <span class="tags">Tagged</span> <a href="https://www.corelan.be/index.php/tag/back-end-allocator/" rel="tag">back-end allocator</a>, <a href="https://www.corelan.be/index.php/tag/bea/" rel="tag">bea</a>, <a href="https://www.corelan.be/index.php/tag/block/" rel="tag">block</a>, <a href="https://www.corelan.be/index.php/tag/breakpoint/" rel="tag">breakpoint</a>, <a href="https://www.corelan.be/index.php/tag/c/" rel="tag">C#</a>, <a href="https://www.corelan.be/index.php/tag/chunk/" rel="tag">chunk</a>, <a href="https://www.corelan.be/index.php/tag/fea/" rel="tag">fea</a>, <a href="https://www.corelan.be/index.php/tag/front-end-allocator/" rel="tag">front-end allocator</a>, <a href="https://www.corelan.be/index.php/tag/heap/" rel="tag">heap</a>, <a href="https://www.corelan.be/index.php/tag/heap-management/" rel="tag">heap management</a>, <a href="https://www.corelan.be/index.php/tag/heap-spray/" rel="tag">heap spray</a>, <a href="https://www.corelan.be/index.php/tag/lfh/" rel="tag">lfh</a>, <a href="https://www.corelan.be/index.php/tag/low-fragmentation-heap/" rel="tag">low fragmentation heap</a>, <a href="https://www.corelan.be/index.php/tag/rtlallocateheap/" rel="tag">rtlallocateheap</a>, <a href="https://www.corelan.be/index.php/tag/rtlfreeheap/" rel="tag">rtlfreeheap</a>, <a href="https://www.corelan.be/index.php/tag/spray/" rel="tag">spray</a>, <a href="https://www.corelan.be/index.php/tag/userland/" rel="tag">userland</a>, <a href="https://www.corelan.be/index.php/tag/visual-studio/" rel="tag">visual studio</a>, <a href="https://www.corelan.be/index.php/tag/windbg/" rel="tag">windbg</a>, <a href="https://www.corelan.be/index.php/tag/windows-10/" rel="tag">windows 10</a>, <a href="https://www.corelan.be/index.php/tag/wow64/" rel="tag">wow64</a>, <a href="https://www.corelan.be/index.php/tag/x86/" rel="tag">x86</a></div></div>	            </div>
+			<div class="cleared"></div>
+	    </div>
+	</div>
+	
+	<div class="art-post">
+	    <div class="art-post-tl"></div>
+	    <div class="art-post-tr"></div>
+	    <div class="art-post-bl"></div>
+	    <div class="art-post-br"></div>
+	    <div class="art-post-tc"></div>
+	    <div class="art-post-bc"></div>
+	    <div class="art-post-cl"></div>
+	    <div class="art-post-cr"></div>
+	    <div class="art-post-cc"></div>
+	    <div class="art-post-body">
+	            <div class="art-post-inner art-article">
+	            	                <div class="art-postcontent">
+	                    <!-- article-content -->
+	                    <h4 id="comments">2 Responses to <em>Windows 10 x86/wow64 Userland heap</em></h4>	                    <!-- /article-content -->
+	                </div>
+	                <div class="cleared"></div>
+	                	            </div>
+			<div class="cleared"></div>
+	    </div>
+	</div>
+	
+	<ul id="comments-list">		<li class="post pingback">
+			<p>Pingback: <a href="https://www.sec.uno/2016/07/06/windows-10-x86wow64-userland-heap/" rel="external nofollow" class="url">Windows 10 x86/wow64 Userland heap – sec.uno</a></p>
+		</li><!-- #comment-## -->
+		<li class="post pingback">
+			<p>Pingback: <a href="https://www.adacis.net/newsletter-cybersecurite-semaine-28/" rel="external nofollow" class="url">Newsletter Cybersécurité semaine 28 - Adacis</a></p>
+		</li><!-- #comment-## -->
+</ul><div class="art-content-layout">
+    <div class="art-content-layout-row">
+					<div class="art-layout-cell art-layout-cell-size1">
+						
+			<div class="art-block widget Advman_Widget" id="advman-7">
+    <div class="art-block-tl"></div>
+    <div class="art-block-tr"></div>
+    <div class="art-block-bl"></div>
+    <div class="art-block-br"></div>
+    <div class="art-block-tc"></div>
+    <div class="art-block-bc"></div>
+    <div class="art-block-cl"></div>
+    <div class="art-block-cr"></div>
+    <div class="art-block-cc"></div>
+    <div class="art-block-body"><div class="art-blockcontent">
+    <div class="art-blockcontent-body"><script type="text/javascript"><!--
+google_ad_client = "pub-8134501503628637";
+/* CorelanTopBottom */
+google_ad_slot = "7639469771";
+google_ad_width = 468;
+google_ad_height = 60;
+//-->
+</script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/f(8).txt">
+</script><ins id="aswift_2_expand" style="display:inline-table;border:none;height:60px;margin:0;padding:0;position:relative;visibility:visible;width:468px;background-color:transparent;"><ins id="aswift_2_anchor" style="display:block;border:none;height:60px;margin:0;padding:0;position:relative;visibility:visible;width:468px;background-color:transparent;"><iframe width="468" height="60" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;width:468px;height:60px;" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/saved_resource(3).html"></iframe></ins></ins>		<div class="cleared"></div>
+    </div>
+</div>		<div class="cleared"></div>
+    </div>
+</div>				
+				<div class="cleared"> </div>
+			</div>
+					
+    </div>
+</div>
+	          <div class="cleared"></div>
+        </div>
+        <div class="art-layout-cell art-sidebar1">
+          <div class="art-block widget widget_search" id="search-2">
+    <div class="art-block-tl"></div>
+    <div class="art-block-tr"></div>
+    <div class="art-block-bl"></div>
+    <div class="art-block-br"></div>
+    <div class="art-block-tc"></div>
+    <div class="art-block-bc"></div>
+    <div class="art-block-cl"></div>
+    <div class="art-block-cr"></div>
+    <div class="art-block-cc"></div>
+    <div class="art-block-body"><div class="art-blockcontent">
+    <div class="art-blockcontent-body"> <form method="get" name="searchform" action="https://www.corelan.be/">
+    <div class="search">
+        <input name="s" type="text" value="" style="width: 95%;">
+        <span class="art-button-wrapper">
+            <span class="art-button-l"> </span>
+            <span class="art-button-r"> </span>
+            <input class="art-button" type="submit" name="search" value="Search">
+        </span>
+    </div>
+</form>
+		<div class="cleared"></div>
+    </div>
+</div>		<div class="cleared"></div>
+    </div>
+</div><div class="art-block widget widget_text" id="text-5">
+    <div class="art-block-tl"></div>
+    <div class="art-block-tr"></div>
+    <div class="art-block-bl"></div>
+    <div class="art-block-br"></div>
+    <div class="art-block-tc"></div>
+    <div class="art-block-bc"></div>
+    <div class="art-block-cl"></div>
+    <div class="art-block-cr"></div>
+    <div class="art-block-cc"></div>
+    <div class="art-block-body"><div class="art-blockheader">
+    <h3 class="t">Corelan Live training</h3>
+</div><div class="art-blockcontent">
+    <div class="art-blockcontent-body">			<div class="textwidget">Since 2011, Corelan GCV has been teaching live win32 exploit dev classes at various security cons and private companies &amp; organizations. <br><br>You can read more about the training and schedules <b><a href="https://www.corelan-training.com/index.php/training/training-schedules/">here</a></b></div>
+				<div class="cleared"></div>
+    </div>
+</div>		<div class="cleared"></div>
+    </div>
+</div><div class="art-block widget widget_text" id="text-10">
+    <div class="art-block-tl"></div>
+    <div class="art-block-tr"></div>
+    <div class="art-block-bl"></div>
+    <div class="art-block-br"></div>
+    <div class="art-block-tc"></div>
+    <div class="art-block-bc"></div>
+    <div class="art-block-cl"></div>
+    <div class="art-block-cr"></div>
+    <div class="art-block-cc"></div>
+    <div class="art-block-body"><div class="art-blockheader">
+    <h3 class="t">Demand Global Change</h3>
+</div><div class="art-blockcontent">
+    <div class="art-blockcontent-body">			<div class="textwidget"><h5>The world needs your help !</h5> <br>
+Please take a few moments to read the "Demand Global Change Call For Action" document at <br><a href="http://bit.ly/demandglobalchange"><b>http://bit.ly/demandglobalchange</b></a> <br>
+Read the full document at <br><a href="http://bit.ly/demandglobalchange_full"><b>http://bit.ly/demandglobalchange_full</b></a>
+and share the message with as many people as possible.<br><br>
+<a href="https://www.facebook.com/demandglobalchange">Like the Facebook page, and SHARE it with everyone you know. <br>
+<center><br>
+<img src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/demandglobalchange.jpg" width="160" ,height="158" scale="0"></center><br><br></a></div>
+				<div class="cleared"></div>
+    </div>
+</div>		<div class="cleared"></div>
+    </div>
+</div><div class="art-block widget widget_text" id="text-9">
+    <div class="art-block-tl"></div>
+    <div class="art-block-tr"></div>
+    <div class="art-block-bl"></div>
+    <div class="art-block-br"></div>
+    <div class="art-block-tc"></div>
+    <div class="art-block-bc"></div>
+    <div class="art-block-cl"></div>
+    <div class="art-block-cr"></div>
+    <div class="art-block-cc"></div>
+    <div class="art-block-body"><div class="art-blockheader">
+    <h3 class="t">Donate</h3>
+</div><div class="art-blockcontent">
+    <div class="art-blockcontent-body">			<div class="textwidget">Want to support the Corelan Team community ? <a href="https://www.corelan.be/index.php/donate/"><b>Click here to go to our donations page.</b></a><br><br>
+<center>Want to donate BTC to Corelan Team? <br><br>
+<img src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/donate_btc_to_corelan_thumb.png" width="160" ,height="158" scale="0"></center><br><br>Your donation will help funding server hosting.</div>
+				<div class="cleared"></div>
+    </div>
+</div>		<div class="cleared"></div>
+    </div>
+</div><div class="art-block widget Advman_Widget" id="advman-6">
+    <div class="art-block-tl"></div>
+    <div class="art-block-tr"></div>
+    <div class="art-block-bl"></div>
+    <div class="art-block-br"></div>
+    <div class="art-block-tc"></div>
+    <div class="art-block-bc"></div>
+    <div class="art-block-cl"></div>
+    <div class="art-block-cr"></div>
+    <div class="art-block-cc"></div>
+    <div class="art-block-body"><div class="art-blockcontent">
+    <div class="art-blockcontent-body"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-8134501503628637";
+/* Sidebar */
+google_ad_slot = "4006062044";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/f(8).txt">
+</script><ins id="aswift_3_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:160px;background-color:transparent;"><ins id="aswift_3_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:160px;background-color:transparent;"><iframe width="160" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;width:160px;height:600px;" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/saved_resource(4).html"></iframe></ins></ins>
+		<div class="cleared"></div>
+    </div>
+</div>		<div class="cleared"></div>
+    </div>
+</div><div class="art-widget widget widget_text" id="text-2"><div class="art-widget-content">			<div class="textwidget"><br><center><a href="http://www.copyscape.com/plagiarism-tool/"><img src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/cs-gy-88x31.gif" alt="Protected by Copyscape Web Plagiarism Tool" title="Protected by Copyscape Plagiarism Checker - Do not copy content from this page." width="88" height="31" border="0" scale="0"></a></center><br></div>
+		</div></div><div class="art-block widget widget_text" id="text-3">
+    <div class="art-block-tl"></div>
+    <div class="art-block-tr"></div>
+    <div class="art-block-bl"></div>
+    <div class="art-block-br"></div>
+    <div class="art-block-tc"></div>
+    <div class="art-block-bc"></div>
+    <div class="art-block-cl"></div>
+    <div class="art-block-cr"></div>
+    <div class="art-block-cc"></div>
+    <div class="art-block-body"><div class="art-blockheader">
+    <h3 class="t">Corelan Team Merchandise</h3>
+</div><div class="art-blockcontent">
+    <div class="art-blockcontent-body">			<div class="textwidget">You can support Corelan Team by donating or purchasing items from <b><a href="http://www.cafepress.com/CorelanTeam">the official Corelan Team merchandising store.</a></b> <br></div>
+				<div class="cleared"></div>
+    </div>
+</div>		<div class="cleared"></div>
+    </div>
+</div><div class="art-block widget widget_text" id="text-4">
+    <div class="art-block-tl"></div>
+    <div class="art-block-tr"></div>
+    <div class="art-block-bl"></div>
+    <div class="art-block-br"></div>
+    <div class="art-block-tc"></div>
+    <div class="art-block-bc"></div>
+    <div class="art-block-cl"></div>
+    <div class="art-block-cr"></div>
+    <div class="art-block-cc"></div>
+    <div class="art-block-body"><div class="art-blockheader">
+    <h3 class="t">Stay posted</h3>
+</div><div class="art-blockcontent">
+    <div class="art-blockcontent-body">			<div class="textwidget"><ul><b><li><a href="http://www.corelan.be/index.php/subscribe-via-email">Subscribe to posts via email</a></li><li><a href="https://twitter.com/corelanc0d3r">Follow me on twitter</a></li></b></ul></div>
+				<div class="cleared"></div>
+    </div>
+</div>		<div class="cleared"></div>
+    </div>
+</div><div class="art-block widget widget_text" id="text-6">
+    <div class="art-block-tl"></div>
+    <div class="art-block-tr"></div>
+    <div class="art-block-bl"></div>
+    <div class="art-block-br"></div>
+    <div class="art-block-tc"></div>
+    <div class="art-block-bc"></div>
+    <div class="art-block-cl"></div>
+    <div class="art-block-cr"></div>
+    <div class="art-block-cc"></div>
+    <div class="art-block-body"><div class="art-blockheader">
+    <h3 class="t">Corelan on IRC</h3>
+</div><div class="art-blockcontent">
+    <div class="art-blockcontent-body">			<div class="textwidget">You can chat with us and our friends on #corelan (freenode IRC)</div>
+				<div class="cleared"></div>
+    </div>
+</div>		<div class="cleared"></div>
+    </div>
+</div><div class="art-block widget widget_meta" id="meta-2">
+    <div class="art-block-tl"></div>
+    <div class="art-block-tr"></div>
+    <div class="art-block-bl"></div>
+    <div class="art-block-br"></div>
+    <div class="art-block-tc"></div>
+    <div class="art-block-bc"></div>
+    <div class="art-block-cl"></div>
+    <div class="art-block-cr"></div>
+    <div class="art-block-cc"></div>
+    <div class="art-block-body"><div class="art-blockheader">
+    <h3 class="t">Actions</h3>
+</div><div class="art-blockcontent">
+    <div class="art-blockcontent-body">			<ul>
+			<li><a href="https://www.corelan.be/wp-login.php?action=register">Register</a></li>			<li><a href="https://www.corelan.be/wp-login.php">Log in</a></li>
+			<li><a href="https://www.corelan.be/index.php/feed/">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://www.corelan.be/index.php/comments/feed/">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>			</ul>
+					<div class="cleared"></div>
+    </div>
+</div>		<div class="cleared"></div>
+    </div>
+</div><div class="art-block widget widget_categories" id="categories-3">
+    <div class="art-block-tl"></div>
+    <div class="art-block-tr"></div>
+    <div class="art-block-bl"></div>
+    <div class="art-block-br"></div>
+    <div class="art-block-tc"></div>
+    <div class="art-block-bc"></div>
+    <div class="art-block-cl"></div>
+    <div class="art-block-cr"></div>
+    <div class="art-block-cc"></div>
+    <div class="art-block-body"><div class="art-blockheader">
+    <h3 class="t">Categories</h3>
+</div><div class="art-blockcontent">
+    <div class="art-blockcontent-body"><form action="https://www.corelan.be/" method="get"><label class="screen-reader-text" for="cat">Categories</label><select name="cat" id="cat" class="postform">
+	<option value="-1">Select Category</option>
+	<option class="level-0" value="6">001_Security</option>
+	<option class="level-1" value="1164">&nbsp;&nbsp;&nbsp;Cons and Seminars</option>
+	<option class="level-1" value="4017">&nbsp;&nbsp;&nbsp;Crypto</option>
+	<option class="level-1" value="3892">&nbsp;&nbsp;&nbsp;CSO</option>
+	<option class="level-1" value="1037">&nbsp;&nbsp;&nbsp;Exploit Writing Tutorials</option>
+	<option class="level-1" value="803">&nbsp;&nbsp;&nbsp;Exploits</option>
+	<option class="level-1" value="3464">&nbsp;&nbsp;&nbsp;Fuzzing</option>
+	<option class="level-1" value="1373">&nbsp;&nbsp;&nbsp;Malware and Reversing</option>
+	<option class="level-1" value="3736">&nbsp;&nbsp;&nbsp;Metasploit</option>
+	<option class="level-1" value="1549">&nbsp;&nbsp;&nbsp;mona</option>
+	<option class="level-1" value="1257">&nbsp;&nbsp;&nbsp;Papers</option>
+	<option class="level-1" value="1492">&nbsp;&nbsp;&nbsp;Pentesting</option>
+	<option class="level-1" value="3465">&nbsp;&nbsp;&nbsp;Root Cause Analysis</option>
+	<option class="level-1" value="3469">&nbsp;&nbsp;&nbsp;Tools</option>
+	<option class="level-1" value="1456">&nbsp;&nbsp;&nbsp;Video</option>
+	<option class="level-1" value="1236">&nbsp;&nbsp;&nbsp;Web Application Security</option>
+	<option class="level-2" value="3697">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SQL Injection</option>
+	<option class="level-0" value="10">Active Directory</option>
+	<option class="level-0" value="283">Certificates</option>
+	<option class="level-0" value="241">Cisco</option>
+	<option class="level-0" value="224">Development</option>
+	<option class="level-0" value="124">Juniper</option>
+	<option class="level-0" value="3760">Legal</option>
+	<option class="level-0" value="8">Linux and Unix</option>
+	<option class="level-0" value="12">MS Exchange</option>
+	<option class="level-0" value="11">My Free Tools</option>
+	<option class="level-0" value="5">Networking</option>
+	<option class="level-0" value="13">OpsMgr</option>
+	<option class="level-0" value="105">Outlook</option>
+	<option class="level-0" value="3990">Penetration testing</option>
+	<option class="level-0" value="34">Private</option>
+	<option class="level-0" value="465">Scripts</option>
+	<option class="level-1" value="466">&nbsp;&nbsp;&nbsp;Powershell</option>
+	<option class="level-0" value="4">Sharepoint</option>
+	<option class="level-0" value="9">Storage</option>
+	<option class="level-0" value="1">Uncategorized</option>
+	<option class="level-0" value="15">Virtualization</option>
+	<option class="level-0" value="14">Windows Client OS</option>
+	<option class="level-0" value="4059">Windows Internals</option>
+	<option class="level-0" value="7">Windows Server</option>
+	<option class="level-0" value="353">Wordpress</option>
+</select>
+</form>
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "cat" );
+	function onCatChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value > 0 ) {
+			dropdown.parentNode.submit();
+		}
+	}
+	dropdown.onchange = onCatChange;
+})();
+/* ]]> */
+</script>
+
+		<div class="cleared"></div>
+    </div>
+</div>		<div class="cleared"></div>
+    </div>
+</div>          <div class="cleared"></div>
+        </div>
+    </div>
+</div>
+<div class="cleared"></div>
+    <div class="art-footer">
+                <div class="art-footer-t"></div>
+                <div class="art-footer-l"></div>
+                <div class="art-footer-b"></div>
+                <div class="art-footer-r"></div>
+                <div class="art-footer-body">
+                    
+
+
+                    <a href="https://www.corelan.be/index.php/feed/" class="art-rss-tag-icon" title="Corelan Team RSS Feed"></a>
+                  <div class="art-footer-text">
+                      <br><br>Copyright Peter Van Eeckhoutte © 2007 - 2018 | All Rights Reserved | <a href="https://www.corelan.be/index.php/terms-of-use/">Terms of use</a><br>			<!-- Added by Peter Van Eeckhoutte -->
+		      <!--  <font size=-6>Your IP address : 60.191.94.120<br> -->
+			<!-- End Add -->
+                  </div>
+            		<div class="cleared"></div>
+                </div>
+            </div>
+    		<div class="cleared"></div>
+        </div>
+    </div>
+    <div class="cleared"></div>
+    <p class="art-page-footer"></p>
+</div><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none;"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:NaNpx;margin:0;padding:0;position:relative;visibility:visible;width:NaNpx;background-color:transparent;"><ins id="aswift_0_anchor" style="display:block;border:none;height:NaNpx;margin:0;padding:0;position:relative;visibility:visible;width:NaNpx;background-color:transparent;"><iframe frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;width:NaNpx;height:NaNpx;" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/saved_resource(5).html"></iframe></ins></ins></ins><iframe id="google_osd_static_frame_8779323345769" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/saved_resource(6).html"></iframe>
+    <div id="wp-footer">
+	        <div id="ZuKCcirlPfTn" class="OjdNNcYauKjD" style="background:#dddddd;z-index:9999999; "></div>   <script type="text/javascript">/* <![CDATA[ */var anOptions ={"anOptionChoice":"2","anOptionStats":"2","anOptionAdsSelectors":"","anOptionCookie":"1","anOptionCookieLife":"2","anPageRedirect":"","anPermalink":"undefined","anOptionModalEffect":"fadeAndPop","anOptionModalspeed":"350","anOptionModalclose":true,"anOptionModalOverlay":"rgba( 0,0,0,0.8 )","anAlternativeActivation":true,"anAlternativeElement":"GoogleActiveViewClass","anAlternativeText":"<p><span style=\"font-size:14px;\"><strong>Important message!<\/strong><\/span><\/p>\n<p>We have detected that you may be using an Ad Blocker. &nbsp;<br \/>\nI have to use Ads to keep this website and its content free. &nbsp;<br \/>\nWithout ads or donations, I will not be able to keep this website alive for much longer. &nbsp;<br \/>\nIf you don&#39;t like the ads, please consider donating instead: <a href=\"https:\/\/www.corelan.be\/index.php\/donate\/\">https:\/\/www.corelan.be\/index.php\/donate\/<\/a><\/p>\n<p>If you are unable to donate, please create an exception for www.corelan.be in your ad blocker. &nbsp;<\/p>\n<p>Thank you.<\/p>\n","anAlternativeClone":"2","anAlternativeProperties":"","anOptionModalShowAfter":0,"anPageMD5":"","anSiteID":0,"modalHTML":"<div class=\"OjdNNcYauKjD-default\">\n\t<h1 style=\"\">Adblocker detected! Please consider reading this notice.<\/h1>\n\t<p>We've detected that you are using AdBlock Plus or some other adblocking software which is preventing the page from fully loading.<\/p>\n<p>We have to use Ads to keep this website and its content free. &nbsp;<br \/>\nWithout ads or donations, we will not be able to keep this website alive for much longer. &nbsp;<br \/>\nIf you don&#39;t like the ads, please consider donating instead: <a href=\"https:\/\/www.corelan.be\/index.php\/donate\/\">https:\/\/www.corelan.be\/index.php\/donate\/<\/a><\/p>\n<p>If you are unable to donate, please create an exception for www.corelan.be in your ad blocker. &nbsp;<\/p>\n<p>Thank you.<\/p>\n<\/div>\n<a class=\"close-modal close-OjdNNcYauKjD\">&#215;<\/a>"}/* ]]> */</script><div id="adsense" class="an-sponsored" style="position:absolute; z-index:-1; height:1px; width:1px; visibility: hidden; top: -1px; left: 0;"><img class="an-advert-banner" alt="sponsored" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" scale="0"></div><span id="bruteprotect_uptime_check_string" style="display:none;">7ads6x98y</span>        <div id="moove_gdpr_cookie_info_bar" class="moove-gdpr-align-center moove-gdpr-dark-scheme gdpr_infobar_postion_bottom">
+            <div class="moove-gdpr-info-bar-container">
+
+                <div class="moove-gdpr-info-bar-content">
+                    <div class="moove-gdpr-cookie-notice">
+                        <p>We are using cookies to give you the best experience on our website.</p>
+<p>You can find out more about which cookies we are using or switch them off in <span data-href="#moove_gdpr_cookie_modal" class="change-settings-button">settings</span>.</p>
+                    </div>
+                    <!--  .moove-gdpr-cookie-notice -->
+                    <div class="moove-gdpr-button-holder">
+                        <button class="mgbutton moove-gdpr-infobar-allow-all" rel="nofollow">Accept</button>
+                    </div>
+                    <!--  .button-container -->
+                </div>
+            </div>
+
+        </div>
+        <!-- #moove_gdpr_cookie_info_bar  -->
+        <!-- begin visitor maps  -->
+<script type="text/javascript">
+//<![CDATA[
+function wo_map_console(url) {
+  window.open(url,"wo_map_console","height=650,width=800,toolbar=no,statusbar=no,scrollbars=yes").focus();
+}
+//]]>
+</script>
+<!-- end visitor maps -->
+		<!-- Advertising Manager v3.5.3 (1.063 seconds.) -->
+
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/www.corelan.be\/index.php\/2016\/07\/05\/windows-10-x86wow64-userland-heap\/":11044};
+	</script>
+	
+		<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/comment-reply.min.js"></script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/devicepx-jetpack.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var tocplus = {"visibility_show":"show","visibility_hide":"hide","width":"Auto"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/front.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var viewsCacheL10n = {"admin_ajax_url":"https:\/\/www.corelan.be\/wp-admin\/admin-ajax.php","post_id":"11044"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/postviews-cache.js"></script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/auto-thickbox.min.js"></script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/new-tab.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var ajax_object = {"nonce":"bfaf149bb0","ajaxurl":"https:\/\/www.corelan.be\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/JUQfFaIBSiql.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var moove_frontend_gdpr_scripts = {"ajaxurl":"https:\/\/www.corelan.be\/wp-admin\/admin-ajax.php","post_id":"11044","plugin_dir":"https:\/\/www.corelan.be\/wp-content\/plugins\/gdpr-cookie-compliance","is_page":"","enabled_default":{"third_party":0,"advanced":0},"is_single":"1","current_user":"0"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/main.js"></script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/effect.min.js"></script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/effect-blind.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var stbUserOptions = {"mode":"css","cssOptions":{"roundedCorners":true,"mbottom":10,"imgHide":"https:\/\/www.corelan.be\/wp-content\/plugins\/wp-special-textboxes\/themes\/stb-dark\/minus.png","imgShow":"https:\/\/www.corelan.be\/wp-content\/plugins\/wp-special-textboxes\/themes\/stb-dark\/plus.png","strHide":"Hide","strShow":"Show"}};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/wstb.min.js"></script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/wp-embed.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/sharing.min.js"></script>
+<script type="text/javascript">
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-twitter', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-facebook', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-google-plus-1', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomgoogle-plus-1', 'menubar=1,resizable=1,width=480,height=550' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-linkedin', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomlinkedin', 'menubar=1,resizable=1,width=580,height=450' );
+				return false;
+			});
+</script>
+
+                            <button data-href="#moove_gdpr_cookie_modal" id="moove_gdpr_save_popup_settings_button" style="bottom: 20px; left: 20px; display: none;">
+                <span class="moove_gdpr_icon"><i class="moovegdpr-advanced"></i></span>
+                <span class="moove_gdpr_text">Change cookie settings</span>
+            </button>
+        
+
+        <style>
+            #moove_gdpr_cookie_modal,#moove_gdpr_cookie_info_bar{font-family:Nunito,sans-serif}#moove_gdpr_save_popup_settings_button{background-color:#373737!important;color:#fff!important}#moove_gdpr_save_popup_settings_button:hover{background-color:#000!important}#moove_gdpr_cookie_info_bar .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content a.mgbutton,#moove_gdpr_cookie_info_bar .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content button.mgbutton{background-color:#0c4da2!important}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-footer-content .moove-gdpr-button-holder a.mgbutton,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-footer-content .moove-gdpr-button-holder button.mgbutton{background-color:#0c4da2!important;border-color:#0c4da2!important}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-footer-content .moove-gdpr-button-holder a.mgbutton:hover,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-footer-content .moove-gdpr-button-holder button.mgbutton:hover{background-color:#fff!important;color:#0c4da2!important}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-close i{background-color:#0c4da2!important;border:1px solid #0c4da2!important}#moove_gdpr_cookie_modal .gdpr-acc-link{line-height:0;font-size:0;color:transparent}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-close:hover i,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li a,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li button,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li button i,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li a i,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-tab-main .moove-gdpr-tab-main-content a:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content a.mgbutton:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content button.mgbutton:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content a:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content button:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content span.change-settings-button:hover{color:#0c4da2!important}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li.menu-item-selected a,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li.menu-item-selected button{color:#000!important}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li.menu-item-selected a i,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li.menu-item-selected button i{color:#000!important}#moove_gdpr_cookie_modal.lity-hide{display:none}        </style>
+
+        <div id="moove_gdpr_cookie_modal" class="lity-hide">
+            <div class="moove-gdpr-modal-content moove-clearfix logo-position-center moove_gdpr_modal_theme_v1">
+                <a href="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/#" class="moove-gdpr-modal-close" rel="nofollow"><i class="moovegdpr-arrow-close"></i></a>
+                <div class="moove-gdpr-modal-left-content">
+                            <div class="moove-gdpr-company-logo-holder">
+                        <img src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/corelan-gcv-small.jpg" alt="" class="img-responsive" scale="0">
+        </div>
+        <!--  .moove-gdpr-company-logo-holder -->
+                            <ul id="moove-gdpr-menu">
+                                                <li class="menu-item-on menu-item-privacy_overview menu-item-selected">
+                            <button data-href="#privacy_overview" class="moove-gdpr-tab-nav"><i class="moovegdpr-privacy-overview"></i> <span>Privacy Overview</span></button>
+                        </li>
+
+                                                                            <li class="menu-item-strict-necesarry-cookies menu-item-off">
+                                <button data-href="#strict-necesarry-cookies" class="moove-gdpr-tab-nav"><i class="moovegdpr-strict-necessary"></i> <span>Strictly Necessary Cookies</span></button>
+                            </li>
+                        
+
+                                                
+                                                
+                                                                            <li class="menu-item-moreinfo menu-item-off">
+                                <button data-href="#cookie_policy_modal" class="moove-gdpr-tab-nav" rel="nofollow"><i class="moovegdpr-policy"></i> <span>Cookie Policy</span></button>
+                            </li>
+                                            </ul>
+
+                            <div class="moove-gdpr-branding-cnt">
+                    </div>
+        <!--  .moove-gdpr-branding -->
+                        </div>
+                <!--  .moove-gdpr-modal-left-content -->
+                                <div class="moove-gdpr-modal-right-content">
+                    <div class="moove-gdpr-modal-title">
+
+                                                                    </div>
+                    <!-- .moove-gdpr-modal-ritle -->
+                    <div class="main-modal-content">
+
+                        <div class="moove-gdpr-tab-content">
+                            <div id="privacy_overview" class="moove-gdpr-tab-main">
+                                                                    <h3 class="tab-title">Privacy Overview</h3>
+                                                                <div class="moove-gdpr-tab-main-content">
+                                    <p>a. Corelan respects your privacy. Most information accessible on or via the<br>
+Corelan Website is available without the need to provide personal information.<br>
+In certain cases you may however be requested to submit personal information. In<br>
+such case your personal information shall be treated in accordance with the General Data Protection Regulation and any amendments hereof.</p>
+<p>b. All personal information made available by you will be treated solely for<br>
+the purpose of making available to you the requested information or services.<br>
+Your personal information will not be shared with third parties, but it may be used for authentication, support &amp; marketing purposes in relation with services provided by Corelan.</p>
+<p>c. We will only keep your personal information for as long as is required to<br>
+provide you with the requested information or services, or for any longer period<br>
+as may legally be required.</p>
+<p>d. It is our goal to reasonably protect the personal information made<br>
+available by you from third parties.</p>
+<p>e. You have the right to consult, correct, adjust or have removed your<br>
+personal details by written request to Corelan. &nbsp;If you decide to get your information removed, you understand and accept that you will lose all access to any resources that require the use of these personal details, such as parts of the website that require authentication.</p>
+<p>f. When using the Corelan Website, cookies may possible be used. You do not have to accept cookies to be able to use the publicly accessible parts of Corelan Websites.&nbsp;If you have an account and you log in to this site, we will set a temporary cookie to determine if your browser accepts cookies. This cookie contains no personal data and is discarded when you close your browser.</p>
+<p>When you log in, we will also set up several cookies to save your login information and your screen display choices.&nbsp; &nbsp;Cookies may be used to display advertisements or to collect statistics about the use of the Corelan website.</p>
+<p>g. This privacy policy may be amended by Corelan at any time.</p>
+                                </div>
+                                <!--  .moove-gdpr-tab-main-content -->
+                            </div>
+
+                                                            <div id="strict-necesarry-cookies" class="moove-gdpr-tab-main" style="display:none">
+                                                                        <h3 class="tab-title">Strictly Necessary Cookies</h3>
+                                    <div class="moove-gdpr-tab-main-content">
+                                        <p>Strictly Necessary Cookie should be enabled at all times so that we can save your preferences for cookie settings.</p>
+                                                                                                                        <div class="moove-gdpr-status-bar ">
+                                            <form>
+                                                <fieldset>
+                                                    <label class="switch">
+                                                        <span class="gdpr-acc-link">disable</span>
+                                                        <input type="checkbox" value="check" id="moove_gdpr_strict_cookies">
+                                                        <span class="slider round" data-text-enable="Enabled" data-text-disabled="Disabled"></span>
+                                                    </label>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                        <!-- .moove-gdpr-status-bar -->
+                                                                                    <div class="moove-gdpr-tab-main-content moove-gdpr-strict-warning-message" style="margin-top: 10px;">
+                                                <p>If you disable this cookie, we will not be able to save your preferences. This means that every time you visit this website you will need to enable or disable cookies again.</p>
+                                            </div>
+                                            <!--  .moove-gdpr-tab-main-content -->
+                                                                                
+                                    </div>
+                                    <!--  .moove-gdpr-tab-main-content -->
+                                </div>
+                            
+                            
+                            
+                                                                                            <div id="cookie_policy_modal" class="moove-gdpr-tab-main" style="display:none">
+                                    <h3 class="tab-title">Cookie Policy</h3>
+                                    <div class="moove-gdpr-tab-main-content">
+                                        <p>When using the Corelan Website, cookies may possible be used. You do not have to accept cookies to be able to use the publicly accessible parts of the Corelan Website.&nbsp;If you have an account and you log in to this site, we will set a temporary cookie to determine if your browser accepts cookies. This cookie contains no personal data and is discarded when you close your browser. When you log in, we will also set up several cookies to save your login information and your screen display choices.</p>
+<p>We may use third party cookies to show ads and to collect anonymous information such as the number of visitors to the site, and the most popular pages.&nbsp; The ability to show ads is an important source of income to cover the hosting fees to keep this website alive. If you prevent ads from being displayed, this website will eventually disappear.</p>
+                                    </div>
+                                    <!--  .moove-gdpr-tab-main-content -->
+                                </div>
+                                                    </div>
+                        <!--  .moove-gdpr-tab-content -->
+                    </div>
+                    <!--  .main-modal-content -->
+                    <div class="moove-gdpr-modal-footer-content">
+                        <div class="moove-gdpr-button-holder">
+                                                        <button class="mgbutton moove-gdpr-modal-allow-all button-visible" rel="nofollow">Enable All</button>
+                            <button class="mgbutton moove-gdpr-modal-save-settings button-visible" rel="nofollow">Save Changes</button>
+                        </div>
+                        <!--  .moove-gdpr-button-holder -->
+                                            </div>
+                    <!--  .moove-gdpr-modal-footer-content -->
+                </div>
+                <!--  .moove-gdpr-modal-right-content -->
+
+                <div class="moove-clearfix"></div>
+
+            </div>
+            <!--  .moove-gdpr-modal-content -->
+        </div>
+        <!-- #moove_gdpr_cookie_modal  -->
+        <script type="text/javascript" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/e-201835.js" async="async" defer="defer"></script>
+<script type="text/javascript">
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:6.4.2',blog:'15427359',post:'11044',tz:'2',srv:'www.corelan.be'} ]);
+	_stq.push([ 'clickTrackerInit', '15427359', '11044' ]);
+</script>
+	        <!-- 29 queries. 1.121 seconds. -->
+    </div>
+
+
+<!--
+Hyper cache file: e16d00e4d17de7e89d84f57208946084
+Cache created: 29-08-2018 05:35:44
+HCE Version: 1.6.3
+Load AVG: 0(5)
+--><script src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/lity.js"></script><div id="sharing_email" style="display: none;">
+		<form action="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="email" name="target_email" id="target_email" value="">
+
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="">
+
+				<label for="source_email">Your Email Address</label>
+				<input type="email" name="source_email" id="source_email" value="">
+
+						<input type="text" id="jetpack-source_f_name" name="source_f_name" class="input" value="" size="25" autocomplete="off" title="This field is for validation and should not be changed">
+			
+			<img style="float: right; display: none" class="loading" src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/loading.gif" alt="loading" width="16" height="16" scale="0">
+			<input type="submit" value="Send Email" class="sharing_send">
+			<a rel="nofollow" href="https://www.corelan.be/index.php/2016/07/05/windows-10-x86wow64-userland-heap/#cancel" class="sharing_cancel">Cancel</a>
+
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div><img src="./Windows 10 x86_wow64 Userland heap _ Corelan Team_files/g.gif" alt=":)" width="6" height="5" id="wpstats" scale="0"></body></html>

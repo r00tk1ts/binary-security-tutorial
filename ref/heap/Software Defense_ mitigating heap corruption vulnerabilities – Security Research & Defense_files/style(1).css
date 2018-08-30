@@ -1,0 +1,20 @@
+/*
+Theme Name: Microsoft TechNet
+Theme URI: http://www.microsoft.com/
+Author: the Microsoft team
+Author URI: http://www.microsoft.com/
+Template: microsoft
+Description: Microsoft default theme for TechNet blog
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: black, blue, gray, pink, purple, white, yellow, dark, light, two-columns, left-sidebar, fixed-layout, responsive-layout, accessibility-ready, custom-background, custom-colors, custom-header, custom-menu, editor-style, featured-images, microformats, post-formats, rtl-language-support, sticky-post, threaded-comments, translation-ready
+Text Domain: microsoft
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/
+#brand-name::after {
+    content: "TechNet";
+}
+
